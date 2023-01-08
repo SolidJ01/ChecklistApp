@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Color x:Key="Foreground">#757575</Color>
+    <Color x:Key="ForegroundDark">#424A4E</Color>
+    <Color x:Key="Background">#242F34</Color>
+    <Color x:Key="Text">White</Color>
+
+    <Color x:Key="ForegroundCyan">#1593A4</Color>
+    <Color x:Key="ForegroundBlue">#3F6297</Color>
+    <Color x:Key="ForegroundPurple">#702783</Color>
+    <Color x:Key="ForegroundMagenta">#972153</Color>
+    <Color x:Key="ForegroundRed">#972121</Color>
+    <Color x:Key="ForegroundOrange">#C05D25</Color>
+    <Color x:Key="ForegroundGreen">#099742</Color>
+
+    <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource Foreground}" />
+    <SolidColorBrush x:Key="ForegroundDarkBrush" Color="{StaticResource ForegroundDark}" />
+    <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource Background}" />
+    <SolidColorBrush x:Key="TextBrush" Color="{StaticResource Text}" />
+
+    <SolidColorBrush x:Key="ForegroundCyanBrush" Color="{StaticResource ForegroundCyan}" />
+    <SolidColorBrush x:Key="ForegroundBlueBrush" Color="{StaticResource ForegroundBlue}" />
+    <SolidColorBrush x:Key="ForegroundPurpleBrush" Color="{StaticResource ForegroundPurple}" />
+    <SolidColorBrush x:Key="ForegroundMagentaBrush" Color="{StaticResource ForegroundMagenta}" />
+    <SolidColorBrush x:Key="ForegroundRedBrush" Color="{StaticResource ForegroundRed}" />
+    <SolidColorBrush x:Key="ForegroundOrangeBrush" Color="{StaticResource ForegroundOrange}" />
+    <SolidColorBrush x:Key="ForegroundGreenBrush" Color="{StaticResource ForegroundGreen}" />
+
+</ResourceDictionary>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Name="this"
+             x:Class="ChecklistApp.Controls.ChecklistCard">
+    <Frame BindingContext="{x:Reference this}"
+           CornerRadius="8"
+           Margin="15,25,15,0"
+           Padding="0"
+           Background="{StaticResource ForegroundBrush}">
+        <Frame.Shadow>
+            <Shadow Brush="Black"
+                    Offset="0,4"
+                    Radius="10"
+                    Opacity="0.5" />
+        </Frame.Shadow>
+        <VerticalStackLayout>
+            <Label Margin="15,15,15,0"
+                   Text="{Binding Name}"
+                   TextColor="{StaticResource Text}"
+                   FontSize="25"
+                   FontAttributes="Bold" />
+            <Grid Margin="15,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0"
+                       Text="{Binding CompletionStatus}"
+                       TextColor="{StaticResource Text}"
+                       FontSize="18"
+                       FontAttributes="Bold" />
+                <Label Grid.Column="1"
+                       Text="{Binding DeadlineStatus}"
+                       TextColor="{StaticResource Text}"
+                       FontSize="18"
+                       FontAttributes="Bold" />
+            </Grid>
+            <Grid HeightRequest="8" BackgroundColor="{StaticResource ForegroundDarkBrush}" />
+            <!--<ProgressBar IsVisible="true" Background="{StaticResource ForegroundDarkBrush}" HeightRequest="10" ProgressColor="{StaticResource Text}" Progress="0.5" />-->
+        </VerticalStackLayout>
+    </Frame>
+</ContentView>

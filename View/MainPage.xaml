@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ChecklistApp.Controls"
+             xmlns:model="clr-namespace:ChecklistApp.Model"
+             xmlns:viewmodel="clr-namespace:ChecklistApp.ViewModel"
+             x:Class="ChecklistApp.MainPage"
+             x:DataType="viewmodel:MainPageViewModel">
+
+    <Grid Background="{StaticResource BackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="60" />
+        </Grid.RowDefinitions>
+
+        <ScrollView Grid.Row="0">
+            <CollectionView ItemsSource="{Binding Checklists}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="viewmodel:ChecklistCardViewModel">
+                        <!--<Frame Padding="15" 
+                               CornerRadius="8"
+                               Background="{StaticResource ForegroundBrush}"
+                               Margin="15">
+                            <Label Text="{Binding Name}" TextColor="{StaticResource Text}" />
+                        </Frame>-->
+                        <controls:ChecklistCard Name="{Binding Name}" CompletionStatus="{Binding ItemsStatus}" DeadlineStatus="{Binding DeadlineStatus}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+
+        <controls:ControlBar Grid.Row="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="0" />
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Text="Create New" Command="{Binding CreateNewCommand}" />
+            </Grid>
+        </controls:ControlBar>
+    </Grid>
+
+</ContentPage>
