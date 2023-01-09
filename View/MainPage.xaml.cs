@@ -8,6 +8,7 @@ public partial class MainPage : ContentPage
 	{
 		InitializeComponent();
 		this.BindingContext = viewModel;
+		NavigatedTo += viewModel.ReloadList;
 	}
 }
 

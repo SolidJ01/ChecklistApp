@@ -8,6 +8,12 @@ public partial class RoundedEntry : ContentView
 		get => (string)GetValue(TextProperty);
 		set => SetValue(TextProperty, value);
 	}
+	public static readonly BindableProperty PlaceholderProperty = BindableProperty.Create(nameof(Placeholder), typeof(string), typeof(RoundedEntry), string.Empty);
+	public string Placeholder
+	{
+		get => (string)GetValue(PlaceholderProperty);
+		set => SetValue(PlaceholderProperty, value);
+	}
 	public RoundedEntry()
 	{
 		InitializeComponent();

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ChecklistApp.ViewModel
 {
-    public class ViewModel
+    public class ViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged = (sender, Easing) => { };
+        public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
 
         public void OnPropertyChanged([CallerMemberName] string property = null)
         {

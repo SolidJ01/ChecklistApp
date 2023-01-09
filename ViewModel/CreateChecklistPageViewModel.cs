@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace ChecklistApp.ViewModel
 {
-    public class CreateChecklistPageViewModel
+    public class CreateChecklistPageViewModel : ViewModel
     {
         private ChecklistContext _checklistContext;
         private NavigationService _navigationService;
@@ -20,12 +20,14 @@ namespace ChecklistApp.ViewModel
 
         public string Name { get { return _checklist.Name; } set { _checklist.Name = value; } }
         public bool UseDeadline { get { return _checklist.UseDeadline; } set { _checklist.UseDeadline = value; } }
+        public DateTime Deadline { get { return _checklist.Deadline; } set { _checklist.Deadline = value; } }
 
         #endregion
 
         #region Commands
 
         public ICommand BackCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
 
         #endregion
 
@@ -36,11 +38,26 @@ namespace ChecklistApp.ViewModel
             _checklist = new Checklist();
 
             BackCommand = new Command(Back);
+            SaveCommand = new Command(Save);
         }
 
         private void Back()
         {
             _navigationService.NavigateTo(NavigationService.NavigationTarget.Back);
+        }
+
+        private void Save()
+        {
+            try
+            {
+                _checklist.Name = StringHelper.FormatItemName(Name);
+                _checklistContext.CreateChecklist(_checklist);
+                _navigationService.NavigateTo(NavigationService.NavigationTarget.Home);
+            }
+            catch
+            {
+                //  TODO: Notify user something went wrong
+            }
         }
     }
 }

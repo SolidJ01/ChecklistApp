@@ -7,6 +7,6 @@
            CornerRadius="8"
            IsClippedToBounds="True"
            Padding="0">
-        <Entry Text="{Binding Text}" Style="{StaticResource TextEntry}" />
+        <Entry Text="{Binding Text}" Style="{StaticResource TextEntry}" Placeholder="{Binding Placeholder}" PlaceholderColor="{StaticResource Text}" />
     </Frame>
 </ContentView>

@@ -5,13 +5,14 @@
              x:Name="this"
              x:Class="ChecklistApp.Controls.ChecklistMetaEditor">
     <VerticalStackLayout BindingContext="{x:Reference this}">
-        <controls:RoundedEntry Text="{Binding Name}" />
+        <controls:RoundedEntry Text="{Binding Name}" Placeholder="Title" />
         <Grid Margin="0,20,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <controls:RoundedCheckbox Grid.Column="0" HeightRequest="50" IsChecked="{Binding UseDeadline}" />
+            <controls:DateTimePicker Grid.Column="1" Margin="20,0,0,0" Use="{Binding UseDeadline}" Value="{Binding Deadline}" />
         </Grid>
     </VerticalStackLayout>
 </ContentView>

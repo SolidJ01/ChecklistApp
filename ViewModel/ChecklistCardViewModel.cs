@@ -13,6 +13,8 @@ namespace ChecklistApp.ViewModel
 
         #region properties
 
+        public int Id { get { return _checklist.Id; } }
+
         public string Name { get { return _checklist.Name; } }
 
         public string ItemsStatus
@@ -32,10 +34,10 @@ namespace ChecklistApp.ViewModel
         {
             get
             {
-                return _checklist.UseDeadline && _checklist.Deadline != null
-                    ? (_checklist.Deadline.Value.Date - DateTime.Now.Date).TotalDays >= 1
-                        ? $"{(int)(_checklist.Deadline.Value - DateTime.Now).TotalDays}d left"
-                        : $"{(int)(_checklist.Deadline.Value - DateTime.Now).TotalHours}h left"
+                return _checklist.UseDeadline
+                    ? (_checklist.Deadline.Date - DateTime.Now.Date).TotalDays >= 1
+                        ? $"{(int)(_checklist.Deadline - DateTime.Now).TotalDays}d left"
+                        : $"{(int)(_checklist.Deadline - DateTime.Now).TotalHours}h left"
                     : string.Empty;
             }
         }

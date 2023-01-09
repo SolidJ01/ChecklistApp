@@ -1,3 +1,5 @@
+using System.Windows.Input;
+
 namespace ChecklistApp.Controls;
 
 public partial class ChecklistCard : ContentView
@@ -22,6 +24,21 @@ public partial class ChecklistCard : ContentView
 		get => (string)GetValue(DeadlineStatusProperty);
 		set => SetValue(DeadlineStatusProperty, value);
 	}
+
+	public static readonly BindableProperty CommandProperty = BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(ChecklistCard), null);
+	public ICommand Command
+	{
+		get => (ICommand)GetValue(CommandProperty);
+		set => SetValue(CommandProperty, value);
+	}
+
+	public static readonly BindableProperty ChecklistIdProperty = BindableProperty.Create(nameof(ChecklistId), typeof(int), typeof(ChecklistCard), null);
+	public int ChecklistId
+	{
+		get => (int)GetValue(ChecklistIdProperty);
+		set => SetValue(ChecklistIdProperty, value);
+	}
+
     public ChecklistCard()
 	{
 		InitializeComponent();

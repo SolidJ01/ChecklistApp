@@ -25,7 +25,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0" Text="&#xf060;" FontFamily="FontAwSolid" Command="{Binding BackCommand}" />
-                <Button Grid.Column="1" Text="Save" Margin="20,0,0,0" />
+                <Button Grid.Column="1" Text="Save" Margin="20,0,0,0" Command="{Binding SaveCommand}" />
             </Grid>
         </controls:ControlBar>
     </Grid>

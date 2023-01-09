@@ -13,7 +13,7 @@
             <RowDefinition Height="60" />
         </Grid.RowDefinitions>
 
-        <ScrollView Grid.Row="0">
+        <ScrollView Grid.Row="0" Padding="0,0,0,20">
             <CollectionView ItemsSource="{Binding Checklists}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="viewmodel:ChecklistCardViewModel">
@@ -23,7 +23,11 @@
                                Margin="15">
                             <Label Text="{Binding Name}" TextColor="{StaticResource Text}" />
                         </Frame>-->
-                        <controls:ChecklistCard Name="{Binding Name}" CompletionStatus="{Binding ItemsStatus}" DeadlineStatus="{Binding DeadlineStatus}" />
+                        <controls:ChecklistCard Name="{Binding Name}" CompletionStatus="{Binding ItemsStatus}" DeadlineStatus="{Binding DeadlineStatus}" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=GoToChecklistCommand}" ChecklistId="{Binding Id}">
+                            <!--<controls:ChecklistCard.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=GoToChecklistCommand}" NumberOfTapsRequired="1" />
+                            </controls:ChecklistCard.GestureRecognizers>-->
+                        </controls:ChecklistCard>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

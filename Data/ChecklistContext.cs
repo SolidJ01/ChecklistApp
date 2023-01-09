@@ -24,9 +24,20 @@ namespace ChecklistApp.Data
 
         #region Methods
 
-        public List<Checklist> GetChecklists()
+        public async Task<List<Checklist>> GetChecklists()
         {
-            return Checklists.Include(x => x.Items).ToList();
+            return await Checklists.Include(x => x.Items).ToListAsync();
+        }
+
+        public async Task<Checklist> GetChecklist(int id)
+        {
+            return await Checklists.FindAsync(id);
+        }
+
+        public async void CreateChecklist(Checklist checklist)
+        {
+            await Checklists.AddAsync(checklist);
+            await SaveChangesAsync();
         }
 
         #endregion

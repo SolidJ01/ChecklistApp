@@ -8,6 +8,9 @@
            Margin="15,25,15,0"
            Padding="0"
            Background="{StaticResource ForegroundBrush}">
+        <Frame.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding Command}" CommandParameter="{Binding ChecklistId}" />
+        </Frame.GestureRecognizers>
         <Frame.Shadow>
             <Shadow Brush="Black"
                     Offset="0,4"

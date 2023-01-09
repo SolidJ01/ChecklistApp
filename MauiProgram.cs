@@ -29,6 +29,9 @@ public static class MauiProgram
 		builder.Services.AddSingleton<CreateChecklistPageViewModel>();
 		builder.Services.AddSingleton<CreateChecklistPage>();
 
+		builder.Services.AddTransient<ChecklistPageViewModel>();
+		builder.Services.AddSingleton<ChecklistPage>();
+
 		return builder.Build();
 	}
 }

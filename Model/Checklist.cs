@@ -23,7 +23,7 @@ namespace ChecklistApp.Model
         public string Name { get; set; }
         public ChecklistColor Color { get; set; }
         public bool UseDeadline { get; set; }
-        public DateTime? Deadline { get; set; }
+        public DateTime Deadline { get; set; }
         public List<Item> Items { get; set; }
 
         public Checklist()
@@ -31,7 +31,7 @@ namespace ChecklistApp.Model
             Name = "";
             Color = ChecklistColor.Grey;
             UseDeadline = false;
-            Deadline = null;
+            Deadline = DateTime.Now;
             Items = new List<Item>();
         }
     }

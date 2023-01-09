@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ChecklistApp.Controls"
+             xmlns:viewmodel="clr-namespace:ChecklistApp.ViewModel"
+             x:Class="ChecklistApp.View.ChecklistPage"
+             x:DataType="viewmodel:ChecklistPageViewModel"
+             Title="ChecklistPage">
+    <Grid Background="{StaticResource BackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="120" />
+        </Grid.RowDefinitions>
+
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout>
+                <Label Text="{Binding Checklist.Name}" FontSize="25" TextColor="{StaticResource Text}" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <controls:ControlBar Grid.Row="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60" />
+                    <RowDefinition Height="50" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="50" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Row="0" Grid.ColumnSpan="3" Text="Delete" Margin="0,0,0,10" Style="{StaticResource DeleteButton}" />
+                <Button Grid.Row="1" Grid.Column="0" FontFamily="FontAwSolid" Text="&#xf060;" Command="{Binding BackCommand}" />
+                <Button Grid.Row="1" Grid.Column="1" Text="Add New" Margin="10,0" />
+                <Button Grid.Row="1" Grid.Column="2" FontFamily="FontAwSolid" Text="&#xf013;" />
+            </Grid>
+        </controls:ControlBar>
+    </Grid>
+</ContentPage>

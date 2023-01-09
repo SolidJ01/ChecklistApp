@@ -17,12 +17,15 @@ namespace ChecklistApp.ViewModel
         private NavigationService _navigationService;
 
         private ObservableCollection<Checklist> _checklists;
-        private ObservableCollection<ChecklistCardViewModel> _checklistViewModels;
-        public ObservableCollection<ChecklistCardViewModel> Checklists { get { return _checklistViewModels; } set { _checklistViewModels = value; } }
+        //private ObservableCollection<ChecklistCardViewModel> _checklistViewModels;
+        //public ObservableCollection<ChecklistCardViewModel> Checklists { get { return _checklistViewModels; } set { _checklistViewModels = value; } }
+        public ObservableCollection<ChecklistCardViewModel> Checklists { get; set; }
 
         #region Commands
 
         public ICommand CreateNewCommand { get; set; }
+
+        public ICommand GoToChecklistCommand { get; set; }
 
         #endregion
 
@@ -31,14 +34,8 @@ namespace ChecklistApp.ViewModel
             _checklistContext = checklistContext;
             _navigationService = navigationService;
 
-            _checklists = new ObservableCollection<Checklist>(_checklistContext.GetChecklists());
-            _checklistViewModels = new ObservableCollection<ChecklistCardViewModel>();
-            foreach (Checklist checklist in _checklists)
-            {
-                _checklistViewModels.Add(new ChecklistCardViewModel(checklist));
-            }
-
             CreateNewCommand = new Command(CreateNew);
+            GoToChecklistCommand = new Command<int>(GoToChecklist);
         }
 
         #region Methods
@@ -46,6 +43,22 @@ namespace ChecklistApp.ViewModel
         private void CreateNew()
         {
             _navigationService.NavigateTo(NavigationService.NavigationTarget.CreateChecklist);
+        }
+
+        public async void ReloadList(object sender, EventArgs e)
+        {
+            _checklists = new ObservableCollection<Checklist>(await _checklistContext.GetChecklists());
+            Checklists = new ObservableCollection<ChecklistCardViewModel>();
+            foreach (Checklist checklist in _checklists)
+            {
+                Checklists.Add(new ChecklistCardViewModel(checklist));
+            }
+            OnPropertyChanged(nameof(Checklists));
+        }
+
+        private void GoToChecklist(int checklist)
+        {
+            _navigationService.NavigateTo(NavigationService.NavigationTarget.Checklist, checklist);
         }
 
         #endregion
