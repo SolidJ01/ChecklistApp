@@ -34,10 +34,43 @@ namespace ChecklistApp.Data
             return await Checklists.FindAsync(id);
         }
 
+        public async Task UpdateChecklist(Checklist checklist)
+        {
+            if (!ChecklistExists(checklist))
+                return;
+            Checklists.Update(checklist);
+            await SaveChangesAsync();
+        }
+
         public async void CreateChecklist(Checklist checklist)
         {
             await Checklists.AddAsync(checklist);
             await SaveChangesAsync();
+        }
+
+        public async void DeleteChecklist(Checklist checklist)
+        {
+            if (!ChecklistExists(checklist))
+                return;
+            Checklists.Remove(checklist);
+            await SaveChangesAsync();
+        }
+
+
+        public async void CreateItems(List<Item> items)
+        {
+            if (items is null || !items.Any())
+                return;
+            if (!ChecklistExists(items.First().Checklist))
+                return;
+            await Items.AddRangeAsync(items);
+            await SaveChangesAsync();
+        }
+
+
+        private bool ChecklistExists(Checklist checklist)
+        {
+            return Checklists.Any(x => x.Id == checklist.Id);
         }
 
         #endregion

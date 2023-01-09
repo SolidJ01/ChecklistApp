@@ -1,36 +1,28 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:controls="clr-namespace:ChecklistApp.Controls"
              xmlns:viewmodel="clr-namespace:ChecklistApp.ViewModel"
+             xmlns:controls="clr-namespace:ChecklistApp.Controls"
              xmlns:model="clr-namespace:ChecklistApp.Model"
-             x:Class="ChecklistApp.View.ChecklistPage"
-             x:DataType="viewmodel:ChecklistPageViewModel"
-             Title="ChecklistPage">
+             x:Class="ChecklistApp.View.CreateItemPage"
+             x:DataType="viewmodel:CreateItemPageViewModel"
+             Title="CreateItemPage">
     <Grid Background="{StaticResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="60" />
         </Grid.RowDefinitions>
 
-        <ScrollView Grid.Row="0">
+        <ScrollView Grid.Row="0" Padding="15,20,15,0">
             <VerticalStackLayout>
-                <controls:ChecklistCard Name="{Binding ChecklistCard.Name}" 
-                                        CompletionStatus="{Binding ChecklistCard.ItemsStatus}" 
-                                        DeadlineStatus="{Binding ChecklistCard.DeadlineStatus}" />
-
                 <CollectionView ItemsSource="{Binding Items}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:Item">
-                            <Frame Margin="15,20,15,0"
-                                   Background="{StaticResource ForegroundBrush}"
-                                   CornerRadius="8"
-                                   Padding="10">
-                                <Label Text="{Binding Name}" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource Text}" />
-                            </Frame>
+                            <controls:RoundedEntry Text="{Binding Name}" Margin="0,0,0,20" />
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+                <Button Text="Add New" Command="{Binding AddNewCommand}" HeightRequest="50" />
             </VerticalStackLayout>
         </ScrollView>
 
@@ -39,11 +31,10 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="50" />
                 </Grid.ColumnDefinitions>
+
                 <Button Grid.Column="0" FontFamily="FontAwSolid" Text="&#xf060;" Command="{Binding BackCommand}" />
-                <Button Grid.Column="1" Text="Add New" Margin="10,0" Command="{Binding CreateNewCommand}" />
-                <Button Grid.Column="2" FontFamily="FontAwSolid" Text="&#xf013;" Command="{Binding OptionsCommand}" />
+                <Button Grid.Column="1" Margin="10,0,0,0" Text="Save" Command="{Binding SaveCommand}" />
             </Grid>
         </controls:ControlBar>
     </Grid>

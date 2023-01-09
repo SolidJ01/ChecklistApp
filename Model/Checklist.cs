@@ -26,13 +26,13 @@ namespace ChecklistApp.Model
         public DateTime Deadline { get; set; }
         public List<Item> Items { get; set; }
 
-        public Checklist()
-        {
-            Name = "";
-            Color = ChecklistColor.Grey;
-            UseDeadline = false;
-            Deadline = DateTime.Now;
-            Items = new List<Item>();
-        }
+        //public Checklist()
+        //{
+        //    Name = "";
+        //    Color = ChecklistColor.Grey;
+        //    UseDeadline = false;
+        //    Deadline = DateTime.Now;
+        //    Items = new List<Item>();
+        //}
     }
 }

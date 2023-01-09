@@ -36,6 +36,7 @@ namespace ChecklistApp.ViewModel
             _checklistContext = checklistContext;
             _navigationService = navigationService;
             _checklist = new Checklist();
+            _checklist.Deadline = DateTime.Now;
 
             BackCommand = new Command(Back);
             SaveCommand = new Command(Save);
