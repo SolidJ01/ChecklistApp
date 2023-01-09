@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Name="this"
+             x:Class="ChecklistApp.Controls.RoundedCheckbox">
+    <Button BindingContext="{x:Reference this}"
+            Text="{Binding Text}"
+            Clicked="Button_Clicked"
+            FontSize="25"
+            FontFamily="FontAwSolid"
+            TextColor="{StaticResource Text}">
+        <Button.Triggers>
+            <DataTrigger TargetType="Button" Binding="{Binding IsChecked}" Value="false">
+                <Setter Property="Background" Value="{StaticResource ForegroundDarkBrush}" />
+                <Setter Property="Text" Value="" />
+            </DataTrigger>
+            <DataTrigger TargetType="Button" Binding="{Binding IsChecked}" Value="true">
+                <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
+                <Setter Property="Text" Value="&#xf00c;" />
+            </DataTrigger>
+        </Button.Triggers>
+        
+    </Button>
+</ContentView>

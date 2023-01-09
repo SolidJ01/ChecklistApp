@@ -14,7 +14,8 @@ namespace ChecklistApp.Services
             Home, 
             CreateChecklist, 
             Checklist, 
-            CreateItem
+            CreateItem, 
+            Back
         }
         public async void NavigateTo(NavigationTarget target)
         {
@@ -31,6 +32,9 @@ namespace ChecklistApp.Services
                     break;
                 case NavigationTarget.CreateItem:
 
+                    break;
+                case NavigationTarget.Back:
+                    await Shell.Current.GoToAsync("..", true);
                     break;
             }
         }

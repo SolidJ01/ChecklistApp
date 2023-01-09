@@ -6,8 +6,7 @@
         <ControlTemplate>
             <Frame Padding="10,0,10,10" 
                    Background="transparent"
-                   CornerRadius="0"
-                   ZIndex="10">
+                   CornerRadius="0">
                 <Frame.Shadow>
                     <Shadow Brush="black"
                             Offset="0, -20"

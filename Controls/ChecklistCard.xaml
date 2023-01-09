@@ -36,7 +36,7 @@
                        FontSize="18"
                        FontAttributes="Bold" />
             </Grid>
-            <Grid HeightRequest="8" BackgroundColor="{StaticResource ForegroundDarkBrush}" />
+            <Grid HeightRequest="8" Background="{StaticResource ForegroundDarkBrush}" />
             <!--<ProgressBar IsVisible="true" Background="{StaticResource ForegroundDarkBrush}" HeightRequest="10" ProgressColor="{StaticResource Text}" Progress="0.5" />-->
         </VerticalStackLayout>
     </Frame>

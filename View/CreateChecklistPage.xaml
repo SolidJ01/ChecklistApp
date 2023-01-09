@@ -2,13 +2,20 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:ChecklistApp.Controls"
+             xmlns:viewmodel="clr-namespace:ChecklistApp.ViewModel"
              x:Class="ChecklistApp.View.CreateChecklistPage"
+             x:DataType="viewmodel:CreateChecklistPageViewModel"
              Title="CreateChecklistPage">
     <Grid Background="{StaticResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="60" />
         </Grid.RowDefinitions>
+        <ScrollView Padding="15,20">
+
+            <controls:ChecklistMetaEditor Name="{Binding Name}" UseDeadline="{Binding UseDeadline}" />
+
+        </ScrollView>
 
         <controls:ControlBar Grid.Row="1">
             <Grid>
@@ -17,7 +24,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Text="&#xf060;" FontFamily="FontAwSolid" />
+                <Button Grid.Column="0" Text="&#xf060;" FontFamily="FontAwSolid" Command="{Binding BackCommand}" />
                 <Button Grid.Column="1" Text="Save" Margin="20,0,0,0" />
             </Grid>
         </controls:ControlBar>
