@@ -31,6 +31,8 @@ namespace ChecklistApp.ViewModel
 
         public ICommand AddNewCommand { get; set; }
 
+        public ICommand RemoveCommand { get; set; }
+
         public ICommand SaveCommand { get; set; }
 
         public ICommand BackCommand { get; set; }
@@ -43,6 +45,7 @@ namespace ChecklistApp.ViewModel
             _navigationService = navigationService;
 
             AddNewCommand = new Command(AddNew);
+            RemoveCommand = new Command<Item>(Remove);
             SaveCommand = new Command(Save);
             BackCommand = new Command(Back);
         }
@@ -53,6 +56,21 @@ namespace ChecklistApp.ViewModel
         private void AddNew()
         {
             Items.Add(new Item { Checklist = _checklist });
+        }
+
+        private void Remove(Item item)
+        {
+            if (item is null)
+                return;
+
+            try
+            {
+                Items.Remove(item);
+            }
+            catch
+            {
+                //  TODO: Notify user of error
+            }
         }
 
         private void Save()

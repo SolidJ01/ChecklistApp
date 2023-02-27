@@ -3,22 +3,50 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Name="this"
              x:Class="ChecklistApp.Controls.RoundedCheckbox">
-    <Button BindingContext="{x:Reference this}"
-            Text="{Binding Text}"
+    <Grid BindingContext="{x:Reference this}">
+        <Frame ZIndex="1" CornerRadius="8" Margin="{Binding ClickablePadding}" Padding="0">
+            <Frame.Triggers>
+                <DataTrigger TargetType="Frame" Binding="{Binding IsChecked}" Value="false">
+                    <Setter Property="Background" Value="{StaticResource ForegroundDarkBrush}" />
+                </DataTrigger>
+                <DataTrigger TargetType="Frame" Binding="{Binding IsChecked}" Value="true">
+                    <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
+                </DataTrigger>
+            </Frame.Triggers>
+            <Label FontSize="{Binding FontSize}"
+                   FontFamily="FontAwSolid"
+                   TextColor="{StaticResource Text}"
+                   Margin="0"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center">
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label" Binding="{Binding IsChecked}" Value="false">
+                        <Setter Property="Text" Value="" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="Label" Binding="{Binding IsChecked}" Value="true">
+                        <Setter Property="Text" Value="&#xf00c;" />
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
+        </Frame>
+        <Frame ZIndex="2" BackgroundColor="Transparent" Padding="0">
+            <Button Opacity="0" Clicked="Button_Clicked" />
+        </Frame>
+    </Grid>
+    <!--<Button
             Clicked="Button_Clicked"
-            FontSize="25"
+            FontSize="{Binding FontSize}"
             FontFamily="FontAwSolid"
             TextColor="{StaticResource Text}">
-        <Button.Triggers>
-            <DataTrigger TargetType="Button" Binding="{Binding IsChecked}" Value="false">
-                <Setter Property="Background" Value="{StaticResource ForegroundDarkBrush}" />
-                <Setter Property="Text" Value="" />
-            </DataTrigger>
-            <DataTrigger TargetType="Button" Binding="{Binding IsChecked}" Value="true">
-                <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
-                <Setter Property="Text" Value="&#xf00c;" />
-            </DataTrigger>
-        </Button.Triggers>
-        
-    </Button>
+            <Button.Triggers>
+                <DataTrigger TargetType="Button" Binding="{Binding IsChecked}" Value="false">
+                    <Setter Property="Background" Value="{StaticResource ForegroundDarkBrush}" />
+                    <Setter Property="Text" Value="" />
+                </DataTrigger>
+                <DataTrigger TargetType="Button" Binding="{Binding IsChecked}" Value="true">
+                    <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
+                    <Setter Property="Text" Value="&#xf00c;" />
+                </DataTrigger>
+            </Button.Triggers>
+        </Button>-->
 </ContentView>

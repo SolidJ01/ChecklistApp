@@ -4,7 +4,7 @@
              x:Class="ChecklistApp.Controls.ControlBar">
     <ContentView.ControlTemplate>
         <ControlTemplate>
-            <Frame Padding="10,0,10,10" 
+            <Frame Padding="10,10,10,10" 
                    Background="transparent"
                    CornerRadius="0">
                 <Frame.Shadow>

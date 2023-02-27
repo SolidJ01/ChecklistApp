@@ -10,15 +10,28 @@
     <Grid Background="{StaticResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="60" />
+            <RowDefinition Height="70" />
         </Grid.RowDefinitions>
 
-        <ScrollView Grid.Row="0" Padding="15,20,15,0">
+        <ScrollView Grid.Row="0" Padding="10,20,10,20">
             <VerticalStackLayout>
                 <CollectionView ItemsSource="{Binding Items}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:Item">
-                            <controls:RoundedEntry Text="{Binding Name}" Margin="0,0,0,20" />
+                            <Grid Margin="0,0,0,20">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="50" />
+                                </Grid.ColumnDefinitions>
+
+                                <controls:RoundedEntry Text="{Binding Name}" Placeholder="Item Name" Margin="0,0,10,0" Grid.Column="0" />
+                                <Button Grid.Column="1" FontFamily="FontAwSolid" Text="&#xf1f8;" Background="{StaticResource ForegroundRedBrush}"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CreateItemPageViewModel}}, Path=RemoveCommand}"
+                                        CommandParameter="{Binding .}"/>
+                            </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

@@ -10,7 +10,7 @@
     <Grid Background="{StaticResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="60" />
+            <RowDefinition Height="70" />
         </Grid.RowDefinitions>
 
         <ScrollView Grid.Row="0">
@@ -22,11 +22,21 @@
                 <CollectionView ItemsSource="{Binding Items}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:Item">
-                            <Frame Margin="15,20,15,0"
+                            <Frame Margin="10,20,10,0"
                                    Background="{StaticResource ForegroundBrush}"
                                    CornerRadius="8"
-                                   Padding="10">
-                                <Label Text="{Binding Name}" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource Text}" />
+                                   Padding="0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="50" />
+                                    </Grid.RowDefinitions>
+                                    <controls:RoundedCheckbox Grid.Column="0" IsChecked="{Binding IsChecked}" ClickablePadding="10" FontSize="22" />
+                                    <Label Grid.Column="1" Margin="10,0" Text="{Binding Name}" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource Text}" VerticalTextAlignment="Center" />
+                                </Grid>
                             </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

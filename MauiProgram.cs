@@ -23,20 +23,20 @@ public static class MauiProgram
 		builder.Services.AddDbContext<ChecklistContext>(options => options.UseSqlite($"DataSource = {Path.Combine(FileSystem.AppDataDirectory, "Checklist.db")}"));
 		builder.Services.AddSingleton<NavigationService>();
 
-		builder.Services.AddSingleton<MainPageViewModel>();
-		builder.Services.AddSingleton<MainPage>();
+		builder.Services.AddTransient<MainPageViewModel>();
+		builder.Services.AddTransient<MainPage>();
 
-		builder.Services.AddSingleton<CreateChecklistPageViewModel>();
-		builder.Services.AddSingleton<CreateChecklistPage>();
+		builder.Services.AddTransient<CreateChecklistPageViewModel>();
+		builder.Services.AddTransient<CreateChecklistPage>();
 
 		builder.Services.AddTransient<ChecklistPageViewModel>();
-		builder.Services.AddSingleton<ChecklistPage>();
+		builder.Services.AddTransient<ChecklistPage>();
 
 		builder.Services.AddTransient<ChecklistOptionsPageViewModel>();
-		builder.Services.AddSingleton<ChecklistOptionsPage>();
+		builder.Services.AddTransient<ChecklistOptionsPage>();
 
 		builder.Services.AddTransient<CreateItemPageViewModel>();
-		builder.Services.AddSingleton<CreateItemPage>();
+		builder.Services.AddTransient<CreateItemPage>();
 
 		return builder.Build();
 	}

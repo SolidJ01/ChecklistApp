@@ -10,7 +10,7 @@
     <Grid Background="{StaticResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="60" />
+            <RowDefinition Height="70" />
         </Grid.RowDefinitions>
 
         <ScrollView Grid.Row="0" Padding="0,0,0,20">

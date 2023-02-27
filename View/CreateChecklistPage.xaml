@@ -9,9 +9,9 @@
     <Grid Background="{StaticResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="60" />
+            <RowDefinition Height="70" />
         </Grid.RowDefinitions>
-        <ScrollView Padding="15,20">
+        <ScrollView Padding="10,20">
 
             <controls:ChecklistMetaEditor Name="{Binding Name}" UseDeadline="{Binding UseDeadline}" Deadline="{Binding Deadline}" />
 
@@ -25,7 +25,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0" Text="&#xf060;" FontFamily="FontAwSolid" Command="{Binding BackCommand}" />
-                <Button Grid.Column="1" Text="Save" Margin="20,0,0,0" Command="{Binding SaveCommand}" />
+                <Button Grid.Column="1" Text="Save" Margin="10,0,0,0" Command="{Binding SaveCommand}" />
             </Grid>
         </controls:ControlBar>
     </Grid>

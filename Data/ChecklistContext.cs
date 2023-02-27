@@ -16,10 +16,10 @@ namespace ChecklistApp.Data
         public ChecklistContext(DbContextOptions dbContextOptions) : base(dbContextOptions) 
         {
             Database.EnsureCreated();
-            if (!Checklists.Any() && !Items.Any())
-            {
-                CreateTestDataSet();
-            }
+            //if (!Checklists.Any() && !Items.Any())
+            //{
+            //    CreateTestDataSet();
+            //}
         }
 
         #region Methods
@@ -31,7 +31,7 @@ namespace ChecklistApp.Data
 
         public async Task<Checklist> GetChecklist(int id)
         {
-            return await Checklists.FindAsync(id);
+            return await Checklists.Include(x => x.Items).Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task UpdateChecklist(Checklist checklist)

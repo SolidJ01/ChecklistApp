@@ -9,10 +9,10 @@
     <Grid Background="{StaticResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="120" />
+            <RowDefinition Height="130" />
         </Grid.RowDefinitions>
 
-        <ScrollView Grid.Row="0" Padding="15,20">
+        <ScrollView Grid.Row="0" Padding="10,20">
             <controls:ChecklistMetaEditor Name="{Binding Name}" UseDeadline="{Binding UseDeadline}" Deadline="{Binding Deadline}" />
         </ScrollView>
 

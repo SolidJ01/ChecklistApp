@@ -17,8 +17,6 @@ namespace ChecklistApp.ViewModel
         private NavigationService _navigationService;
 
         private ObservableCollection<Checklist> _checklists;
-        //private ObservableCollection<ChecklistCardViewModel> _checklistViewModels;
-        //public ObservableCollection<ChecklistCardViewModel> Checklists { get { return _checklistViewModels; } set { _checklistViewModels = value; } }
         public ObservableCollection<ChecklistCardViewModel> Checklists { get; set; }
 
         #region Commands
@@ -47,7 +45,8 @@ namespace ChecklistApp.ViewModel
 
         public async void ReloadList(object sender, EventArgs e)
         {
-            _checklists = new ObservableCollection<Checklist>(await _checklistContext.GetChecklists());
+            List<Checklist> checklists = await _checklistContext.GetChecklists();
+            _checklists = new ObservableCollection<Checklist>(checklists);
             Checklists = new ObservableCollection<ChecklistCardViewModel>();
             foreach (Checklist checklist in _checklists)
             {

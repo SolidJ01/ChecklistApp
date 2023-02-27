@@ -24,10 +24,10 @@ namespace ChecklistApp.Services
             switch (target)
             {
                 case NavigationTarget.Home:
-                    await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+                    await Shell.Current.GoToAsync($"//{nameof(MainPage)}", true);
                     break;
                 case NavigationTarget.CreateChecklist:
-                    await Shell.Current.GoToAsync($"{nameof(CreateChecklistPage)}");
+                    await Shell.Current.GoToAsync($"{nameof(CreateChecklistPage)}", true);
                     break;
                 case NavigationTarget.Checklist:
                     throw new Exception("Must pass a Checklist index to navigate to");
@@ -35,7 +35,6 @@ namespace ChecklistApp.Services
                     throw new Exception("Must pass a Checklist index to navigate to");
                 case NavigationTarget.CreateItem:
                     throw new Exception("Must pass a Checklist index to navigate to");
-                    break;
                 case NavigationTarget.Back:
                     await Shell.Current.GoToAsync("..", true);
                     break;
