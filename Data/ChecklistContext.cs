@@ -67,6 +67,16 @@ namespace ChecklistApp.Data
             await SaveChangesAsync();
         }
 
+        public async void UpdateItem(Item item)
+        {
+            if (item is null)
+                return;
+            if (!ChecklistExists(item.Checklist))
+                return;
+            Items.Update(item);
+            await SaveChangesAsync();
+        }
+
 
         private bool ChecklistExists(Checklist checklist)
         {

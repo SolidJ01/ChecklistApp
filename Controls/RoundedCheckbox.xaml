@@ -7,10 +7,10 @@
         <Frame ZIndex="1" CornerRadius="8" Margin="{Binding ClickablePadding}" Padding="0">
             <Frame.Triggers>
                 <DataTrigger TargetType="Frame" Binding="{Binding IsChecked}" Value="false">
-                    <Setter Property="Background" Value="{StaticResource ForegroundDarkBrush}" />
+                    <Setter Property="Background" Value="{DynamicResource ForegroundDarkBrush}" />
                 </DataTrigger>
                 <DataTrigger TargetType="Frame" Binding="{Binding IsChecked}" Value="true">
-                    <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
+                    <Setter Property="Background" Value="{Binding BackgroundColorChecked}" />
                 </DataTrigger>
             </Frame.Triggers>
             <Label FontSize="{Binding FontSize}"
@@ -25,12 +25,13 @@
                     </DataTrigger>
                     <DataTrigger TargetType="Label" Binding="{Binding IsChecked}" Value="true">
                         <Setter Property="Text" Value="&#xf00c;" />
+                        <Setter Property="TextColor" Value="{Binding TextColorChecked}" />
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
         </Frame>
         <Frame ZIndex="2" BackgroundColor="Transparent" Padding="0">
-            <Button Opacity="0" Clicked="Button_Clicked" />
+            <Button Opacity="0" Clicked="Button_Clicked" Command="{Binding Command}" CommandParameter="{Binding CommandParameter}" />
         </Frame>
     </Grid>
     <!--<Button

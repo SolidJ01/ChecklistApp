@@ -8,6 +8,7 @@
     <Color x:Key="ForegroundDark">#424A4E</Color>
     <Color x:Key="Background">#242F34</Color>
     <Color x:Key="Text">White</Color>
+    <Color x:Key="TextDark">#CACACA</Color>
 
     <Color x:Key="ForegroundCyan">#1593A4</Color>
     <Color x:Key="ForegroundBlue">#3F6297</Color>

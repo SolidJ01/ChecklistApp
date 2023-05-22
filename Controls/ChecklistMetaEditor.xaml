@@ -11,7 +11,7 @@
                 <ColumnDefinition Width="50" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <controls:RoundedCheckbox Grid.Column="0" HeightRequest="50" IsChecked="{Binding UseDeadline}" />
+            <controls:RoundedCheckbox Grid.Column="0" HeightRequest="50" IsChecked="{Binding UseDeadline}" BackgroundColorChecked="{StaticResource BackgroundBrush}" />
             <controls:DateTimePicker Grid.Column="1" Margin="10,0,0,0" Use="{Binding UseDeadline}" Value="{Binding Deadline}" />
         </Grid>
     </VerticalStackLayout>

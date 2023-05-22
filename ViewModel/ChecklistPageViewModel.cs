@@ -29,6 +29,24 @@ namespace ChecklistApp.ViewModel
 
         public ObservableCollection<Item> Items { get; set; } = new ObservableCollection<Item>();
 
+        public ObservableCollection<Item> UncheckedItems
+        {
+            get
+            {
+                //return (ObservableCollection<Item>)Items.Where(x => !x.IsChecked);
+                return new ObservableCollection<Item>(Items.Where(x => !x.IsChecked));
+            }
+        }
+
+        public ObservableCollection<Item> CheckedItems
+        {
+            get
+            {
+                //return (ObservableCollection<Item>)Items.Where(x => x.IsChecked);
+                return new ObservableCollection<Item>(Items.Where(x => x.IsChecked));
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -38,6 +56,8 @@ namespace ChecklistApp.ViewModel
         public ICommand OptionsCommand { get; set; }
 
         public ICommand CreateNewCommand { get; set; }
+
+        public ICommand ToggleItemCheckedCommand { get; set; }
 
         #endregion
 
@@ -49,6 +69,7 @@ namespace ChecklistApp.ViewModel
             BackCommand = new Command(Back);
             OptionsCommand = new Command(Options);
             CreateNewCommand = new Command(CreateNew);
+            ToggleItemCheckedCommand = new Command<int>(ToggleItemChecked);
         }
 
         #region Methods
@@ -68,6 +89,17 @@ namespace ChecklistApp.ViewModel
             _navigationService.NavigateTo(NavigationService.NavigationTarget.CreateItem, Id);
         }
 
+        private void ToggleItemChecked(int id)
+        {
+            Item item = Items.Where(x => x.Id.Equals(id)).FirstOrDefault();
+            if (item != null)
+            {
+                item.IsChecked = !item.IsChecked;
+                _checklistContext.UpdateItem(item);
+                RetrieveChecklist(this, new EventArgs());
+            }
+        }
+
         public async void RetrieveChecklist(object sender, EventArgs e)
         {
             _checklist = await _checklistContext.GetChecklist(Id);
@@ -78,6 +110,8 @@ namespace ChecklistApp.ViewModel
 
             Items = new ObservableCollection<Item>(_checklist.Items);
             OnPropertyChanged(nameof(Items));
+            OnPropertyChanged(nameof(UncheckedItems));
+            OnPropertyChanged(nameof(CheckedItems));
         }
 
         #endregion
