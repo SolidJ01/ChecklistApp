@@ -1,4 +1,5 @@
-﻿using ChecklistApp.Model;
+﻿using Android.Content;
+using ChecklistApp.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -75,6 +76,15 @@ namespace ChecklistApp.Data
                 return;
             Items.Update(item);
             await SaveChangesAsync();
+        }
+
+        public void DiscardChanges()
+        {
+            var changedEntries = ChangeTracker.Entries().Where(x => x.State != EntityState.Unchanged).ToList();
+            foreach (var entry in changedEntries)
+            {
+                entry.State = EntityState.Unchanged;
+            }
         }
 
 

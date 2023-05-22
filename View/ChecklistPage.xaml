@@ -46,7 +46,7 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <Label Text="Completed" TextColor="{StaticResource Text}" FontSize="26" FontAttributes="Bold" HorizontalTextAlignment="Center" Margin="10,10,10,-10" IsVisible="{Binding CheckedItems, Converter={StaticResource ItemCollectionToBool}}" />
+                <Label Text="Completed" TextColor="{StaticResource Text}" FontSize="22" FontAttributes="Bold" HorizontalTextAlignment="Center" Margin="10,10,10,-10" IsVisible="{Binding CheckedItems, Converter={StaticResource ItemCollectionToBool}}" />
                 <CollectionView ItemsSource="{Binding CheckedItems}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:Item">

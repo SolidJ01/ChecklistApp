@@ -17,6 +17,7 @@ namespace ChecklistApp.ViewModel
         private NavigationService _navigationService;
 
         private Checklist _checklist;
+        private Checklist _unchangedChecklist;
 
         #region Properties
 
@@ -52,6 +53,7 @@ namespace ChecklistApp.ViewModel
 
         private void Back()
         {
+            _checklistContext.DiscardChanges();
             _navigationService.NavigateTo(NavigationService.NavigationTarget.Back);
         }
 
