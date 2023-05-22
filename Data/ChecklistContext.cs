@@ -1,5 +1,4 @@
-﻿using Android.Content;
-using ChecklistApp.Model;
+﻿using ChecklistApp.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -27,12 +26,12 @@ namespace ChecklistApp.Data
 
         public async Task<List<Checklist>> GetChecklists()
         {
-            return await Checklists.Include(x => x.Items).ToListAsync();
+            return await Checklists.Include(x => x.Items.OrderBy(y => y.Name)).OrderBy(x => x.Name).ToListAsync();
         }
 
         public async Task<Checklist> GetChecklist(int id)
         {
-            return await Checklists.Include(x => x.Items).Where(x => x.Id == id).FirstOrDefaultAsync();
+            return await Checklists.Include(x => x.Items.OrderBy(y => y.Name)).Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task UpdateChecklist(Checklist checklist)
