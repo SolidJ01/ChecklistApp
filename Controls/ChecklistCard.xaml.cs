@@ -25,6 +25,14 @@ public partial class ChecklistCard : ContentView
 		set => SetValue(DeadlineStatusProperty, value);
 	}
 
+	public static readonly BindableProperty IsOverdueProperty = BindableProperty.Create(nameof(IsOverdue), typeof(bool), typeof(ChecklistCard), false);
+
+    public bool IsOverdue
+	{
+		get => (bool)GetValue(IsOverdueProperty);
+		set => SetValue(IsOverdueProperty, value);
+	}
+
 	public static readonly BindableProperty CommandProperty = BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(ChecklistCard), null);
 	public ICommand Command
 	{

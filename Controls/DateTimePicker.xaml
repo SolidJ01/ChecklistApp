@@ -13,8 +13,8 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <DatePicker Grid.Column="0" Date="{Binding Value}" TextColor="{StaticResource Text}" Margin="5,0" IsEnabled="{Binding Use}" />
-            <TimePicker Grid.Column="1" Time="{Binding Value.TimeOfDay}" TextColor="{StaticResource Text}" Margin="5,0" IsEnabled="{Binding Use}" />
+            <DatePicker Grid.Column="0" Date="{Binding Date, Mode=TwoWay}" TextColor="{StaticResource Text}" Margin="5,0" IsEnabled="{Binding Use}" />
+            <TimePicker Grid.Column="1" Time="{Binding Time, Mode=TwoWay}" TextColor="{StaticResource Text}" Margin="5,0" IsEnabled="{Binding Use}" />
             <Label Grid.ColumnSpan="2" 
                    Text="Deadline" 
                    Background="{StaticResource ForegroundDarkBrush}" 

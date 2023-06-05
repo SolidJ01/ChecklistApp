@@ -23,21 +23,40 @@
                    TextColor="{StaticResource Text}"
                    FontSize="25"
                    FontAttributes="Bold" />
-            <Grid Margin="15,10">
+            <Grid Margin="15,7">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0"
-                       Text="{Binding CompletionStatus}"
-                       TextColor="{StaticResource Text}"
-                       FontSize="18"
-                       FontAttributes="Bold" />
+                <Frame Grid.Column="0"
+                       Margin="0"
+                       Padding="0,3"
+                       BackgroundColor="Transparent">
+                    <Label Text="{Binding CompletionStatus}"
+                           TextColor="{StaticResource Text}"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           VerticalTextAlignment="Center" />
+                </Frame>
                 <Label Grid.Column="1"
                        Text="{Binding DeadlineStatus}"
                        TextColor="{StaticResource Text}"
                        FontSize="18"
-                       FontAttributes="Bold" />
+                       FontAttributes="Bold"
+                       VerticalTextAlignment="Center"
+                       IsVisible="{Binding IsOverdue, Converter={StaticResource BooleanInverter}}"/>
+                <!-- Overdue label -->
+                <Frame Grid.Column="1"
+                       Margin="0"
+                       Padding="12.5,3"
+                       CornerRadius="5"
+                       BackgroundColor="{StaticResource Text}"
+                       IsVisible="{Binding IsOverdue}">
+                    <Label Text="Overdue"
+                           FontSize="18"
+                           TextColor="{StaticResource Foreground}"
+                           FontAttributes="Bold" />
+                </Frame>
             </Grid>
             <Grid HeightRequest="8" Background="{StaticResource ForegroundDarkBrush}" />
             <!--<ProgressBar IsVisible="true" Background="{StaticResource ForegroundDarkBrush}" HeightRequest="10" ProgressColor="{StaticResource Text}" Progress="0.5" />-->
