@@ -7,7 +7,8 @@
            CornerRadius="8"
            Margin="10,20,10,0"
            Padding="0"
-           Background="{StaticResource ForegroundBrush}">
+           Background="{StaticResource ForegroundBrush}"
+           HasShadow="True">
         <Frame.GestureRecognizers>
             <TapGestureRecognizer Command="{Binding Command}" CommandParameter="{Binding ChecklistId}" />
         </Frame.GestureRecognizers>
@@ -28,16 +29,13 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
-                <Frame Grid.Column="0"
-                       Margin="0"
+                <Label Grid.Column="0"
                        Padding="0,3"
-                       BackgroundColor="Transparent">
-                    <Label Text="{Binding CompletionStatus}"
-                           TextColor="{StaticResource Text}"
-                           FontSize="18"
-                           FontAttributes="Bold"
-                           VerticalTextAlignment="Center" />
-                </Frame>
+                       Text="{Binding CompletionStatus}"
+                       TextColor="{StaticResource Text}"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       VerticalTextAlignment="Center" />
                 <Label Grid.Column="1"
                        Text="{Binding DeadlineStatus}"
                        TextColor="{StaticResource Text}"
@@ -52,6 +50,9 @@
                        CornerRadius="5"
                        BackgroundColor="{StaticResource Text}"
                        IsVisible="{Binding IsOverdue}">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Command}" CommandParameter="{Binding ChecklistId}" />
+                    </Frame.GestureRecognizers>
                     <Label Text="Overdue"
                            FontSize="18"
                            TextColor="{StaticResource Foreground}"
