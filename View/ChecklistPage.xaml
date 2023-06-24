@@ -39,7 +39,13 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="50" />
                                     </Grid.RowDefinitions>
-                                    <controls:RoundedCheckbox Grid.Column="0" IsChecked="{Binding IsChecked, Mode=TwoWay}" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChecklistPageViewModel}}, Path=ToggleItemCheckedCommand}" CommandParameter="{Binding Id}" ClickablePadding="10" FontSize="22" />
+                                    <controls:RoundedCheckbox Grid.Column="0" 
+                                                              IsChecked="{Binding IsChecked, Mode=TwoWay}" 
+                                                              Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChecklistPageViewModel}}, Path=ToggleItemCheckedCommand}" 
+                                                              CommandParameter="{Binding Id}" 
+                                                              TextColorChecked="{StaticResource TextDark}" 
+                                                              ClickablePadding="10" 
+                                                              FontSize="22" />
                                     <Label Grid.Column="1" Margin="0" Text="{Binding Name}" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource Text}" VerticalTextAlignment="Center" />
                                 </Grid>
                             </Frame>
@@ -62,7 +68,13 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="50" />
                                     </Grid.RowDefinitions>
-                                    <controls:RoundedCheckbox Grid.Column="0" IsChecked="{Binding IsChecked, Mode=TwoWay}" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChecklistPageViewModel}}, Path=ToggleItemCheckedCommand}" CommandParameter="{Binding Id}" TextColorChecked="{StaticResource TextDark}" BackgroundColorChecked="{StaticResource ForegroundDarkBrush}" ClickablePadding="10" FontSize="22" />
+                                    <controls:RoundedCheckbox Grid.Column="0" 
+                                                              IsChecked="{Binding IsChecked, Mode=TwoWay}" 
+                                                              Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChecklistPageViewModel}}, Path=ToggleItemCheckedCommand}" 
+                                                              CommandParameter="{Binding Id}" 
+                                                              TextColorChecked="{StaticResource TextDark}" 
+                                                              ClickablePadding="10" 
+                                                              FontSize="22" />
                                     <Label Grid.Column="1" Margin="0" Text="{Binding Name}" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource TextDark}" VerticalTextAlignment="Center" />
                                 </Grid>
                             </Frame>

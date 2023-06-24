@@ -6,5 +6,6 @@
 
     <valueconverters:BooleanInverter x:Key="BooleanInverter" />
     <valueconverters:BoolToIntConverter x:Key="BoolToInt" />
+    <valueconverters:ChecklistColorToBooleanConverter x:Key="ChecklistColorToBool" />
 
 </ResourceDictionary>

@@ -42,7 +42,7 @@
                        FontSize="18"
                        FontAttributes="Bold"
                        VerticalTextAlignment="Center"
-                       IsVisible="{Binding IsOverdue, Converter={StaticResource BooleanInverter}}"/>
+                       IsVisible="{Binding IsOverdue, Converter={StaticResource BooleanInverter}}" />
                 <!-- Overdue label -->
                 <Frame Grid.Column="1"
                        Margin="0"

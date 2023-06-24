@@ -6,6 +6,20 @@ namespace ChecklistApp.Controls;
 
 public partial class RoundedCheckbox : ContentView
 {
+	public enum CheckboxStyle
+	{
+        DynamicForegroundDark, 
+		StaticForeground, 
+		StaticForegroundCyan, 
+		StaticForegroundBlue, 
+		StaticForegroundPurple, 
+		StaticForegroundMagenta, 
+		StaticForegroundRed, 
+		StaticForegroundOrange, 
+		StaticForegroundGreen
+	}
+
+
 	public static readonly BindableProperty IsCheckedProperty = BindableProperty.Create(nameof(IsChecked), typeof(bool), typeof(RoundedCheckbox), false, BindingMode.TwoWay);
 	public bool IsChecked
 	{
@@ -27,11 +41,26 @@ public partial class RoundedCheckbox : ContentView
 		set => SetValue(TextColorCheckedProperty, value);
 	}
 
-	public static readonly BindableProperty BackgroundColorCheckedProperty = BindableProperty.Create(nameof(BackgroundColorChecked), typeof(Brush), typeof(RoundedCheckbox), Brush.Black);
-	public Brush BackgroundColorChecked
+	//public static new readonly BindableProperty BackgroundProperty = BindableProperty.Create(nameof(Background), typeof(Brush), typeof(RoundedCheckbox));
+	//public new Brush Background
+	//{
+	//	get => (Brush)GetValue(BackgroundProperty);
+	//	set => SetValue(BackgroundProperty, value);
+	//}
+
+	//public static readonly BindableProperty BackgroundCheckedProperty = BindableProperty.Create(nameof(BackgroundChecked), typeof(Brush), typeof(RoundedCheckbox));
+	//public Brush BackgroundChecked
+	//{
+	//	get => (Brush)GetValue(BackgroundCheckedProperty);
+	//	set => SetValue(BackgroundCheckedProperty, value);
+	//}
+
+	public static readonly BindableProperty DesignProperty = BindableProperty.Create(nameof(Design), typeof(CheckboxStyle), typeof(RoundedCheckbox), CheckboxStyle.DynamicForegroundDark);
+
+    public CheckboxStyle Design
 	{
-		get => (Brush)GetValue(BackgroundColorCheckedProperty);
-		set => SetValue(BackgroundColorCheckedProperty, value);
+		get => (CheckboxStyle)GetValue(DesignProperty);
+		set => SetValue(DesignProperty, value);
 	}
 
 	public static readonly BindableProperty ClickablePaddingProperty = BindableProperty.Create(nameof(ClickablePadding), typeof(Thickness), typeof(RoundedCheckbox), Thickness.Zero);
@@ -39,6 +68,13 @@ public partial class RoundedCheckbox : ContentView
 	{
 		get => (Thickness)GetValue(ClickablePaddingProperty);
 		set => SetValue(ClickablePaddingProperty, value);
+	}
+
+	public static readonly BindableProperty EnsureSquareProperty = BindableProperty.Create(nameof(EnsureSquare), typeof(bool), typeof(RoundedCheckbox), false);
+	public bool EnsureSquare
+	{
+		get => (bool)GetValue(EnsureSquareProperty);
+		set => SetValue(EnsureSquareProperty, value);
 	}
 
 	public static readonly BindableProperty CommandProperty = BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(RoundedCheckbox), null);
@@ -63,5 +99,6 @@ public partial class RoundedCheckbox : ContentView
     private void Button_Clicked(object sender, EventArgs e)
     {
         IsChecked = !IsChecked;
+        OnPropertyChanged(nameof(BaseFrame.Width));
     }
 }

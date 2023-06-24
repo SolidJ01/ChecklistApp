@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ChecklistApp.Controls"
+             x:Name="this"
+             x:Class="ChecklistApp.Controls.ColorSelector">
+    <Frame BindingContext="{x:Reference this}" 
+           BackgroundColor="{StaticResource ForegroundDark}"
+           Padding="20"
+           CornerRadius="8">
+        <Grid ColumnSpacing="20"
+              RowSpacing="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <controls:RoundedCheckbox Grid.Row="0"
+                                      Grid.Column="0"
+                                      FontSize="38"
+                                      Design="StaticForeground"
+                                      EnsureSquare="True"
+                                      IsChecked="{Binding Color, Converter={StaticResource ChecklistColorToBool}, ConverterParameter=Checklist.ChecklistColor.Grey, Mode=OneWay}"/>
+            <controls:RoundedCheckbox Grid.Row="0"
+                                      Grid.Column="1"
+                                      FontSize="38"
+                                      Design="StaticForegroundCyan"
+                                      EnsureSquare="True"
+                                      IsChecked="{Binding Color, Converter={StaticResource ChecklistColorToBool}, ConverterParameter=Checklist.ChecklistColor.Cyan, Mode=OneWay}"/>
+            <controls:RoundedCheckbox Grid.Row="0"
+                                      Grid.Column="2"
+                                      FontSize="38"
+                                      Design="StaticForegroundBlue"
+                                      EnsureSquare="True"/>
+            <controls:RoundedCheckbox Grid.Row="0"
+                                      Grid.Column="3"
+                                      FontSize="38"
+                                      Design="StaticForegroundPurple"
+                                      EnsureSquare="True"/>
+
+            <controls:RoundedCheckbox Grid.Row="1"
+                                      Grid.Column="0"
+                                      FontSize="38"
+                                      Design="StaticForegroundMagenta"
+                                      EnsureSquare="True"/>
+            <controls:RoundedCheckbox Grid.Row="1"
+                                      Grid.Column="1"
+                                      FontSize="38"
+                                      Design="StaticForegroundRed"
+                                      EnsureSquare="True"/>
+            <controls:RoundedCheckbox Grid.Row="1"
+                                      Grid.Column="2"
+                                      FontSize="38"
+                                      Design="StaticForegroundOrange"
+                                      EnsureSquare="True"/>
+            <controls:RoundedCheckbox Grid.Row="1"
+                                      Grid.Column="3"
+                                      FontSize="38"
+                                      Design="StaticForegroundGreen"
+                                      EnsureSquare="True"/>
+        </Grid>
+    </Frame>
+</ContentView>
