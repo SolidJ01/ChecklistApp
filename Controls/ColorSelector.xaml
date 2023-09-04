@@ -8,62 +8,86 @@
            BackgroundColor="{StaticResource ForegroundDark}"
            Padding="20"
            CornerRadius="8">
-        <Grid ColumnSpacing="20"
-              RowSpacing="20">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <VerticalStackLayout>
+            <Label FontSize="28" TextColor="{StaticResource Text}" FontAttributes="Bold" Text="{Binding Color}" />
 
-            <controls:RoundedCheckbox Grid.Row="0"
+            <Grid ColumnSpacing="20"
+              RowSpacing="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--<Button Grid.Row="0"
+                    Grid.Column="0"
+                    FontSize="38"
+                    Background="{StaticResource ForegroundBrush}"
+                    TextColor="{StaticResource Text}"
+                    Command="{Binding SetColorCommand}"/>-->
+
+                <controls:RoundedCheckbox Grid.Row="0"
                                       Grid.Column="0"
                                       FontSize="38"
                                       Design="StaticForeground"
                                       EnsureSquare="True"
-                                      IsChecked="{Binding Color, Converter={StaticResource ChecklistColorToBool}, ConverterParameter=Checklist.ChecklistColor.Grey, Mode=OneWay}"/>
-            <controls:RoundedCheckbox Grid.Row="0"
+                                      IsChecked="{Binding GreyChecked, Mode=OneWay}"
+                                      Command="{Binding SetColorCommand}"
+                                      CommandParameter="Grey"/>
+                <controls:RoundedCheckbox Grid.Row="0"
                                       Grid.Column="1"
                                       FontSize="38"
                                       Design="StaticForegroundCyan"
                                       EnsureSquare="True"
-                                      IsChecked="{Binding Color, Converter={StaticResource ChecklistColorToBool}, ConverterParameter=Checklist.ChecklistColor.Cyan, Mode=OneWay}"/>
-            <controls:RoundedCheckbox Grid.Row="0"
+                                      IsChecked="{Binding CyanChecked, Mode=OneWay}"
+                                      Command="{Binding SetColorCommand}"
+                                      CommandParameter="Cyan"/>
+                <controls:RoundedCheckbox Grid.Row="0"
                                       Grid.Column="2"
                                       FontSize="38"
                                       Design="StaticForegroundBlue"
-                                      EnsureSquare="True"/>
-            <controls:RoundedCheckbox Grid.Row="0"
+                                      EnsureSquare="True"
+                                      IsChecked="{Binding BlueChecked}"
+                                      Command="{Binding SetColorCommand}"
+                                      CommandParameter="Blue"/>
+                <controls:RoundedCheckbox Grid.Row="0"
                                       Grid.Column="3"
                                       FontSize="38"
                                       Design="StaticForegroundPurple"
                                       EnsureSquare="True"/>
 
-            <controls:RoundedCheckbox Grid.Row="1"
+                <controls:RoundedCheckbox Grid.Row="1"
                                       Grid.Column="0"
                                       FontSize="38"
                                       Design="StaticForegroundMagenta"
                                       EnsureSquare="True"/>
-            <controls:RoundedCheckbox Grid.Row="1"
+                <controls:RoundedCheckbox Grid.Row="1"
                                       Grid.Column="1"
                                       FontSize="38"
                                       Design="StaticForegroundRed"
                                       EnsureSquare="True"/>
-            <controls:RoundedCheckbox Grid.Row="1"
+                <controls:RoundedCheckbox Grid.Row="1"
                                       Grid.Column="2"
                                       FontSize="38"
                                       Design="StaticForegroundOrange"
                                       EnsureSquare="True"/>
-            <controls:RoundedCheckbox Grid.Row="1"
+                <controls:RoundedCheckbox Grid.Row="1"
                                       Grid.Column="3"
                                       FontSize="38"
                                       Design="StaticForegroundGreen"
                                       EnsureSquare="True"/>
-        </Grid>
+
+                <controls:ColorButton Grid.Row="2"
+                                      Grid.Column="0"
+                                      BackgroundColor="{StaticResource ForegroundCyan}" />
+            </Grid>
+        </VerticalStackLayout>
+        
     </Frame>
 </ContentView>

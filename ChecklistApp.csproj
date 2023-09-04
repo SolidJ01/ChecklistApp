@@ -68,6 +68,9 @@
 	  <MauiXaml Update="Controls\ChecklistProgressBar.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Controls\ColorButton.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Controls\ColorSelector.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

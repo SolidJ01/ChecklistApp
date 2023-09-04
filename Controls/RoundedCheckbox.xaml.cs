@@ -87,7 +87,7 @@ public partial class RoundedCheckbox : ContentView
 	public static readonly BindableProperty CommandParameterProperty = BindableProperty.Create(nameof(CommandParameter), typeof(object), typeof(RoundedCheckbox), null);
 	public object CommandParameter
 	{
-		get => GetValue(CommandParameterProperty);
+		get => (object)GetValue(CommandParameterProperty);
 		set => SetValue(CommandParameterProperty, value);
 	}
 
