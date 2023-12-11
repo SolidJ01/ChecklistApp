@@ -1,3 +1,4 @@
+using ChecklistApp.Model;
 using System.Windows.Input;
 
 namespace ChecklistApp.Controls;
@@ -46,6 +47,20 @@ public partial class ChecklistCard : ContentView
 		get => (int)GetValue(ChecklistIdProperty);
 		set => SetValue(ChecklistIdProperty, value);
 	}
+
+	public static readonly BindableProperty ChecklistColorProperty = BindableProperty.Create(nameof(ChecklistColor), typeof(Checklist.ChecklistColor), typeof(ChecklistCard), Checklist.ChecklistColor.Grey, propertyChanged:OnChecklistColorPropertyChanged);
+
+    public Checklist.ChecklistColor ChecklistColor
+	{
+		get => (Checklist.ChecklistColor)GetValue(ChecklistColorProperty);
+		set => SetValue(ChecklistColorProperty, value);
+    }
+
+    private static void OnChecklistColorPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        var card = (ChecklistCard)bindable;
+		card.OnPropertyChanged(nameof(ChecklistColor));
+    }
 
     public ChecklistCard()
 	{

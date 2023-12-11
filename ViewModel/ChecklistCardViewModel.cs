@@ -54,6 +54,14 @@ namespace ChecklistApp.ViewModel
             }
         }
 
+        public Checklist.ChecklistColor ChecklistColor
+        {
+            get
+            {
+                return _checklist.Color;
+            }
+        }
+
         #endregion
         public ChecklistCardViewModel(Checklist checklist)
         {

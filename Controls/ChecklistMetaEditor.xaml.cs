@@ -1,3 +1,5 @@
+using ChecklistApp.Model;
+
 namespace ChecklistApp.Controls;
 
 public partial class ChecklistMetaEditor : ContentView
@@ -20,7 +22,21 @@ public partial class ChecklistMetaEditor : ContentView
 		get => (DateTime)GetValue(DeadlineProperty);
 		set => SetValue(DeadlineProperty, value);
 	}
-	public ChecklistMetaEditor()
+	public static readonly BindableProperty ChecklistColorProperty = BindableProperty.Create(nameof(ChecklistColor), typeof(Checklist.ChecklistColor), typeof(ChecklistMetaEditor), Checklist.ChecklistColor.Magenta, BindingMode.TwoWay, propertyChanged:OnChecklistColorChanged);
+
+    public Checklist.ChecklistColor ChecklistColor
+	{
+		get => (Checklist.ChecklistColor)GetValue(ChecklistColorProperty);
+		set => SetValue(ChecklistColorProperty, value);
+    }
+
+    private static void OnChecklistColorChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        var editor = (ChecklistMetaEditor)bindable;
+		editor.OnPropertyChanged(nameof(ChecklistColor));
+    }
+
+    public ChecklistMetaEditor()
 	{
 		InitializeComponent();
 	}

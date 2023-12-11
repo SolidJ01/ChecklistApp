@@ -22,10 +22,10 @@ namespace ChecklistApp.ViewModel
         #region Properties
 
         public int Id { get; set; }
-
         public string Name { get { return _checklist != null ? _checklist.Name : "Loading"; } set { if (_checklist != null) _checklist.Name = value; } }
         public bool UseDeadline { get { return _checklist != null ? _checklist.UseDeadline : false; } set { if (_checklist != null) _checklist.UseDeadline = value; } }
         public DateTime Deadline { get { return _checklist != null ? _checklist.Deadline : DateTime.Now; } set { if (_checklist != null) _checklist.Deadline = value; } }
+        public Checklist.ChecklistColor Color { get { return _checklist != null ? _checklist.Color : Checklist.ChecklistColor.Grey; } set { if (_checklist != null) _checklist.Color = value; } }
 
         #endregion
 
@@ -89,6 +89,7 @@ namespace ChecklistApp.ViewModel
             OnPropertyChanged(nameof(Name));
             OnPropertyChanged(nameof(UseDeadline));
             OnPropertyChanged(nameof(Deadline));
+            OnPropertyChanged(nameof(Color));
         }
 
         #endregion

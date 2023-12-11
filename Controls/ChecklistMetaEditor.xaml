@@ -18,6 +18,6 @@
                                       IsChecked="{Binding UseDeadline}" />
             <controls:DateTimePicker Grid.Column="1" Margin="10,0,0,0" Use="{Binding UseDeadline}" Value="{Binding Deadline, Mode=TwoWay}" />
         </Grid>
-        <controls:ColorSelector Margin="0,10,0,0" />
+        <controls:ColorSelector Margin="0,10,0,0" SelectedColor="{Binding ChecklistColor}" />
     </VerticalStackLayout>
 </ContentView>

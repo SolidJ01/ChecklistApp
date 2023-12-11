@@ -21,6 +21,7 @@ namespace ChecklistApp.ViewModel
         public string Name { get { return _checklist.Name; } set { _checklist.Name = value; } }
         public bool UseDeadline { get { return _checklist.UseDeadline; } set { _checklist.UseDeadline = value; } }
         public DateTime Deadline { get { return _checklist.Deadline; } set { _checklist.Deadline = value; } }
+        public Checklist.ChecklistColor Color { get { return _checklist.Color; } set { _checklist.Color = value; } }
 
         #endregion
 

@@ -6,15 +6,14 @@
              x:Class="ChecklistApp.Controls.ColorSelector">
     <Frame BindingContext="{x:Reference this}" 
            BackgroundColor="{StaticResource ForegroundDark}"
-           Padding="20"
+           Padding="10"
            CornerRadius="8">
         <VerticalStackLayout>
-            <Label FontSize="28" TextColor="{StaticResource Text}" FontAttributes="Bold" Text="{Binding Color}" />
 
-            <Grid ColumnSpacing="20"
-              RowSpacing="20">
+            <Grid ColumnSpacing="0"
+                  RowSpacing="0"
+                  IsClippedToBounds="False">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
@@ -32,7 +31,7 @@
                     TextColor="{StaticResource Text}"
                     Command="{Binding SetColorCommand}"/>-->
 
-                <controls:RoundedCheckbox Grid.Row="0"
+                <!--<controls:RoundedCheckbox Grid.Row="0"
                                       Grid.Column="0"
                                       FontSize="38"
                                       Design="StaticForeground"
@@ -81,11 +80,56 @@
                                       Grid.Column="3"
                                       FontSize="38"
                                       Design="StaticForegroundGreen"
-                                      EnsureSquare="True"/>
+                                      EnsureSquare="True"/>-->
 
-                <controls:ColorButton Grid.Row="2"
+                <controls:ColorButton Grid.Row="0"
                                       Grid.Column="0"
-                                      BackgroundColor="{StaticResource ForegroundCyan}" />
+                                      BackgroundColor="{StaticResource Foreground}"
+                                      IsChecked="{Binding GreyChecked}"
+                                      Command="{Binding SetColorCommand}"
+                                      CommandParameter="Grey"/>
+                <controls:ColorButton Grid.Row="0"
+                                      Grid.Column="1"
+                                      BackgroundColor="{StaticResource ForegroundCyan}"
+                                      IsChecked="{Binding CyanChecked}"
+                                      Command="{Binding SetColorCommand}"
+                                      CommandParameter="Cyan"/>
+                <controls:ColorButton Grid.Row="0"
+                                      Grid.Column="2"
+                                      BackgroundColor="{StaticResource ForegroundBlue}"
+                                      IsChecked="{Binding BlueChecked}"
+                                      Command="{Binding SetColorCommand}"
+                                      CommandParameter="Blue"/>
+                <controls:ColorButton Grid.Row="0"
+                                      Grid.Column="3"
+                                      BackgroundColor="{StaticResource ForegroundPurple}"
+                                      IsChecked="{Binding PurpleChecked}"
+                                      Command="{Binding SetColorCommand}"
+                                      CommandParameter="Purple"/>
+                <controls:ColorButton Grid.Row="1"
+                                      Grid.Column="0"
+                                      BackgroundColor="{StaticResource ForegroundMagenta}"
+                                      IsChecked="{Binding MagentaChecked}"
+                                      Command="{Binding SetColorCommand}"
+                                      CommandParameter="Magenta"/>
+                <controls:ColorButton Grid.Row="1"
+                                      Grid.Column="1"
+                                      BackgroundColor="{StaticResource ForegroundRed}"
+                                      IsChecked="{Binding RedChecked}"
+                                      Command="{Binding SetColorCommand}"
+                                      CommandParameter="Red"/>
+                <controls:ColorButton Grid.Row="1"
+                                      Grid.Column="2"
+                                      BackgroundColor="{StaticResource ForegroundOrange}"
+                                      IsChecked="{Binding OrangeChecked}"
+                                      Command="{Binding SetColorCommand}"
+                                      CommandParameter="Orange"/>
+                <controls:ColorButton Grid.Row="1"
+                                      Grid.Column="3"
+                                      BackgroundColor="{StaticResource ForegroundGreen}"
+                                      IsChecked="{Binding GreenChecked}"
+                                      Command="{Binding SetColorCommand}"
+                                      CommandParameter="Green"/>
             </Grid>
         </VerticalStackLayout>
         

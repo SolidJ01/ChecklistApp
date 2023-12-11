@@ -4,20 +4,35 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
-public partial class ColorSelector : ContentView, INotifyPropertyChanged
+public partial class ColorSelector : ContentView
 {
-	public static readonly BindableProperty ColorProperty = BindableProperty.Create(nameof(Color), typeof(Checklist.ChecklistColor), typeof(ColorSelector), Checklist.ChecklistColor.Grey, BindingMode.TwoWay);
-	public Checklist.ChecklistColor Color
-	{
-		get => (Checklist.ChecklistColor)GetValue(ColorProperty);
-		set => SetValue(ColorProperty, value);
-	}
+	public static readonly BindableProperty SelectedColorProperty = BindableProperty.Create(nameof(SelectedColor), typeof(Checklist.ChecklistColor), typeof(ColorSelector), Checklist.ChecklistColor.Red, BindingMode.TwoWay, propertyChanged:OnSelectedColorChanged);
 
-	public bool GreyChecked
+    public Checklist.ChecklistColor SelectedColor
+	{
+		get => (Checklist.ChecklistColor)GetValue(SelectedColorProperty);
+		set => SetValue(SelectedColorProperty, value);
+    }
+
+    private static void OnSelectedColorChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        var selector = (ColorSelector)bindable;
+        selector.OnPropertyChanged(nameof(SelectedColor));
+        selector.OnPropertyChanged(nameof(GreyChecked));
+        selector.OnPropertyChanged(nameof(CyanChecked));
+        selector.OnPropertyChanged(nameof(BlueChecked));
+        selector.OnPropertyChanged(nameof(PurpleChecked));
+        selector.OnPropertyChanged(nameof(MagentaChecked));
+        selector.OnPropertyChanged(nameof(RedChecked));
+        selector.OnPropertyChanged(nameof(OrangeChecked));
+        selector.OnPropertyChanged(nameof(GreenChecked));
+    }
+
+    public bool GreyChecked
 	{
 		get
 		{
-			return Color.Equals(Checklist.ChecklistColor.Grey);
+			return SelectedColor.Equals(Checklist.ChecklistColor.Grey);
 		}
 	}
 
@@ -25,7 +40,7 @@ public partial class ColorSelector : ContentView, INotifyPropertyChanged
 	{
 		get
 		{
-			return Color.Equals(Checklist.ChecklistColor.Cyan);
+			return SelectedColor.Equals(Checklist.ChecklistColor.Cyan);
 		}
 	}
 
@@ -33,7 +48,7 @@ public partial class ColorSelector : ContentView, INotifyPropertyChanged
     {
         get
         {
-            return Color.Equals(Checklist.ChecklistColor.Blue);
+            return SelectedColor.Equals(Checklist.ChecklistColor.Blue);
         }
     }
 
@@ -41,7 +56,7 @@ public partial class ColorSelector : ContentView, INotifyPropertyChanged
     {
         get
         {
-            return Color.Equals(Checklist.ChecklistColor.Purple);
+            return SelectedColor.Equals(Checklist.ChecklistColor.Purple);
         }
     }
 
@@ -49,7 +64,7 @@ public partial class ColorSelector : ContentView, INotifyPropertyChanged
     {
         get
         {
-            return Color.Equals(Checklist.ChecklistColor.Magenta);
+            return SelectedColor.Equals(Checklist.ChecklistColor.Magenta);
         }
     }
 
@@ -57,7 +72,7 @@ public partial class ColorSelector : ContentView, INotifyPropertyChanged
     {
         get
         {
-            return Color.Equals(Checklist.ChecklistColor.Red);
+            return SelectedColor.Equals(Checklist.ChecklistColor.Red);
         }
     }
 
@@ -65,7 +80,7 @@ public partial class ColorSelector : ContentView, INotifyPropertyChanged
     {
         get
         {
-            return Color.Equals(Checklist.ChecklistColor.Orange);
+            return SelectedColor.Equals(Checklist.ChecklistColor.Orange);
         }
     }
 
@@ -73,7 +88,7 @@ public partial class ColorSelector : ContentView, INotifyPropertyChanged
     {
         get
         {
-            return Color.Equals(Checklist.ChecklistColor.Grey);
+            return SelectedColor.Equals(Checklist.ChecklistColor.Green);
         }
     }
 
@@ -85,32 +100,20 @@ public partial class ColorSelector : ContentView, INotifyPropertyChanged
         InitializeComponent();
 	}
 
-    private void SetColorGrey()
-    {
-        SetColor("Grey");
-    }
-
     private void SetColor(string value)
     {
         if (value is null)
             return;
 
         Checklist.ChecklistColor color = (Checklist.ChecklistColor)Enum.Parse(typeof(Checklist.ChecklistColor), value);
-        Color = color;
-        OnPropChange(nameof(GreyChecked));
-        OnPropChange(nameof(CyanChecked));
-        OnPropChange(nameof(BlueChecked));
-        OnPropChange(nameof(PurpleChecked));
-        OnPropChange(nameof(MagentaChecked));
-        OnPropChange(nameof(RedChecked));
-        OnPropChange(nameof(OrangeChecked));
-        OnPropChange(nameof(GreenChecked));
-    }
-
-    public event PropertyChangedEventHandler PropChange = (sender, e) => { };
-
-    public void OnPropChange([CallerMemberName] string property = null)
-    {
-        PropChange(this, new PropertyChangedEventArgs(property));
+        SelectedColor = color;
+        OnPropertyChanged(nameof(GreyChecked));
+        OnPropertyChanged(nameof(CyanChecked));
+        OnPropertyChanged(nameof(BlueChecked));
+        OnPropertyChanged(nameof(PurpleChecked));
+        OnPropertyChanged(nameof(MagentaChecked));
+        OnPropertyChanged(nameof(RedChecked));
+        OnPropertyChanged(nameof(OrangeChecked));
+        OnPropertyChanged(nameof(GreenChecked));
     }
 }

@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
 
         <ScrollView Grid.Row="0" Padding="10,20">
-            <controls:ChecklistMetaEditor Name="{Binding Name}" UseDeadline="{Binding UseDeadline}" Deadline="{Binding Deadline}" />
+            <controls:ChecklistMetaEditor Name="{Binding Name}" UseDeadline="{Binding UseDeadline}" Deadline="{Binding Deadline}" ChecklistColor="{Binding Color}" />
         </ScrollView>
 
         <controls:ControlBar Grid.Row="1">
