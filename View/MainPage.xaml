@@ -46,7 +46,7 @@
                     <ColumnDefinition Width="0" />
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Text="Create New" Command="{Binding CreateNewCommand}" />
+                <Button Grid.Column="0" Text="New List" Command="{Binding CreateNewCommand}" />
             </Grid>
         </controls:ControlBar>
     </Grid>
