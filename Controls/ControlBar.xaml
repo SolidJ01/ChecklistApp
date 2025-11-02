@@ -4,17 +4,16 @@
              x:Class="ChecklistApp.Controls.ControlBar">
     <ContentView.ControlTemplate>
         <ControlTemplate>
-            <Frame Padding="10,10,10,10" 
-                   Background="transparent"
-                   CornerRadius="0">
-                <Frame.Shadow>
-                    <Shadow Brush="black"
-                            Offset="0, -20"
-                            Radius="40"
-                            Opacity="0.8" />
-                </Frame.Shadow>
+            <Border Padding="10,10,10,10" 
+                   Background="{StaticResource BackgroundBrush}">
+                <Border.Shadow>
+                    <Shadow Brush="{StaticResource BackgroundBrush}"
+                            Offset="0, -10"
+                            Radius="10"
+                            Opacity="1" />
+                </Border.Shadow>
                 <ContentPresenter />
-            </Frame>
+            </Border>
         </ControlTemplate>
     </ContentView.ControlTemplate>
 </ContentView>

@@ -11,5 +11,14 @@ public class MainApplication : MauiApplication
 	{
 	}
 
-	protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+	protected override MauiApp CreateMauiApp()
+	{
+		Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("RemoveUnderLine", (r, v) =>
+		{
+			r.PlatformView.BackgroundTintList =
+				Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.ParseColor("#424A4E"));
+		});
+
+		return MauiProgram.CreateMauiApp();
+	}
 }

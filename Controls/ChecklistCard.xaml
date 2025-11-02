@@ -3,51 +3,51 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Name="this"
              x:Class="ChecklistApp.Controls.ChecklistCard">
-    <Frame BindingContext="{x:Reference this}"
-           CornerRadius="8"
+    <Border BindingContext="{x:Reference this}"
+           StrokeShape="RoundRectangle 8,8,8,8"
+           StrokeThickness="0"
            Margin="10,20,10,0"
            Padding="0"
-           Background="{StaticResource ForegroundBrush}"
-           HasShadow="True">
-        <Frame.GestureRecognizers>
+           Background="{StaticResource ForegroundBrush}">
+        <Border.GestureRecognizers>
             <TapGestureRecognizer Command="{Binding Command}" CommandParameter="{Binding ChecklistId}" />
-        </Frame.GestureRecognizers>
-        <Frame.Shadow>
+        </Border.GestureRecognizers>
+        <Border.Shadow>
             <Shadow Brush="Black"
                     Offset="0,4"
                     Radius="10"
-                    Opacity="0.5" />
-        </Frame.Shadow>
-        <Frame.Style>
-            <Style TargetType="Frame">
+                    Opacity="0" />
+        </Border.Shadow>
+        <Border.Style>
+            <Style TargetType="Border">
                 <Style.Triggers>
-                    <DataTrigger TargetType="Frame" Binding="{Binding ChecklistColor}" Value="Grey">
+                    <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Grey">
                         <Setter Property="Background" Value="{StaticResource ForegroundBrush}" />
                     </DataTrigger>
-                    <DataTrigger TargetType="Frame" Binding="{Binding ChecklistColor}" Value="Cyan">
+                    <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Cyan">
                         <Setter Property="Background" Value="{StaticResource ForegroundCyanBrush}" />
                     </DataTrigger>
-                    <DataTrigger TargetType="Frame" Binding="{Binding ChecklistColor}" Value="Blue">
+                    <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Blue">
                         <Setter Property="Background" Value="{StaticResource ForegroundBlueBrush}" />
                     </DataTrigger>
-                    <DataTrigger TargetType="Frame" Binding="{Binding ChecklistColor}" Value="Purple">
+                    <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Purple">
                         <Setter Property="Background" Value="{StaticResource ForegroundPurpleBrush}" />
                     </DataTrigger>
-                    <DataTrigger TargetType="Frame" Binding="{Binding ChecklistColor}" Value="Magenta">
+                    <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Magenta">
                         <Setter Property="Background" Value="{StaticResource ForegroundMagentaBrush}" />
                     </DataTrigger>
-                    <DataTrigger TargetType="Frame" Binding="{Binding ChecklistColor}" Value="Red">
+                    <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Red">
                         <Setter Property="Background" Value="{StaticResource ForegroundRedBrush}" />
                     </DataTrigger>
-                    <DataTrigger TargetType="Frame" Binding="{Binding ChecklistColor}" Value="Orange">
+                    <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Orange">
                         <Setter Property="Background" Value="{StaticResource ForegroundOrangeBrush}" />
                     </DataTrigger>
-                    <DataTrigger TargetType="Frame" Binding="{Binding ChecklistColor}" Value="Green">
+                    <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Green">
                         <Setter Property="Background" Value="{StaticResource ForegroundGreenBrush}" />
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
-        </Frame.Style>
+        </Border.Style>
         
         <VerticalStackLayout>
             <Label Margin="15,15,15,0"
@@ -75,15 +75,15 @@
                        VerticalTextAlignment="Center"
                        IsVisible="{Binding IsOverdue, Converter={StaticResource BooleanInverter}}" />
                 <!-- Overdue label -->
-                <Frame Grid.Column="1"
-                       Margin="0"
-                       Padding="12.5,3"
-                       CornerRadius="5"
-                       BackgroundColor="{StaticResource Text}"
-                       IsVisible="{Binding IsOverdue}">
-                    <Frame.GestureRecognizers>
+                <Border Grid.Column="1"
+                        Margin="0"
+                        Padding="12.5,3"
+                        StrokeShape="RoundRectangle 5,5,5,5"
+                        BackgroundColor="{StaticResource Text}"
+                        IsVisible="{Binding IsOverdue}">
+                    <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding Command}" CommandParameter="{Binding ChecklistId}" />
-                    </Frame.GestureRecognizers>
+                    </Border.GestureRecognizers>
                     <Label Text="Overdue"
                            FontSize="18"
                            TextColor="{StaticResource Foreground}"
@@ -119,10 +119,10 @@
                             </Style>
                         </Label.Style>
                     </Label>
-                </Frame>
+                </Border>
             </Grid>
             <Grid HeightRequest="8" Background="{StaticResource ForegroundDarkBrush}" />
             <!--<ProgressBar IsVisible="true" Background="{StaticResource ForegroundDarkBrush}" HeightRequest="10" ProgressColor="{StaticResource Text}" Progress="0.5" />-->
         </VerticalStackLayout>
-    </Frame>
+    </Border>
 </ContentView>
