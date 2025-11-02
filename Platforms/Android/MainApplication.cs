@@ -18,6 +18,16 @@ public class MainApplication : MauiApplication
 			r.PlatformView.BackgroundTintList =
 				Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.ParseColor("#424A4E"));
 		});
+		Microsoft.Maui.Handlers.DatePickerHandler.Mapper.AppendToMapping("RemoveUnderLine", (r, v) =>
+		{
+			r.PlatformView.BackgroundTintList =
+				Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.ParseColor("#424A4E"));
+		});
+		Microsoft.Maui.Handlers.TimePickerHandler.Mapper.AppendToMapping("RemoveUnderLine", (r, v) =>
+		{
+			r.PlatformView.BackgroundTintList = 
+				Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.ParseColor("#424A4E"));
+		});
 
 		return MauiProgram.CreateMauiApp();
 	}

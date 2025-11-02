@@ -27,7 +27,19 @@ namespace ChecklistApp.ViewModel
 
         public ChecklistCardViewModel ChecklistCard { get; set; }
 
-        public ObservableCollection<Item> Items { get; set; } = new ObservableCollection<Item>();
+        public ObservableCollection<Item> Items { get; set; }
+
+        private List<ItemGroup> _itemGroups = new List<ItemGroup>();
+        public List<ItemGroup> ItemGroups
+        {
+            get { return _itemGroups; }
+            set
+            {
+                _itemGroups = value;
+                OnPropertyChanged(nameof(ItemGroups));
+            }
+        }
+        /*public ObservableCollection<Item> Items { get; set; } = new ObservableCollection<Item>();
 
         public ObservableCollection<Item> UncheckedItems
         {
@@ -45,7 +57,7 @@ namespace ChecklistApp.ViewModel
                 //return (ObservableCollection<Item>)Items.Where(x => x.IsChecked);
                 return new ObservableCollection<Item>(Items.Where(x => x.IsChecked));
             }
-        }
+        }*/
 
         #endregion
 
@@ -91,27 +103,52 @@ namespace ChecklistApp.ViewModel
 
         private void ToggleItemChecked(int id)
         {
-            Item item = Items.Where(x => x.Id.Equals(id)).FirstOrDefault();
+            Item item = _checklist.Items.Where(x => x.Id.Equals(id)).FirstOrDefault();
             if (item != null)
             {
                 item.IsChecked = !item.IsChecked;
                 _checklistContext.UpdateItem(item);
-                RetrieveChecklist(this, new EventArgs());
+                //Items.First(x => x.Id.Equals(id)).IsChecked = item.IsChecked;
+                
+                ConstructItemList();
+                // OnPropertyChanged(nameof(Items));
+                // OnPropertyChanged(nameof(UncheckedItems));
+                // OnPropertyChanged(nameof(CheckedItems));
+                //RetrieveChecklist(this, new EventArgs());
             }
         }
 
         public async void RetrieveChecklist(object sender, EventArgs e)
         {
             _checklist = await _checklistContext.GetChecklist(Id);
+            foreach (var item in _checklist.Items)
+                item.Checklist = _checklist;
             OnPropertyChanged(nameof(Checklist));
 
             ChecklistCard = new ChecklistCardViewModel(_checklist);
             OnPropertyChanged(nameof(ChecklistCard));
 
-            Items = new ObservableCollection<Item>(_checklist.Items);
+            ConstructItemList();
+            //Items = new ObservableCollection<Item>(_checklist.Items);
+            //OnPropertyChanged(nameof(Items));
+            //OnPropertyChanged(nameof(UncheckedItems));
+            //OnPropertyChanged(nameof(CheckedItems));
+        }
+
+        private void ConstructItemList()
+        {
+            Items = new ObservableCollection<Item>(_checklist.Items.OrderBy(x => x.IsChecked).ThenBy(x => x.Name));
             OnPropertyChanged(nameof(Items));
-            OnPropertyChanged(nameof(UncheckedItems));
-            OnPropertyChanged(nameof(CheckedItems));
+        }
+
+        private void ConstructItemGroups()
+        {
+            List<ItemGroup> items = new List<ItemGroup>();
+            ItemGroup uncheckedItems = new ItemGroup("Unfinished", _checklist.Items.Any(x => !x.IsChecked) ? _checklist.Items.Where(x => !x.IsChecked).ToList() : new List<Item>());
+            ItemGroup checkedItems = new ItemGroup("Completed", _checklist.Items.Any(x => x.IsChecked) ? _checklist.Items.Where(x => x.IsChecked).ToList() : new List<Item>());
+            items.Add(uncheckedItems);
+            items.Add(checkedItems);
+            ItemGroups = items;
         }
 
         #endregion

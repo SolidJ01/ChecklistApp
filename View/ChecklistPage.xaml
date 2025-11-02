@@ -18,7 +18,55 @@
             <RowDefinition Height="70" />
         </Grid.RowDefinitions>
 
-        <ScrollView Grid.Row="0">
+        <CollectionView ItemsSource="{Binding Items}" IsGrouped="False" ItemSizingStrategy="MeasureFirstItem">
+            <CollectionView.Header>
+                <controls:ChecklistCard Name="{Binding ChecklistCard.Name}" 
+                                        CompletionStatus="{Binding ChecklistCard.ItemsStatus}" 
+                                        DeadlineStatus="{Binding ChecklistCard.DeadlineStatus}" 
+                                        ChecklistColor="{Binding ChecklistCard.ChecklistColor}" />
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:Item">
+                    <Border Margin="10,20,10,0"
+                           Background="{StaticResource ForegroundBrush}"
+                           StrokeShape="RoundRectangle 8,8,8,8"
+                           Padding="0">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger TargetType="Border" Binding="{Binding IsChecked}" Value="true">
+                                        <Setter Property="Background" Value="{StaticResource ForegroundDarkBrush}" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Border" Binding="{Binding IsChecked}" Value="false">
+                                        <Setter Property="Background" Value="{StaticResource ForegroundBrush}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50" />
+                            </Grid.RowDefinitions>
+                            <controls:RoundedCheckbox Grid.Column="0" 
+                                                      IsChecked="{Binding IsChecked, Mode=TwoWay}" 
+                                                      Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChecklistPageViewModel}}, Path=ToggleItemCheckedCommand}" 
+                                                      CommandParameter="{Binding Id}" 
+                                                      TextColorChecked="{StaticResource TextDark}" 
+                                                      ClickablePadding="10" 
+                                                      FontSize="22" />
+                            <Label Grid.Column="1" Margin="0" Text="{Binding Name}" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource Text}" VerticalTextAlignment="Center" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        
+        <!--<ScrollView Grid.Row="0">
             <VerticalStackLayout>
                 <controls:ChecklistCard Name="{Binding ChecklistCard.Name}" 
                                         CompletionStatus="{Binding ChecklistCard.ItemsStatus}" 
@@ -83,7 +131,7 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </VerticalStackLayout>
-        </ScrollView>
+        </ScrollView>-->
 
         <controls:ControlBar Grid.Row="1">
             <Grid>

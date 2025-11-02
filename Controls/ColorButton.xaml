@@ -4,27 +4,19 @@
              x:Name="this"
              x:Class="ChecklistApp.Controls.ColorButton">
     <Grid BindingContext="{x:Reference this}" IsClippedToBounds="False" Margin="10">
-        <Border>
-            <Border.Shadow>
-                <Shadow Brush="Black"
-                        Offset="0,10"
-                        Radius="40"
-                        Opacity="0.25" />
-            </Border.Shadow>
-        <Frame BackgroundColor="{Binding BackgroundColor}"
-               CornerRadius="8"
-               HasShadow="false"
+        <Border BackgroundColor="{Binding BackgroundColor}"
+               StrokeShape="RoundRectangle 8,8,8,8"
                Padding="0"
                HeightRequest="{Binding Width, Source={RelativeSource AncestorType={x:Type Grid}}}">
-            <Frame.Shadow>
+            <Border.Shadow>
                 <Shadow Brush="Black"
                         Offset="0,6"
                         Radius="20"
-                        Opacity="1" />
-            </Frame.Shadow>
-            <Frame.GestureRecognizers>
+                        Opacity="0" />
+            </Border.Shadow>
+            <Border.GestureRecognizers>
                 <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" NumberOfTapsRequired="1" />
-            </Frame.GestureRecognizers>
+            </Border.GestureRecognizers>
             <Label FontSize="36"
                    FontFamily="FontAwSolid"
                    FontAttributes="Bold"
@@ -41,7 +33,6 @@
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
-        </Frame>
         </Border>
     </Grid>
 </ContentView>
