@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ChecklistApp.Controls"
+             x:Name="this"
+             x:Class="ChecklistApp.Controls.ChecklistItem">
+    <Grid ColumnDefinitions="50, *, 50"
+          ColumnSpacing="10"
+          HeightRequest="50"
+          BindingContext="{x:Reference this}">
+        <Button FontFamily="FontAwSolid" 
+                Text="&#xf1f8;" 
+                Background="{StaticResource ForegroundRed}" 
+                IsVisible="{Binding IsEditing}"
+                Command="{Binding DeleteItemCommand}"
+                CommandParameter="{Binding Item}" />
+        <controls:RoundedEntry Text="{Binding EditedItemName, Mode=TwoWay}" 
+                               Placeholder="Item Name"
+                               IsVisible="{Binding IsEditing}"
+                               Grid.Column="1" />
+        <Button FontFamily="FontAwSolid"
+                Text="&#xf0c7;"
+                Background="{StaticResource ForegroundCyan}"
+                IsVisible="{Binding IsEditing}"
+                Command="{Binding SaveChangesCommand}"
+                Grid.Column="2" />
+        
+        <Border Grid.ColumnSpan="3" 
+                Background="{StaticResource ForegroundBrush}"
+                StrokeShape="RoundRectangle 8,8,8,8"
+                Padding="0">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding ToggleIsEditingCommand}" />
+            </Border.GestureRecognizers>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <DataTrigger TargetType="Border" Binding="{Binding Item.IsChecked}" Value="true">
+                            <Setter Property="Background" Value="{StaticResource ForegroundDarkBrush}" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="Border" Binding="{Binding Item.IsChecked}" Value="false">
+                            <Setter Property="Background" Value="{StaticResource ForegroundBrush}" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="Border" Binding="{Binding IsEditing}" Value="true">
+                            <Setter Property="IsVisible" Value="false" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="Border" Binding="{Binding IsEditing}" Value="false">
+                            <Setter Property="IsVisible" Value="true" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                </Grid.RowDefinitions>
+                <controls:RoundedCheckbox Grid.Column="0" 
+                                          IsChecked="{Binding Item.IsChecked, Mode=TwoWay}" 
+                                          Command="{Binding ToggleCheckedCommand}" 
+                                          CommandParameter="{Binding Item.Id}" 
+                                          TextColorChecked="{StaticResource TextDark}" 
+                                          ClickablePadding="10" 
+                                          FontSize="22" />
+                <Label Grid.Column="1" 
+                       Margin="0" 
+                       Text="{Binding Item.Name}" 
+                       FontSize="22" 
+                       FontAttributes="Bold" 
+                       TextColor="{StaticResource Text}" 
+                       VerticalTextAlignment="Center"
+                       InputTransparent="True" />
+            </Grid>
+        </Border>
+    </Grid>
+</ContentView>

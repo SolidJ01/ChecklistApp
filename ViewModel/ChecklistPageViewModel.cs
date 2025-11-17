@@ -70,6 +70,10 @@ namespace ChecklistApp.ViewModel
         public ICommand CreateNewCommand { get; set; }
 
         public ICommand ToggleItemCheckedCommand { get; set; }
+        
+        public ICommand SaveItemChangesCommand { get; set; }
+        
+        public ICommand DeleteItemCommand { get; set; }
 
         #endregion
 
@@ -82,6 +86,8 @@ namespace ChecklistApp.ViewModel
             OptionsCommand = new Command(Options);
             CreateNewCommand = new Command(CreateNew);
             ToggleItemCheckedCommand = new Command<int>(ToggleItemChecked);
+            SaveItemChangesCommand = new Command<Item>(SaveItemChanges);
+            DeleteItemCommand = new Command<Item>(DeleteItem);
         }
 
         #region Methods
@@ -116,6 +122,18 @@ namespace ChecklistApp.ViewModel
                 // OnPropertyChanged(nameof(CheckedItems));
                 //RetrieveChecklist(this, new EventArgs());
             }
+        }
+
+        private void SaveItemChanges(Item item)
+        {
+            _checklistContext.UpdateItem(item);
+        }
+
+        private void DeleteItem(Item item)
+        {
+            _checklist.Items.Remove(item);
+            _checklistContext.DeleteItem(item);
+            ConstructItemList();
         }
 
         public async void RetrieveChecklist(object sender, EventArgs e)

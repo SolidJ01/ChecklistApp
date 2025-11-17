@@ -23,115 +23,19 @@
                 <controls:ChecklistCard Name="{Binding ChecklistCard.Name}" 
                                         CompletionStatus="{Binding ChecklistCard.ItemsStatus}" 
                                         DeadlineStatus="{Binding ChecklistCard.DeadlineStatus}" 
-                                        ChecklistColor="{Binding ChecklistCard.ChecklistColor}" />
+                                        ChecklistColor="{Binding ChecklistCard.ChecklistColor}"
+                                        Margin="0, 0, 0, 10"/>
             </CollectionView.Header>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:Item">
-                    <Border Margin="10,20,10,0"
-                           Background="{StaticResource ForegroundBrush}"
-                           StrokeShape="RoundRectangle 8,8,8,8"
-                           Padding="0">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Style.Triggers>
-                                    <DataTrigger TargetType="Border" Binding="{Binding IsChecked}" Value="true">
-                                        <Setter Property="Background" Value="{StaticResource ForegroundDarkBrush}" />
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Border" Binding="{Binding IsChecked}" Value="false">
-                                        <Setter Property="Background" Value="{StaticResource ForegroundBrush}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="50" />
-                            </Grid.RowDefinitions>
-                            <controls:RoundedCheckbox Grid.Column="0" 
-                                                      IsChecked="{Binding IsChecked, Mode=TwoWay}" 
-                                                      Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChecklistPageViewModel}}, Path=ToggleItemCheckedCommand}" 
-                                                      CommandParameter="{Binding Id}" 
-                                                      TextColorChecked="{StaticResource TextDark}" 
-                                                      ClickablePadding="10" 
-                                                      FontSize="22" />
-                            <Label Grid.Column="1" Margin="0" Text="{Binding Name}" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource Text}" VerticalTextAlignment="Center" />
-                        </Grid>
-                    </Border>
+                    <controls:ChecklistItem Item="{Binding .}" 
+                                            ToggleCheckedCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChecklistPageViewModel}}, Path=ToggleItemCheckedCommand}"
+                                            DeleteItemCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChecklistPageViewModel}}, Path=DeleteItemCommand}"
+                                            SaveItemCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChecklistPageViewModel}}, Path=SaveItemChangesCommand}"
+                                            Margin="10, 0, 10, 10"/>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        
-        <!--<ScrollView Grid.Row="0">
-            <VerticalStackLayout>
-                <controls:ChecklistCard Name="{Binding ChecklistCard.Name}" 
-                                        CompletionStatus="{Binding ChecklistCard.ItemsStatus}" 
-                                        DeadlineStatus="{Binding ChecklistCard.DeadlineStatus}" 
-                                        ChecklistColor="{Binding ChecklistCard.ChecklistColor}" />
-
-                <CollectionView ItemsSource="{Binding UncheckedItems}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="model:Item">
-                            <Frame Margin="10,20,10,0"
-                                   Background="{StaticResource ForegroundBrush}"
-                                   CornerRadius="8"
-                                   Padding="0">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="50" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="50" />
-                                    </Grid.RowDefinitions>
-                                    <controls:RoundedCheckbox Grid.Column="0" 
-                                                              IsChecked="{Binding IsChecked, Mode=TwoWay}" 
-                                                              Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChecklistPageViewModel}}, Path=ToggleItemCheckedCommand}" 
-                                                              CommandParameter="{Binding Id}" 
-                                                              TextColorChecked="{StaticResource TextDark}" 
-                                                              ClickablePadding="10" 
-                                                              FontSize="22" />
-                                    <Label Grid.Column="1" Margin="0" Text="{Binding Name}" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource Text}" VerticalTextAlignment="Center" />
-                                </Grid>
-                            </Frame>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-                <Label Text="Completed" TextColor="{StaticResource Text}" FontSize="22" FontAttributes="Bold" HorizontalTextAlignment="Center" Margin="10,10,10,-10" IsVisible="{Binding CheckedItems, Converter={StaticResource ItemCollectionToBool}}" />
-                <CollectionView ItemsSource="{Binding CheckedItems}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="model:Item">
-                            <Frame Margin="10,20,10,0"
-                                   Background="{StaticResource ForegroundDarkBrush}"
-                                   CornerRadius="8"
-                                   Padding="0">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="50" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="50" />
-                                    </Grid.RowDefinitions>
-                                    <controls:RoundedCheckbox Grid.Column="0" 
-                                                              IsChecked="{Binding IsChecked, Mode=TwoWay}" 
-                                                              Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChecklistPageViewModel}}, Path=ToggleItemCheckedCommand}" 
-                                                              CommandParameter="{Binding Id}" 
-                                                              TextColorChecked="{StaticResource TextDark}" 
-                                                              ClickablePadding="10" 
-                                                              FontSize="22" />
-                                    <Label Grid.Column="1" Margin="0" Text="{Binding Name}" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource TextDark}" VerticalTextAlignment="Center" />
-                                </Grid>
-                            </Frame>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </VerticalStackLayout>
-        </ScrollView>-->
 
         <controls:ControlBar Grid.Row="1">
             <Grid>
