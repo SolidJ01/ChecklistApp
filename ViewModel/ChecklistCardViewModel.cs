@@ -30,6 +30,14 @@ namespace ChecklistApp.ViewModel
             }
         }
 
+        public float CompletionPercentage
+        {
+            get
+            {
+                return (float)_checklist.Items.Count(x => x.IsChecked) / (float)_checklist.Items.Count;
+            }
+        }
+
         public string DeadlineStatus
         {
             get

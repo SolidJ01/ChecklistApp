@@ -19,6 +19,14 @@ public partial class ChecklistCard : ContentView
 		set => SetValue(CompletionStatusProperty, value);
 	}
 
+	public static readonly BindableProperty CompletionPercentageProperty = BindableProperty.Create(nameof(CompletionPercentage), typeof(float), typeof(ChecklistCard), 0f);
+
+	public float CompletionPercentage
+	{
+		get => (float)GetValue(CompletionPercentageProperty);
+		set => SetValue(CompletionPercentageProperty, value);
+	}
+
 	public static readonly BindableProperty DeadlineStatusProperty = BindableProperty.Create(nameof(DeadlineStatus), typeof(string), typeof(ChecklistCard), string.Empty);
 	public string DeadlineStatus
 	{

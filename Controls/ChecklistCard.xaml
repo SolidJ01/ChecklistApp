@@ -1,55 +1,120 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ChecklistApp.Controls"
              x:Name="this"
              x:Class="ChecklistApp.Controls.ChecklistCard">
     <Border BindingContext="{x:Reference this}"
            StrokeShape="RoundRectangle 8,8,8,8"
            StrokeThickness="0"
-           Margin="10,20,10,0"
            Padding="0"
-           Background="{StaticResource ForegroundBrush}">
+           HeightRequest="95">
         <Border.GestureRecognizers>
             <TapGestureRecognizer Command="{Binding Command}" CommandParameter="{Binding ChecklistId}" />
         </Border.GestureRecognizers>
-        <Border.Shadow>
-            <Shadow Brush="Black"
-                    Offset="0,4"
-                    Radius="10"
-                    Opacity="0" />
-        </Border.Shadow>
-        <Border.Style>
-            <Style TargetType="Border">
-                <Style.Triggers>
-                    <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Grey">
-                        <Setter Property="Background" Value="{StaticResource ForegroundBrush}" />
-                    </DataTrigger>
-                    <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Cyan">
-                        <Setter Property="Background" Value="{StaticResource ForegroundCyanBrush}" />
-                    </DataTrigger>
-                    <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Blue">
-                        <Setter Property="Background" Value="{StaticResource ForegroundBlueBrush}" />
-                    </DataTrigger>
-                    <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Purple">
-                        <Setter Property="Background" Value="{StaticResource ForegroundPurpleBrush}" />
-                    </DataTrigger>
-                    <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Magenta">
-                        <Setter Property="Background" Value="{StaticResource ForegroundMagentaBrush}" />
-                    </DataTrigger>
-                    <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Red">
-                        <Setter Property="Background" Value="{StaticResource ForegroundRedBrush}" />
-                    </DataTrigger>
-                    <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Orange">
-                        <Setter Property="Background" Value="{StaticResource ForegroundOrangeBrush}" />
-                    </DataTrigger>
-                    <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Green">
-                        <Setter Property="Background" Value="{StaticResource ForegroundGreenBrush}" />
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Border.Style>
+        <Grid RowDefinitions="*, 8">
+            <Border Background="{StaticResource ForegroundBrush}">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Style.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Cyan">
+                                <Setter Property="Background" Value="{StaticResource ForegroundCyanBrush}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Blue">
+                                <Setter Property="Background" Value="{StaticResource ForegroundBlueBrush}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Purple">
+                                <Setter Property="Background" Value="{StaticResource ForegroundPurpleBrush}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Magenta">
+                                <Setter Property="Background" Value="{StaticResource ForegroundMagentaBrush}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Red">
+                                <Setter Property="Background" Value="{StaticResource ForegroundRedBrush}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Orange">
+                                <Setter Property="Background" Value="{StaticResource ForegroundOrangeBrush}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Border" Binding="{Binding ChecklistColor}" Value="Green">
+                                <Setter Property="Background" Value="{StaticResource ForegroundGreenBrush}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <Grid RowDefinitions="*, 28" Padding="15, 12,15,7">
+                    <Label Text="{Binding Name}"
+                           TextColor="{StaticResource Text}"
+                           FontSize="25"
+                           FontAttributes="Bold"
+                           VerticalTextAlignment="Start" />
+                    <FlexLayout Grid.Row="1"
+                                Direction="Row"
+                                JustifyContent="SpaceBetween">
+                        <Label Text="{Binding CompletionStatus}"
+                               TextColor="{StaticResource Text}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               VerticalTextAlignment="Center" />
+                        <Border StrokeShape="RoundRectangle 6,6,6,6">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger TargetType="Border" Binding="{Binding IsOverdue}" Value="true">
+                                            <Setter Property="Background" Value="{StaticResource Text}" />
+                                            <Setter Property="Padding" Value="10,0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Label Text="{Binding DeadlineStatus}"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   VerticalTextAlignment="Center">
+                                <Label.Style>
+                                    <Style TargetType="Label">
+                                        <Style.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsOverdue}" Value="true">
+                                                <Setter Property="Text" Value="Overdue" />
+                                                <Setter Property="TextColor" Value="{StaticResource Foreground}" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label" Binding="{Binding ChecklistColor}" Value="Cyan">
+                                                <Setter Property="TextColor" Value="{StaticResource ForegroundCyan}" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label" Binding="{Binding ChecklistColor}" Value="Blue">
+                                                <Setter Property="TextColor" Value="{StaticResource ForegroundBlue}" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label" Binding="{Binding ChecklistColor}" Value="Purple">
+                                                <Setter Property="TextColor" Value="{StaticResource ForegroundPurple}" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label" Binding="{Binding ChecklistColor}" Value="Magenta">
+                                                <Setter Property="TextColor" Value="{StaticResource ForegroundMagenta}" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label" Binding="{Binding ChecklistColor}" Value="Red">
+                                                <Setter Property="TextColor" Value="{StaticResource ForegroundRed}" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label" Binding="{Binding ChecklistColor}" Value="Orange">
+                                                <Setter Property="TextColor" Value="{StaticResource ForegroundOrange}" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label" Binding="{Binding ChecklistColor}" Value="Green">
+                                                <Setter Property="TextColor" Value="{StaticResource ForegroundGreen}" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsOverdue}" Value="false">
+                                                <Setter Property="TextColor" Value="{StaticResource Text}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                        </Border>
+                    </FlexLayout>
+                </Grid>
+            </Border>
+            <!--<Border Grid.Row="1" Background="{StaticResource ForegroundDarkBrush}"></Border>-->
+            <controls:ChecklistProgressBar Grid.Row="1" Progress="{Binding CompletionPercentage}" />
+        </Grid>
         
-        <VerticalStackLayout>
+        <!--<VerticalStackLayout Padding="0">
+            
             <Label Margin="15,15,15,0"
                    Text="{Binding Name}"
                    TextColor="{StaticResource Text}"
@@ -74,7 +139,7 @@
                        FontAttributes="Bold"
                        VerticalTextAlignment="Center"
                        IsVisible="{Binding IsOverdue, Converter={StaticResource BooleanInverter}}" />
-                <!-- Overdue label -->
+                ~1~ Overdue label @1@
                 <Border Grid.Column="1"
                         Margin="0"
                         Padding="12.5,3"
@@ -121,8 +186,8 @@
                     </Label>
                 </Border>
             </Grid>
-            <Grid HeightRequest="8" Background="{StaticResource ForegroundDarkBrush}" />
-            <!--<ProgressBar IsVisible="true" Background="{StaticResource ForegroundDarkBrush}" HeightRequest="10" ProgressColor="{StaticResource Text}" Progress="0.5" />-->
-        </VerticalStackLayout>
+            <Grid HeightRequest="8" Margin="0" Background="{StaticResource ForegroundDarkBrush}" />
+            ~1~<ProgressBar IsVisible="true" Background="{StaticResource ForegroundDarkBrush}" HeightRequest="10" ProgressColor="{StaticResource Text}" Progress="0.5" />@1@
+        </VerticalStackLayout>-->
     </Border>
 </ContentView>

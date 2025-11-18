@@ -22,9 +22,11 @@
             <CollectionView.Header>
                 <controls:ChecklistCard Name="{Binding ChecklistCard.Name}" 
                                         CompletionStatus="{Binding ChecklistCard.ItemsStatus}" 
-                                        DeadlineStatus="{Binding ChecklistCard.DeadlineStatus}" 
+                                        CompletionPercentage="{Binding ChecklistCard.CompletionPercentage}"
+                                        DeadlineStatus="{Binding ChecklistCard.DeadlineStatus}"
+                                        IsOverdue="False"
                                         ChecklistColor="{Binding ChecklistCard.ChecklistColor}"
-                                        Margin="0, 0, 0, 10"/>
+                                        Margin="10, 20, 10, 10"/>
             </CollectionView.Header>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:Item">
