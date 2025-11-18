@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Name="this"
              x:Class="ChecklistApp.Controls.ColorButton">
-    <Grid BindingContext="{x:Reference this}" IsClippedToBounds="False" Margin="10">
+    <Grid BindingContext="{x:Reference this}" IsClippedToBounds="False" Margin="7.5">
         <Border BackgroundColor="{Binding BackgroundColor}"
                StrokeShape="RoundRectangle 8,8,8,8"
                Padding="0"

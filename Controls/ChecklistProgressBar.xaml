@@ -6,7 +6,18 @@
     <AbsoluteLayout BackgroundColor="{StaticResource ForegroundDark}"
                     BindingContext="{x:Reference this}">
         <Border BackgroundColor="{StaticResource Text}"
+                StrokeShape="RoundRectangle 0,4,0,4"
                 AbsoluteLayout.LayoutBounds="{Binding Progress, Converter={StaticResource FloatToProgress}}"
-                AbsoluteLayout.LayoutFlags="SizeProportional" />
+                AbsoluteLayout.LayoutFlags="SizeProportional">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <DataTrigger TargetType="Border" Binding="{Binding Progress}" Value="1">
+                            <Setter Property="StrokeShape" Value="RoundRectangle 0,0,0,0" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
     </AbsoluteLayout>
 </ContentView>

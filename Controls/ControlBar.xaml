@@ -9,7 +9,7 @@
                 <Border.Shadow>
                     <Shadow Brush="{StaticResource BackgroundBrush}"
                             Offset="0, -10"
-                            Radius="10"
+                            Radius="8"
                             Opacity="1" />
                 </Border.Shadow>
                 <ContentPresenter />

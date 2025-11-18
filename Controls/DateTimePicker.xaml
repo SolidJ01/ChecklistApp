@@ -21,8 +21,9 @@
                    TextColor="{StaticResource Text}" 
                    FontSize="22" 
                    FontAttributes="Bold"
-                   HorizontalTextAlignment="Center"
-                   VerticalTextAlignment="Center">
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Center"
+                   Margin="10,0">
                 <Label.Triggers>
                     <DataTrigger TargetType="Label" Binding="{Binding Use}" Value="false">
                         <Setter Property="Opacity" Value="1" />

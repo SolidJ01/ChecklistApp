@@ -18,7 +18,7 @@
             <RowDefinition Height="70" />
         </Grid.RowDefinitions>
 
-        <CollectionView ItemsSource="{Binding Items}" IsGrouped="False" ItemSizingStrategy="MeasureFirstItem">
+        <CollectionView x:Name="itemsView" ItemsSource="{Binding Items}" ItemSizingStrategy="MeasureFirstItem">
             <CollectionView.Header>
                 <controls:ChecklistCard Name="{Binding ChecklistCard.Name}" 
                                         CompletionStatus="{Binding ChecklistCard.ItemsStatus}" 
@@ -26,7 +26,7 @@
                                         DeadlineStatus="{Binding ChecklistCard.DeadlineStatus}"
                                         IsOverdue="False"
                                         ChecklistColor="{Binding ChecklistCard.ChecklistColor}"
-                                        Margin="10, 20, 10, 10"/>
+                                        Margin="10, 15, 10, 10"/>
             </CollectionView.Header>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:Item">

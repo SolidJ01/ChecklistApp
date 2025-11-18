@@ -6,7 +6,11 @@
     <Frame BindingContext="{x:Reference this}"
            CornerRadius="8"
            IsClippedToBounds="True"
+           BackgroundColor="{StaticResource ForegroundDark}"
            Padding="0">
-        <Entry Text="{Binding Text}" Style="{StaticResource TextEntry}" Placeholder="{Binding Placeholder}" PlaceholderColor="{StaticResource Text}" />
+        <Entry Text="{Binding Text}" 
+               Style="{StaticResource TextEntry}" 
+               Placeholder="{Binding Placeholder}" 
+               PlaceholderColor="{StaticResource TextDark}" />
     </Frame>
 </ContentView>

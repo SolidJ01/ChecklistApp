@@ -6,7 +6,7 @@
              x:Class="ChecklistApp.Controls.ColorSelector">
     <Frame BindingContext="{x:Reference this}" 
            BackgroundColor="{StaticResource ForegroundDark}"
-           Padding="10"
+           Padding="7.5"
            CornerRadius="8">
         <VerticalStackLayout>
 
