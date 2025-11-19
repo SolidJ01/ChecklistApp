@@ -102,10 +102,14 @@ namespace ChecklistApp.ViewModel
 
         private void DeleteItem(Item item)
         {
-            _checklist.Items.Remove(item);
+            var checklistItem = _checklist.Items.FirstOrDefault(x => x.Id.Equals(item.Id));
+            _checklist.Items.Remove(checklistItem);
             Items.Remove(item);
             
-            _checklistContext.DeleteItem(item);
+            ChecklistCard = new ChecklistCardViewModel(_checklist);
+            OnPropertyChanged(nameof(ChecklistCard));
+            
+            _checklistContext.DeleteItem(checklistItem);
         }
 
         public async void RetrieveChecklist(object sender, EventArgs e)
