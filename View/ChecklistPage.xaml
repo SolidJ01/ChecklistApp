@@ -18,7 +18,7 @@
             <RowDefinition Height="70" />
         </Grid.RowDefinitions>
 
-        <CollectionView x:Name="itemsView" ItemsSource="{Binding Items}" ItemSizingStrategy="MeasureFirstItem">
+        <CollectionView x:Name="itemsView" ItemsSource="{Binding Items}" ItemSizingStrategy="MeasureFirstItem" ItemsUpdatingScrollMode="KeepScrollOffset">
             <CollectionView.Header>
                 <controls:ChecklistCard Name="{Binding ChecklistCard.Name}" 
                                         CompletionStatus="{Binding ChecklistCard.ItemsStatus}" 

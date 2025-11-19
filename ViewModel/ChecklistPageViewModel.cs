@@ -27,7 +27,7 @@ namespace ChecklistApp.ViewModel
 
         public ChecklistCardViewModel ChecklistCard { get; set; }
 
-        public ObservableCollection<Item> Items { get; set; }
+        public ObservableCollection<Item> Items { get; set; } = [];
 
         #endregion
 
@@ -79,13 +79,19 @@ namespace ChecklistApp.ViewModel
 
         private void ToggleItemChecked(int id)
         {
-            Item item = _checklist.Items.Where(x => x.Id.Equals(id)).FirstOrDefault();
+            Item item = _checklist.Items.FirstOrDefault(x => x.Id.Equals(id));
             if (item != null)
             {
+                Items.Remove(Items.FirstOrDefault(x => x.Id.Equals(id)));
                 item.IsChecked = !item.IsChecked;
-                _checklistContext.UpdateItem(item);
+                _checklist.Items = _checklist.Items.OrderBy(x => x.IsChecked).ThenBy(x => x.Name).ToList();
+                Items.Insert(_checklist.Items.IndexOf(item), new Item { Id = item.Id, IsChecked = item.IsChecked,  Name = item.Name , Checklist = _checklist });
                 
-                ConstructItemList();
+                ChecklistCard = new ChecklistCardViewModel(_checklist);
+                OnPropertyChanged(nameof(ChecklistCard));
+                
+                _checklistContext.UpdateItem(item);
+                //ConstructItemList();
             }
         }
 
@@ -97,8 +103,9 @@ namespace ChecklistApp.ViewModel
         private void DeleteItem(Item item)
         {
             _checklist.Items.Remove(item);
+            Items.Remove(item);
+            
             _checklistContext.DeleteItem(item);
-            ConstructItemList();
         }
 
         public async void RetrieveChecklist(object sender, EventArgs e)
@@ -110,18 +117,28 @@ namespace ChecklistApp.ViewModel
 
             ChecklistCard = new ChecklistCardViewModel(_checklist);
             OnPropertyChanged(nameof(ChecklistCard));
+            _checklist.Items = _checklist.Items.OrderBy(x => x.IsChecked).ThenBy(x => x.Name).ToList();
 
-            ConstructItemList();
-            //Items = new ObservableCollection<Item>(_checklist.Items);
-            //OnPropertyChanged(nameof(Items));
-            //OnPropertyChanged(nameof(UncheckedItems));
-            //OnPropertyChanged(nameof(CheckedItems));
-        }
+            // if (Items.Count == 0)
+            // {
+            //     await Task.Run(() =>
+            //     {
+            //         Items = new ObservableCollection<Item>(_checklist.Items);
+            //         OnPropertyChanged(nameof(Items));
+            //     });
+            //     return;
+            // }
 
-        private void ConstructItemList()
-        {
-            Items = new ObservableCollection<Item>(_checklist.Items.OrderBy(x => x.IsChecked).ThenBy(x => x.Name));
-            OnPropertyChanged(nameof(Items));
+            List<Item> addedItems = _checklist.Items.Where(x => !Items.Contains(x)).ToList();
+            List<Item> removedItems = Items.Where(x => !_checklist.Items.Contains(x)).ToList();
+
+            await Task.Run(() =>
+            {
+                foreach (Item item in addedItems)
+                    Items.Insert(_checklist.Items.IndexOf(item), item);
+                foreach (Item item in removedItems)
+                    Items.Remove(item);
+            });
         }
 
         #endregion
