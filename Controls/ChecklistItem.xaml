@@ -13,7 +13,7 @@
                 Text="&#xf1f8;" 
                 Background="{StaticResource ForegroundRed}" 
                 IsVisible="{Binding IsEditing}"
-                Command="{Binding DeleteItemCommand}"
+                Command="{Binding ProperDeleteCommand}"
                 CommandParameter="{Binding Item}" />
         <controls:RoundedEntry Text="{Binding EditedItemName, Mode=TwoWay}" 
                                Placeholder="Item Name"

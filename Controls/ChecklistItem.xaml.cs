@@ -64,11 +64,13 @@ public partial class ChecklistItem : ContentView
     }
 
     public ICommand ToggleIsEditingCommand { get; set; }
+    public ICommand ProperDeleteCommand { get; set; }
     public ICommand SaveChangesCommand { get; set; }
     
     public ChecklistItem()
     {
         ToggleIsEditingCommand = new Command(ToggleIsEditing);
+        ProperDeleteCommand = new Command(ProperDelete);
         SaveChangesCommand = new Command(SaveChanges);
         InitializeComponent();
     }
@@ -93,5 +95,12 @@ public partial class ChecklistItem : ContentView
             SaveItemCommand?.Execute(Item);
         }
         ToggleIsEditing();
+    }
+
+    private void ProperDelete()
+    {
+        _isEditing = false;
+        OnPropertyChanged(nameof(IsEditing));
+        DeleteItemCommand?.Execute(Item);
     }
 }

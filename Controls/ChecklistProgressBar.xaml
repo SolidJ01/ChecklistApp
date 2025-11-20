@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ChecklistApp.Controls"
              x:Name="this"
-             x:Class="ChecklistApp.Controls.ChecklistProgressBar">
-    <AbsoluteLayout BackgroundColor="{StaticResource ForegroundDark}"
+             x:Class="ChecklistApp.Controls.ChecklistProgressBar"
+             x:DataType="controls:ChecklistProgressBar">
+    <AbsoluteLayout x:Name="ProgressContainer"
+                    BackgroundColor="{StaticResource ForegroundDark}"
                     BindingContext="{x:Reference this}">
-        <Border BackgroundColor="{StaticResource Text}"
+        <Border x:Name="ProgressIndicator"
+                BackgroundColor="{StaticResource Text}"
                 StrokeShape="RoundRectangle 0,4,0,4"
-                AbsoluteLayout.LayoutBounds="{Binding Progress, Converter={StaticResource FloatToProgress}}"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
                 AbsoluteLayout.LayoutFlags="SizeProportional">
             <Border.Style>
                 <Style TargetType="Border">
