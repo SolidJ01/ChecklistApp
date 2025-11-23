@@ -3,36 +3,38 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Name="this"
              x:Class="ChecklistApp.Controls.DateTimePicker">
-    <Frame BindingContext="{x:Reference this}"
-           Background="{StaticResource ForegroundDarkBrush}"
-           CornerRadius="8"
-           IsClippedToBounds="True"
-           Padding="5">
+    <Border BindingContext="{x:Reference this}"
+            BackgroundColor="{StaticResource ForegroundDark}"
+            StrokeShape="RoundRectangle 8,8,8,8"
+            Padding="5">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Style.Triggers>
+                    <DataTrigger TargetType="Border" Binding="{Binding Use}" Value="false">
+                        <Setter Property="Background" Value="transparent" />
+                        <Setter Property="Padding" Value="0,5" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <DatePicker Grid.Column="0" Date="{Binding Date, Mode=TwoWay}" TextColor="{StaticResource Text}" Margin="5,0" IsEnabled="{Binding Use}" />
-            <TimePicker Grid.Column="1" Time="{Binding Time, Mode=TwoWay}" TextColor="{StaticResource Text}" Margin="5,0" IsEnabled="{Binding Use}" />
-            <Label Grid.ColumnSpan="2" 
-                   Text="Deadline" 
-                   Background="{StaticResource ForegroundDarkBrush}" 
+            <DatePicker Grid.Column="0" Date="{Binding Date, Mode=TwoWay}" TextColor="{StaticResource Text}" Margin="5,0" IsVisible="{Binding Use}" />
+            <TimePicker Grid.Column="1" Time="{Binding Time, Mode=TwoWay}" TextColor="{StaticResource Text}" Margin="5,0" IsVisible="{Binding Use}" />
+            <Label Grid.Column="0" 
+                   Grid.ColumnSpan="2" 
+                   Text="Deadline"
                    TextColor="{StaticResource Text}" 
                    FontSize="22" 
                    FontAttributes="Bold"
                    HorizontalTextAlignment="Start"
                    VerticalTextAlignment="Center"
-                   Margin="10,0">
-                <Label.Triggers>
-                    <DataTrigger TargetType="Label" Binding="{Binding Use}" Value="false">
-                        <Setter Property="Opacity" Value="1" />
-                    </DataTrigger>
-                    <DataTrigger TargetType="Label" Binding="{Binding Use}" Value="true">
-                        <Setter Property="Opacity" Value="0" />
-                    </DataTrigger>
-                </Label.Triggers>
+                   Margin="10,0"
+                   IsVisible="{Binding Use, Converter={StaticResource BooleanInverter}}">
             </Label>
         </Grid>
-    </Frame>
+    </Border>
 </ContentView>
