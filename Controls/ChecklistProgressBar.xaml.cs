@@ -22,6 +22,7 @@ public partial class ChecklistProgressBar : ContentView
 	{
 		priorProgress = Progress;
 		InitializeComponent();
+		ProgressContainer.SetLayoutBounds(ProgressIndicator, new Rect(0, 0, Progress, 1));
 	}
 
 	public void OnProgressChanged()

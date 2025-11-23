@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ChecklistApp.ViewModel
 {
-    public class ChecklistCardViewModel
+    public class ChecklistCardViewModel : ViewModel
     {
         private Checklist _checklist;
 
@@ -17,11 +17,10 @@ namespace ChecklistApp.ViewModel
 
         public string Name { get { return _checklist.Name; } }
 
-        public string ItemsStatus
+        public string CompletionStatus
         {
             get
             {
-                //return _checklist.Items != null ? "Yes" : "No";
                 return _checklist.Items != null && _checklist.Items.Any()
                     ? _checklist.Items.Where(x => x.IsChecked).ToList().Any() 
                         ? $"{_checklist.Items.Where(x => x.IsChecked).ToList().Count}/{_checklist.Items.Count} Items" 
@@ -58,11 +57,11 @@ namespace ChecklistApp.ViewModel
         {
             get
             {
-                return _checklist.UseDeadline ? (_checklist.Deadline - DateTime.Now).TotalSeconds < 0 : false;
+                return _checklist.UseDeadline && (_checklist.Deadline - DateTime.Now).TotalSeconds < 0;
             }
         }
 
-        public Checklist.ChecklistColor ChecklistColor
+        public Checklist.ChecklistColor Color
         {
             get
             {
@@ -74,6 +73,32 @@ namespace ChecklistApp.ViewModel
         public ChecklistCardViewModel(Checklist checklist)
         {
             _checklist = checklist;
+        }
+
+        public void Update(Checklist checklist)
+        {
+            _checklist = checklist;
+            OnPropertyChanged(nameof(Name));
+            OnPropertyChanged(nameof(CompletionStatus));
+            OnPropertyChanged(nameof(CompletionPercentage));
+            OnPropertyChanged(nameof(DeadlineStatus));
+            OnPropertyChanged(nameof(IsOverdue));
+            OnPropertyChanged(nameof(Color));
+        }
+
+        public void Update()
+        {
+            OnPropertyChanged(nameof(Name));
+            OnPropertyChanged(nameof(CompletionStatus));
+            OnPropertyChanged(nameof(CompletionPercentage));
+            OnPropertyChanged(nameof(DeadlineStatus));
+            OnPropertyChanged(nameof(IsOverdue));
+            OnPropertyChanged(nameof(Color));
+        }
+
+        public bool ModelEquals(Checklist checklist)
+        {
+            return _checklist.Equals(checklist);
         }
     }
 }

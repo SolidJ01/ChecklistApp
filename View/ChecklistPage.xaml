@@ -20,13 +20,7 @@
 
         <CollectionView x:Name="itemsView" ItemsSource="{Binding Items}" ItemSizingStrategy="MeasureFirstItem" ItemsUpdatingScrollMode="KeepScrollOffset">
             <CollectionView.Header>
-                <controls:ChecklistCard Name="{Binding ChecklistCard.Name}" 
-                                        CompletionStatus="{Binding ChecklistCard.ItemsStatus}" 
-                                        CompletionPercentage="{Binding ChecklistCard.CompletionPercentage}"
-                                        DeadlineStatus="{Binding ChecklistCard.DeadlineStatus}"
-                                        IsOverdue="False"
-                                        ChecklistColor="{Binding ChecklistCard.ChecklistColor}"
-                                        Margin="10, 15, 10, 10"/>
+                <controls:ChecklistCard Checklist="{Binding ChecklistCardViewModel}" Margin="10, 15, 10, 10"/>
             </CollectionView.Header>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:Item">

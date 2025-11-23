@@ -16,14 +16,8 @@
         <CollectionView ItemsSource="{Binding Checklists}" Margin="0,15,0,0">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="viewmodel:ChecklistCardViewModel">
-                    <controls:ChecklistCard Name="{Binding Name}" 
-                                            CompletionStatus="{Binding ItemsStatus}" 
-                                            CompletionPercentage="{Binding CompletionPercentage}"
-                                            DeadlineStatus="{Binding DeadlineStatus}" 
-                                            IsOverdue="{Binding IsOverdue}" 
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=GoToChecklistCommand}" 
-                                            ChecklistId="{Binding Id}" 
-                                            ChecklistColor="{Binding ChecklistColor}"
+                    <controls:ChecklistCard Checklist="{Binding}" 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=GoToChecklistCommand}"
                                             Margin="10,0,10,15">
                     </controls:ChecklistCard>
                 </DataTemplate>

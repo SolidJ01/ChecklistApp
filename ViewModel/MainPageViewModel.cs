@@ -16,8 +16,7 @@ namespace ChecklistApp.ViewModel
         private ChecklistContext _checklistContext;
         private NavigationService _navigationService;
 
-        private ObservableCollection<Checklist> _checklists;
-        public ObservableCollection<ChecklistCardViewModel> Checklists { get; set; }
+        public ObservableCollection<ChecklistCardViewModel> Checklists { get; set; } = [];
 
         #region Commands
 
@@ -46,13 +45,32 @@ namespace ChecklistApp.ViewModel
         public async void ReloadList(object sender, EventArgs e)
         {
             List<Checklist> checklists = await _checklistContext.GetChecklists();
-            _checklists = new ObservableCollection<Checklist>(checklists);
-            Checklists = new ObservableCollection<ChecklistCardViewModel>();
-            foreach (Checklist checklist in _checklists)
+            
+            if (Checklists.Count == 0)
             {
-                Checklists.Add(new ChecklistCardViewModel(checklist));
+                foreach (Checklist checklist in checklists)
+                {
+                    Checklists.Add(new ChecklistCardViewModel(checklist));
+                }
+
+                return;
             }
-            OnPropertyChanged(nameof(Checklists));
+            
+            List<ChecklistCardViewModel> removedChecklists = Checklists.Where(x => !checklists.Any(y => y.Id == x.Id)).ToList();
+            List<Checklist> addedChecklists = checklists.Where(x => !Checklists.Any(y => y.Id == x.Id)).ToList();
+            // List<Checklist> editedChecklists = checklists.Where(x => Checklists.Any(y => y.Id == x.Id) 
+            //                                                               && !Checklists.First(y => y.Id == x.Id).ModelEquals(x))
+            //                                                               .ToList();
+            foreach (ChecklistCardViewModel checklist in removedChecklists)
+                Checklists.Remove(checklist);
+            foreach (Checklist checklist in addedChecklists)
+                Checklists.Insert(checklists.IndexOf(checklist), new ChecklistCardViewModel(checklist));
+            // foreach (Checklist checklist in editedChecklists)
+            //     Checklists[Checklists.IndexOf(Checklists.First(x => x.Id == checklist.Id))].Update(checklist);
+            foreach (ChecklistCardViewModel checklist in Checklists)
+            {
+                checklist.Update();
+            }
         }
 
         private void GoToChecklist(int checklist)
