@@ -63,6 +63,10 @@
                                             <Setter Property="Background" Value="{StaticResource Text}" />
                                             <Setter Property="Padding" Value="10,0" />
                                         </DataTrigger>
+                                        <DataTrigger TargetType="Border" Binding="{Binding Checklist.IsOverdue}" Value="false">
+                                            <Setter Property="Background" Value="transparent" />
+                                            <Setter Property="Padding" Value="0" />
+                                        </DataTrigger>
                                         <MultiTrigger TargetType="Border">
                                             <MultiTrigger.Conditions>
                                                 <BindingCondition Binding="{Binding Checklist.IsOverdue}" Value="true" />
