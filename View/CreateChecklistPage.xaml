@@ -9,7 +9,7 @@
     <Grid Background="{StaticResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="70" />
+            <RowDefinition Height="130" />
         </Grid.RowDefinitions>
         <ScrollView Padding="10,20">
 
@@ -18,14 +18,10 @@
         </ScrollView>
 
         <controls:ControlBar Grid.Row="1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <Button Grid.Column="0" Text="&#xf060;" FontFamily="FontAwSolid" Command="{Binding BackCommand}" />
-                <Button Grid.Column="1" Text="Save" Margin="10,0,0,0" Command="{Binding SaveCommand}" />
+            <Grid RowDefinitions="50,50" ColumnDefinitions="50,*" RowSpacing="10" ColumnSpacing="10">
+                <Button Grid.ColumnSpan="2" Text="Import from File" Command="{Binding ImportCommand}" />
+                <Button Grid.Column="0" Grid.Row="1" Text="&#xf060;" FontFamily="FontAwSolid" Command="{Binding BackCommand}" />
+                <Button Grid.Column="1" Grid.Row="1" Text="Save" Command="{Binding SaveCommand}" />
             </Grid>
         </controls:ControlBar>
     </Grid>

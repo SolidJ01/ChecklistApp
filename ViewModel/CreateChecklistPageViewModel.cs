@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -29,6 +30,7 @@ namespace ChecklistApp.ViewModel
 
         public ICommand BackCommand { get; set; }
         public ICommand SaveCommand { get; set; }
+        public ICommand ImportCommand { get; set; }
 
         #endregion
 
@@ -41,6 +43,7 @@ namespace ChecklistApp.ViewModel
 
             BackCommand = new Command(Back);
             SaveCommand = new Command(Save);
+            ImportCommand = new Command(Import);
         }
 
         private void Back()
@@ -59,6 +62,36 @@ namespace ChecklistApp.ViewModel
             catch
             {
                 //  TODO: Notify user something went wrong
+            }
+        }
+
+        private async void Import()
+        {
+            try
+            {
+                PickOptions options = new PickOptions();
+                options.PickerTitle = "Select a .json file";
+                options.FileTypes = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
+                {
+                    { DevicePlatform.Android, ["application/json"] },
+                });
+                var result = await FilePicker.Default.PickAsync(options);
+                if (result != null)
+                {
+                    var stream = await result.OpenReadAsync();
+                    Checklist checklist = JsonSerializer.Deserialize<Checklist>(stream);
+                    checklist.Id = 0;
+                    foreach (Item item in checklist.Items)
+                    {
+                        item.Id = 0;
+                    }
+                    _checklistContext.CreateChecklist(checklist);
+                    Back();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
     }

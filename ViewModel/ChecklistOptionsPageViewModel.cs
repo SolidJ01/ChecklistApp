@@ -5,8 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Maui.Storage;
 
 namespace ChecklistApp.ViewModel
 {
@@ -15,6 +17,7 @@ namespace ChecklistApp.ViewModel
     {
         private ChecklistContext _checklistContext;
         private NavigationService _navigationService;
+        private IFileSaver _fileSaver;
 
         private Checklist _checklist;
         private Checklist _unchangedChecklist;
@@ -36,17 +39,21 @@ namespace ChecklistApp.ViewModel
         public ICommand SaveCommand { get; set; }
 
         public ICommand DeleteCommand { get; set; }
+        
+        public ICommand ExportCommand { get; set; }
 
         #endregion
 
-        public ChecklistOptionsPageViewModel(ChecklistContext checklistContext, NavigationService navigationService)
+        public ChecklistOptionsPageViewModel(ChecklistContext checklistContext, NavigationService navigationService, IFileSaver fileSaver)
         {
             _checklistContext = checklistContext;
             _navigationService = navigationService;
+            _fileSaver = fileSaver;
 
             BackCommand = new Command(Back);
             SaveCommand = new Command(Save);
             DeleteCommand = new Command(Delete);
+            ExportCommand = new Command(Export);
         }
 
         #region Methods
@@ -80,6 +87,20 @@ namespace ChecklistApp.ViewModel
             catch
             {
                 //  TODO: Notify user of error
+            }
+        }
+
+        private void Export()
+        {
+            foreach (var item in _checklist.Items)
+            {
+                item.Checklist = null;
+            }
+            var stream = new MemoryStream(Encoding.Default.GetBytes(JsonSerializer.Serialize(_checklist)));
+            _fileSaver.SaveAsync($"{_checklist.Name}.json", stream);
+            foreach (var item in _checklist.Items)
+            {
+                item.Checklist = _checklist;
             }
         }
 

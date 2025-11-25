@@ -63,9 +63,11 @@
 	</ItemGroup>-->
 
 	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Maui" Version="12.2.0" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.1" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.1" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.1" />
+	  <PackageReference Include="Microsoft.Maui.Controls.Core" Version="9.0.120" />
 	</ItemGroup>
 
 	<ItemGroup>

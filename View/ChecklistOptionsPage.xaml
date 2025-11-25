@@ -17,10 +17,11 @@
         </ScrollView>
 
         <controls:ControlBar Grid.Row="1">
-            <Grid RowDefinitions="50,50" ColumnDefinitions="50,*" RowSpacing="10" ColumnSpacing="10">
+            <Grid RowDefinitions="50,50" ColumnDefinitions="50,*,*,50" RowSpacing="10" ColumnSpacing="10">
                 <Button Grid.Row="0" Grid.ColumnSpan="2" Text="Delete" Style="{StaticResource DeleteButton}" Command="{Binding DeleteCommand}" />
+                <Button Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Text="Export to File" Command="{Binding ExportCommand}" />
                 <Button Grid.Row="1" Grid.Column="0" FontFamily="FontAwSolid" Text="&#xf060;" Command="{Binding BackCommand}" />
-                <Button Grid.Row="1" Grid.Column="1" Text="Save" Command="{Binding SaveCommand}" />
+                <Button Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="Save" Command="{Binding SaveCommand}" />
             </Grid>
         </controls:ControlBar>
     </Grid>
