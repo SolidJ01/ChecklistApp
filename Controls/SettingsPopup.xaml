@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<controls:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ChecklistApp.Controls"
+             x:Class="ChecklistApp.Controls.SettingsPopup">
+    <controls:Popup.Content>
+        <!--<Label Text="Hello?" />-->
+        <VerticalStackLayout Padding="10">
+            <Grid ColumnDefinitions="50, *" 
+                  ColumnSpacing="10"
+                  HeightRequest="50">
+                <Button WidthRequest="50"
+                        Clicked="CloseButtonClicked" />
+                <Button Grid.Column="1"
+                        Text="Export Checklists"/>
+            </Grid>
+        </VerticalStackLayout>
+    </controls:Popup.Content>
+    
+</controls:Popup>

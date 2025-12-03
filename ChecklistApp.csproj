@@ -12,7 +12,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>FastChecklist</ApplicationTitle>
+		<ApplicationTitle>Checklist</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.fastcode.checklistapp</ApplicationId>
