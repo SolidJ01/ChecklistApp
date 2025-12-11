@@ -10,5 +10,10 @@ public partial class MainPage : ContentPage
 		this.BindingContext = viewModel;
 		NavigatedTo += viewModel.ReloadList;
 	}
+
+	private void OnSettingsButtonClicked(object sender, EventArgs e)
+	{
+		SettingsPopup.Open();
+	}
 }
 

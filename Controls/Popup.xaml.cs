@@ -9,7 +9,9 @@ namespace ChecklistApp.Controls;
 
 public partial class Popup : ContentView
 {
-    private static readonly double s_BaseOpacity = 0.5;
+    public static readonly BindableProperty BackgroundOpacityProperty = BindableProperty.Create(nameof(BackgroundOpacity), typeof(double), typeof(Popup), 0.5);
+    public static readonly BindableProperty PopupMarginProperty = BindableProperty.Create(nameof(PopupMargin), typeof(Thickness), typeof(Popup), new Thickness(10));
+    //private static readonly double s_BaseOpacity = 0.5;
     private static readonly double s_BaseScale = 1;
     
     private double _opacity;
@@ -41,24 +43,43 @@ public partial class Popup : ContentView
         }
     }
 
+    public double BackgroundOpacity
+    {
+        get => (double)GetValue(BackgroundOpacityProperty);
+        set => SetValue(BackgroundOpacityProperty, value);
+    }
+
+    public Thickness PopupMargin
+    {
+        get => (Thickness)GetValue(PopupMarginProperty);
+        set => SetValue(PopupMarginProperty, value);
+    }
+
     public ICommand CloseCommand { get; private set; }
     
     public Popup()
     {
-        _opacity = s_BaseOpacity;
-        _scale = s_BaseScale;
+        _opacity = 0;
+        _scale = 0;
+        this.IsVisible = false;
         CloseCommand = new Command(Close);
         InitializeComponent();
     }
 
     public void Open()
     {
+        this.IsVisible = true;
         
+        var backgroundAnimation = new Animation(x => Opacity = x, 0, BackgroundOpacity);
+        backgroundAnimation.Commit(this, "PopupOpacity", 16, 500, Easing.CubicInOut);
+
+        var popupAnimation = new Animation(x => Scale = x, 0, s_BaseScale);
+        popupAnimation.Commit(this, "PopupScale", 16, 500, Easing.SpringOut);
     }
 
     public async void Close()
     {
-        var animation = new Animation(x => Opacity = x, s_BaseOpacity, 0);
+        var animation = new Animation(x => Opacity = x, BackgroundOpacity, 0);
         animation.Commit(this, "OverlayHide", 16, 500, Easing.CubicInOut);
         
         var popupAnimation = new Animation(x => Scale = x, s_BaseScale, 0);

@@ -28,11 +28,14 @@
             <Grid ColumnDefinitions="*, 50" ColumnSpacing="10">
 
                 <Button Grid.Column="0" Text="New List" Command="{Binding CreateNewCommand}" />
-                <Button Grid.Column="1" Text="&#xf013;" FontFamily="FontAwSolid" />
+                <Button Grid.Column="1" Text="&#xf013;" FontFamily="FontAwSolid" Clicked="OnSettingsButtonClicked" />
             </Grid>
         </controls:ControlBar>
         
-        <!--<controls:SettingsPopup Grid.Row="0" Grid.RowSpan="2" />-->
+        <controls:SettingsPopup x:Name="SettingsPopup" 
+                                Checklists="{Binding Checklists}"
+                                Grid.Row="0" 
+                                Grid.RowSpan="2" />
     </Grid>
 
 </ContentPage>

@@ -3,19 +3,40 @@
 <controls:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:ChecklistApp.Controls"
+             xmlns:viewmodel="clr-namespace:ChecklistApp.ViewModel"
+             x:Name="settings"
              x:Class="ChecklistApp.Controls.SettingsPopup">
     <controls:Popup.Content>
-        <!--<Label Text="Hello?" />-->
-        <VerticalStackLayout Padding="10">
-            <Grid ColumnDefinitions="50, *" 
+        <Grid RowDefinitions="*, 60"
+              BindingContext="{x:Reference settings}">
+            <VerticalStackLayout Padding="10">
+                <Label Text="Test" />
+                
+            </VerticalStackLayout>
+            <Grid Grid.Row="1" 
+                  ColumnDefinitions="50, *" 
                   ColumnSpacing="10"
-                  HeightRequest="50">
+                  Padding="10,0,10,10">
                 <Button WidthRequest="50"
+                        Text="&#xf060;"
+                        FontFamily="FontAwSolid"
                         Clicked="CloseButtonClicked" />
                 <Button Grid.Column="1"
-                        Text="Export Checklists"/>
+                        Text="Export Checklists"
+                        Clicked="ExportChecklistsButtonClicked"/>
             </Grid>
-        </VerticalStackLayout>
+            <controls:Popup Grid.Row="0"
+                            Grid.RowSpan="2"
+                            x:Name="ChecklistExportPopup">
+                <CollectionView ItemsSource="{Binding Checklists}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="viewmodel:ChecklistCardViewModel">
+                            <Label Text="{Binding Name}" />
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </controls:Popup>
+        </Grid>
     </controls:Popup.Content>
     
 </controls:Popup>

@@ -6,7 +6,8 @@
              x:Class="ChecklistApp.Controls.Popup">
     <ContentView.ControlTemplate>
         <ControlTemplate>
-            <Grid BindingContext="{x:Reference this}">
+            <Grid BindingContext="{x:Reference this}"
+                  IsClippedToBounds="False">
                 <Border x:Name="overlay"
                         BackgroundColor="Black"
                         Opacity="{Binding Opacity}">
@@ -18,7 +19,7 @@
                             AlignContent="Stretch"
                             JustifyContent="Center">
                     <Border x:Name="popup"
-                            Margin="10"
+                            Margin="{Binding PopupMargin}"
                             Scale="{Binding Scale}"
                             BackgroundColor="{StaticResource Background}"
                             StrokeShape="RoundRectangle 8,8,8,8">
