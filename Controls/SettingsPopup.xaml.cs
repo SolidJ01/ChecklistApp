@@ -12,19 +12,7 @@ namespace ChecklistApp.Controls;
 
 public partial class SettingsPopup : Popup
 {
-    public static readonly BindableProperty ChecklistsProperty = BindableProperty.Create(nameof(Checklists), typeof(ObservableCollection<Checklist>), typeof(SettingsPopup));
-    public static readonly BindableProperty ExportChecklistsCommandProperty = BindableProperty.Create(nameof(ExportChecklists), typeof(ICommand), typeof(SettingsPopup));
-
-    public ObservableCollection<ChecklistCardViewModel> Checklists
-    {
-        get => (ObservableCollection<ChecklistCardViewModel>)GetValue(ChecklistsProperty);
-        set => SetValue(ChecklistsProperty, value);
-    }
-    public ICommand ExportChecklists
-    {
-        get => (ICommand)GetValue(ExportChecklistsCommandProperty);
-        set => SetValue(ExportChecklistsCommandProperty, value);
-    }
+    public event EventHandler ExportChecklistsClicked;
     
     public SettingsPopup()
     {
@@ -36,8 +24,8 @@ public partial class SettingsPopup : Popup
         Close();
     }
 
-    private void ExportChecklistsButtonClicked(object sender, EventArgs e)
+    private void ExportButtonClicked(object sender, EventArgs e)
     {
-        ChecklistExportPopup.Open();
+        ExportChecklistsClicked?.Invoke(sender, e);
     }
 }

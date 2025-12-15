@@ -23,19 +23,8 @@
                         Clicked="CloseButtonClicked" />
                 <Button Grid.Column="1"
                         Text="Export Checklists"
-                        Clicked="ExportChecklistsButtonClicked"/>
+                        Clicked="ExportButtonClicked"/>
             </Grid>
-            <controls:Popup Grid.Row="0"
-                            Grid.RowSpan="2"
-                            x:Name="ChecklistExportPopup">
-                <CollectionView ItemsSource="{Binding Checklists}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="viewmodel:ChecklistCardViewModel">
-                            <Label Text="{Binding Name}" />
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </controls:Popup>
         </Grid>
     </controls:Popup.Content>
     

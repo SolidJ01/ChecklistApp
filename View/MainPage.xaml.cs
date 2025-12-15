@@ -15,5 +15,10 @@ public partial class MainPage : ContentPage
 	{
 		SettingsPopup.Open();
 	}
+
+	private void OnExportChecklistsButtonClicked(object sender, EventArgs e)
+	{
+		ChecklistExportPopup.Open();
+	}
 }
 

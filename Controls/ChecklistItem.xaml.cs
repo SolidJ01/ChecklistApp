@@ -10,10 +10,14 @@ namespace ChecklistApp.Controls;
 
 public partial class ChecklistItem : ContentView
 {
-    public static BindableProperty ItemProperty = BindableProperty.Create(nameof(Item), typeof(Item), typeof(ChecklistItem), propertyChanged: ItemPropertyChanged);
+    //public static BindableProperty ItemProperty = BindableProperty.Create(nameof(Item), typeof(Item), typeof(ChecklistItem), propertyChanged: ItemPropertyChanged);
+    public static BindableProperty IdProperty = BindableProperty.Create(nameof(Id), typeof(int), typeof(ChecklistItem));
+    public static BindableProperty NameProperty = BindableProperty.Create(nameof(Name), typeof(string), typeof(ChecklistItem), propertyChanged: ItemPropertyChanged);
+    public static BindableProperty IsCheckedProperty = BindableProperty.Create(nameof(IsChecked), typeof(bool), typeof(ChecklistItem));
     public static BindableProperty ToggleCheckedCommandProperty = BindableProperty.Create(nameof(ToggleCheckedCommand), typeof(ICommand), typeof(ChecklistItem));
     public static BindableProperty DeleteItemCommandProperty = BindableProperty.Create(nameof(DeleteItemCommand), typeof(ICommand), typeof(ChecklistItem));
     public static BindableProperty SaveItemCommandProperty = BindableProperty.Create(nameof(SaveItemCommand), typeof(ICommand), typeof(ChecklistItem));
+    public static BindableProperty IsEditableProperty = BindableProperty.Create(nameof(IsEditable), typeof(bool), typeof(ChecklistItem), true);
     
     private static void ItemPropertyChanged(BindableObject bindable, object oldValue, object newValue)
     {
@@ -24,10 +28,28 @@ public partial class ChecklistItem : ContentView
     private bool _isEditing = false;
     private string _editedItemName = "";
     
-    public Item Item
+    // public Item Item
+    // {
+    //     get => (Item)GetValue(ItemProperty);
+    //     set => SetValue(ItemProperty, value);
+    // }
+
+    public int Id
     {
-        get => (Item)GetValue(ItemProperty);
-        set => SetValue(ItemProperty, value);
+        get => (int)GetValue(IdProperty);
+        set => SetValue(IdProperty, value);
+    }
+
+    public string Name
+    {
+        get => (string)GetValue(NameProperty);
+        set => SetValue(NameProperty, value);
+    }
+
+    public bool IsChecked
+    {
+        get => (bool)GetValue(IsCheckedProperty);
+        set => SetValue(IsCheckedProperty, value);
     }
 
     public ICommand ToggleCheckedCommand
@@ -46,6 +68,12 @@ public partial class ChecklistItem : ContentView
     {
         get => (ICommand)GetValue(SaveItemCommandProperty);
         set => SetValue(SaveItemCommandProperty, value);
+    }
+
+    public bool IsEditable
+    {
+        get => (bool)GetValue(IsEditableProperty);
+        set => SetValue(IsEditableProperty, value);
     }
     
     public bool IsEditing
@@ -77,22 +105,26 @@ public partial class ChecklistItem : ContentView
 
     public void OnItemPropertyChanged()
     {
-        EditedItemName = Item.Name;
+        //EditedItemName = Item.Name;
+        EditedItemName = Name;
     }
 
     private void ToggleIsEditing()
     {
+        if (!IsEditable)
+            return;
+        
         _isEditing = !_isEditing;
         OnPropertyChanged(nameof(IsEditing));
     }
     
     private void SaveChanges() 
     {
-        if (_editedItemName != Item.Name)
+        if (_editedItemName != Name)
         {
-            Item.Name = _editedItemName;
-            OnPropertyChanged(nameof(Item));
-            SaveItemCommand?.Execute(Item);
+            Name = _editedItemName;
+            OnPropertyChanged(nameof(Name));
+            SaveItemCommand?.Execute((Id, Name));
         }
         ToggleIsEditing();
     }
@@ -101,6 +133,6 @@ public partial class ChecklistItem : ContentView
     {
         _isEditing = false;
         OnPropertyChanged(nameof(IsEditing));
-        DeleteItemCommand?.Execute(Item);
+        DeleteItemCommand?.Execute(Id);
     }
 }

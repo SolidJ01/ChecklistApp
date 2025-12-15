@@ -69,6 +69,8 @@ namespace ChecklistApp.ViewModel
             }
         }
 
+        public bool Selected { get; set; } = false;
+
         #endregion
         public ChecklistCardViewModel(Checklist checklist)
         {

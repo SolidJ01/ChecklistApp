@@ -14,7 +14,7 @@
                 Background="{StaticResource ForegroundRed}" 
                 IsVisible="{Binding IsEditing}"
                 Command="{Binding ProperDeleteCommand}"
-                CommandParameter="{Binding Item}" />
+                CommandParameter="{Binding Id}" />
         <controls:RoundedEntry Text="{Binding EditedItemName, Mode=TwoWay}" 
                                Placeholder="Item Name"
                                IsVisible="{Binding IsEditing}"
@@ -36,10 +36,10 @@
             <Border.Style>
                 <Style TargetType="Border">
                     <Style.Triggers>
-                        <DataTrigger TargetType="Border" Binding="{Binding Item.IsChecked}" Value="true">
+                        <DataTrigger TargetType="Border" Binding="{Binding IsChecked}" Value="true">
                             <Setter Property="Background" Value="{StaticResource ForegroundDarkBrush}" />
                         </DataTrigger>
-                        <DataTrigger TargetType="Border" Binding="{Binding Item.IsChecked}" Value="false">
+                        <DataTrigger TargetType="Border" Binding="{Binding IsChecked}" Value="false">
                             <Setter Property="Background" Value="{StaticResource ForegroundBrush}" />
                         </DataTrigger>
                         <DataTrigger TargetType="Border" Binding="{Binding IsEditing}" Value="true">
@@ -61,15 +61,15 @@
                     <RowDefinition Height="50" />
                 </Grid.RowDefinitions>
                 <controls:RoundedCheckbox Grid.Column="0" 
-                                          IsChecked="{Binding Item.IsChecked, Mode=TwoWay}" 
+                                          IsChecked="{Binding IsChecked, Mode=TwoWay}" 
                                           Command="{Binding ToggleCheckedCommand}" 
-                                          CommandParameter="{Binding Item.Id}" 
+                                          CommandParameter="{Binding Id}" 
                                           TextColorChecked="{StaticResource TextDark}" 
                                           ClickablePadding="10" 
                                           FontSize="22" />
                 <Label Grid.Column="1" 
                        Margin="0" 
-                       Text="{Binding Item.Name}" 
+                       Text="{Binding Name}" 
                        FontSize="22" 
                        FontAttributes="Bold" 
                        TextColor="{StaticResource Text}" 

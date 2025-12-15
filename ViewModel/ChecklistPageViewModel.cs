@@ -55,8 +55,8 @@ namespace ChecklistApp.ViewModel
             OptionsCommand = new Command(Options);
             CreateNewCommand = new Command(CreateNew);
             ToggleItemCheckedCommand = new Command<int>(ToggleItemChecked);
-            SaveItemChangesCommand = new Command<Item>(SaveItemChanges);
-            DeleteItemCommand = new Command<Item>(DeleteItem);
+            SaveItemChangesCommand = new Command<(int, string)>(SaveItemChanges);
+            DeleteItemCommand = new Command<int>(DeleteItem);
         }
 
         #region Methods
@@ -103,16 +103,18 @@ namespace ChecklistApp.ViewModel
             }
         }
 
-        private void SaveItemChanges(Item item)
+        private void SaveItemChanges((int, string) data)
         {
-            _checklistContext.UpdateItem(_checklist.Items.FirstOrDefault(x => x.Id.Equals(item.Id)));
+            Item item = _checklist.Items.FirstOrDefault(x => x.Id.Equals(data.Item1));
+            item.Name = data.Item2;
+            _checklistContext.UpdateItem(item);
         }
 
-        private void DeleteItem(Item item)
+        private void DeleteItem(int id)
         {
-            var checklistItem = _checklist.Items.FirstOrDefault(x => x.Id.Equals(item.Id));
+            var checklistItem = _checklist.Items.FirstOrDefault(x => x.Id.Equals(id));
             _checklist.Items.Remove(checklistItem);
-            Items.Remove(item);
+            Items.Remove(Items.FirstOrDefault(x => x.Id.Equals(id)));
             
             ChecklistCardViewModel.Update(_checklist);
             // Checklist = new Checklist

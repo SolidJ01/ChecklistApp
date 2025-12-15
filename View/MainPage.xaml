@@ -33,9 +33,13 @@
         </controls:ControlBar>
         
         <controls:SettingsPopup x:Name="SettingsPopup" 
-                                Checklists="{Binding Checklists}"
+                                ExportChecklistsClicked="OnExportChecklistsButtonClicked"
                                 Grid.Row="0" 
                                 Grid.RowSpan="2" />
+        <controls:ChecklistExportPopup x:Name="ChecklistExportPopup"
+                                       Checklists="{Binding Checklists}"
+                                       Grid.Row="0"
+                                       Grid.RowSpan="2"/>
     </Grid>
 
 </ContentPage>

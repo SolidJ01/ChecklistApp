@@ -24,7 +24,9 @@
             </CollectionView.Header>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:Item">
-                    <controls:ChecklistItem Item="{Binding .}" 
+                    <controls:ChecklistItem Id="{Binding Id}"
+                                            Name="{Binding Name}"
+                                            IsChecked="{Binding IsChecked}"
                                             ToggleCheckedCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChecklistPageViewModel}}, Path=ToggleItemCheckedCommand}"
                                             DeleteItemCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChecklistPageViewModel}}, Path=DeleteItemCommand}"
                                             SaveItemCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChecklistPageViewModel}}, Path=SaveItemChangesCommand}"
