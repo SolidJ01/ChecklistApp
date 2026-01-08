@@ -84,4 +84,9 @@ public partial class ChecklistExportPopup : Popup
     {
         OnPropertyChanged(nameof(AllSelected));
     }
+
+    private void ExportButtonClicked(object sender, EventArgs e)
+    {
+        ExportCommand?.Execute(new Action(Close));
+    }
 }

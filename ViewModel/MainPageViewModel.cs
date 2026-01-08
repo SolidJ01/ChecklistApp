@@ -39,7 +39,7 @@ namespace ChecklistApp.ViewModel
 
             CreateNewCommand = new Command(CreateNew);
             GoToChecklistCommand = new Command<int>(GoToChecklist);
-            ExportChecklistsCommand = new Command(ExportChecklists);
+            ExportChecklistsCommand = new Command<Action>(ExportChecklists);
         }
 
         #region Methods
@@ -85,7 +85,7 @@ namespace ChecklistApp.ViewModel
             _navigationService.NavigateTo(NavigationService.NavigationTarget.Checklist, checklist);
         }
 
-        private void ExportChecklists()
+        private async void ExportChecklists(Action callback = null)
         {
             List<Checklist> checklists = [];
             foreach (var checklistViewModel in Checklists.Where(x => x.Selected))
@@ -99,7 +99,9 @@ namespace ChecklistApp.ViewModel
             }
             
             var stream = new MemoryStream(Encoding.Default.GetBytes(JsonSerializer.Serialize(checklists)));
-            _fileSaver.SaveAsync("checklists.json", stream);
+            await _fileSaver.SaveAsync("checklists.json", stream);
+            
+            callback?.Invoke();
         }
 
         #endregion

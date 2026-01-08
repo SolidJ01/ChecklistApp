@@ -45,7 +45,7 @@
                     Clicked="CloseButtonClicked" />
             <Button Grid.Column="1"
                     Text="Export Selected"
-                    Command="{Binding ExportCommand}" />
+                    Clicked="ExportButtonClicked"/>
         </Grid>
     </Grid>
 </controls:Popup>
