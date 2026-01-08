@@ -99,9 +99,10 @@ namespace ChecklistApp.ViewModel
             }
             
             var stream = new MemoryStream(Encoding.Default.GetBytes(JsonSerializer.Serialize(checklists)));
-            await _fileSaver.SaveAsync("checklists.json", stream);
+            var fileSaverResult = await _fileSaver.SaveAsync("checklists.json", stream);
             
-            callback?.Invoke();
+            if (fileSaverResult.IsSuccessful)
+                callback?.Invoke();
         }
 
         #endregion
