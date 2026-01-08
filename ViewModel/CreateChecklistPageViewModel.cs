@@ -69,23 +69,46 @@ namespace ChecklistApp.ViewModel
         {
             try
             {
-                PickOptions options = new PickOptions();
-                options.PickerTitle = "Select a .json file";
-                options.FileTypes = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
+                PickOptions options = new PickOptions
                 {
-                    { DevicePlatform.Android, ["application/json"] },
-                });
+                    PickerTitle = "Select a .json file",
+                    FileTypes = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
+                    {
+                        { DevicePlatform.Android, ["application/json"] },
+                    })
+                };
                 var result = await FilePicker.Default.PickAsync(options);
                 if (result != null)
                 {
                     var stream = await result.OpenReadAsync();
-                    Checklist checklist = JsonSerializer.Deserialize<Checklist>(stream);
-                    checklist.Id = 0;
-                    foreach (Item item in checklist.Items)
+                    try
                     {
-                        item.Id = 0;
+                        Checklist checklist = JsonSerializer.Deserialize<Checklist>(stream);
+                        checklist.Id = 0;
+                        foreach (Item item in checklist.Items)
+                        {
+                            item.Id = 0;
+                        }
+
+                        _checklistContext.CreateChecklist(checklist);
                     }
-                    _checklistContext.CreateChecklist(checklist);
+                    catch (JsonException e)
+                    {
+                        stream = await result.OpenReadAsync();
+                        
+                        List<Checklist> checklists = JsonSerializer.Deserialize<List<Checklist>>(stream);
+                        foreach (Checklist checklist in checklists)
+                        {
+                            checklist.Id = 0;
+                            foreach (Item item in checklist.Items)
+                            {
+                                item.Id = 0;
+                                item.Checklist = checklist;
+                            }
+                            _checklistContext.CreateChecklist(checklist);
+                        }
+                        //_checklistContext.CreateChecklists(checklists);
+                    }
                     Back();
                 }
             }

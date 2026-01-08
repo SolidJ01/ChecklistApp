@@ -3,11 +3,39 @@
 <controls:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:ChecklistApp.Controls"
+             xmlns:viewmodel="clr-namespace:ChecklistApp.ViewModel"
              x:Name="ChecklistExport"
              x:Class="ChecklistApp.Controls.ChecklistExportPopup">
     <Grid RowDefinitions="*, 60"
           BindingContext="{x:Reference ChecklistExport}">
-        <Label Text="Checklist Export" />
+        <CollectionView ItemsSource="{Binding Checklists}"
+                        Margin="10,10,10,0">
+            <CollectionView.Header>
+                <Grid ColumnDefinitions="50,*"
+                      HeightRequest="50"
+                      Margin="0,0,0,10">
+                    <controls:RoundedCheckbox ClickablePadding="10"
+                                              Command="{Binding ToggleAllCommand}"
+                                              IsChecked="{Binding AllSelected}"/>
+                    <Label Text="Select All"
+                           Grid.Column="1"
+                           FontSize="22"
+                           TextColor="{StaticResource Text}"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center"/>
+                </Grid>
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="viewmodel:SelectableChecklistCardViewModel">
+                    <controls:ChecklistItem IsChecked="{Binding Selected, Mode=TwoWay}"
+                                            ToggleCheckedCommand="{Binding Source={RelativeSource AncestorType={x:Type controls:ChecklistExportPopup}}, Path=UpdateAllSelectedCommand}"
+                                            Name="{Binding Name}"
+                                            IsEditable="False"
+                                            Margin="0,0,0,10" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            
+        </CollectionView>
         <Grid Grid.Row="1"
               ColumnDefinitions="50, *"
               ColumnSpacing="10"

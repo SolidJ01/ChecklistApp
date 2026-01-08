@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Maui.Storage;
 
 namespace ChecklistApp.ViewModel
 {
@@ -15,24 +17,29 @@ namespace ChecklistApp.ViewModel
     {
         private ChecklistContext _checklistContext;
         private NavigationService _navigationService;
+        private IFileSaver _fileSaver;
 
-        public ObservableCollection<ChecklistCardViewModel> Checklists { get; set; } = [];
+        public ObservableCollection<SelectableChecklistCardViewModel> Checklists { get; set; } = [];
 
         #region Commands
 
         public ICommand CreateNewCommand { get; set; }
 
         public ICommand GoToChecklistCommand { get; set; }
+        
+        public ICommand ExportChecklistsCommand { get; set; }
 
         #endregion
 
-        public MainPageViewModel(ChecklistContext checklistContext, NavigationService navigationService)
+        public MainPageViewModel(ChecklistContext checklistContext, NavigationService navigationService, IFileSaver  fileSaver)
         {
             _checklistContext = checklistContext;
             _navigationService = navigationService;
+            _fileSaver = fileSaver;
 
             CreateNewCommand = new Command(CreateNew);
             GoToChecklistCommand = new Command<int>(GoToChecklist);
+            ExportChecklistsCommand = new Command(ExportChecklists);
         }
 
         #region Methods
@@ -50,21 +57,21 @@ namespace ChecklistApp.ViewModel
             {
                 foreach (Checklist checklist in checklists)
                 {
-                    Checklists.Add(new ChecklistCardViewModel(checklist));
+                    Checklists.Add(new SelectableChecklistCardViewModel(checklist));
                 }
 
                 return;
             }
             
-            List<ChecklistCardViewModel> removedChecklists = Checklists.Where(x => !checklists.Any(y => y.Id == x.Id)).ToList();
+            List<SelectableChecklistCardViewModel> removedChecklists = Checklists.Where(x => !checklists.Any(y => y.Id == x.Id)).ToList();
             List<Checklist> addedChecklists = checklists.Where(x => !Checklists.Any(y => y.Id == x.Id)).ToList();
             // List<Checklist> editedChecklists = checklists.Where(x => Checklists.Any(y => y.Id == x.Id) 
             //                                                               && !Checklists.First(y => y.Id == x.Id).ModelEquals(x))
             //                                                               .ToList();
-            foreach (ChecklistCardViewModel checklist in removedChecklists)
+            foreach (SelectableChecklistCardViewModel checklist in removedChecklists)
                 Checklists.Remove(checklist);
             foreach (Checklist checklist in addedChecklists)
-                Checklists.Insert(checklists.IndexOf(checklist), new ChecklistCardViewModel(checklist));
+                Checklists.Insert(checklists.IndexOf(checklist), new SelectableChecklistCardViewModel(checklist));
             // foreach (Checklist checklist in editedChecklists)
             //     Checklists[Checklists.IndexOf(Checklists.First(x => x.Id == checklist.Id))].Update(checklist);
             foreach (ChecklistCardViewModel checklist in Checklists)
@@ -76,6 +83,23 @@ namespace ChecklistApp.ViewModel
         private void GoToChecklist(int checklist)
         {
             _navigationService.NavigateTo(NavigationService.NavigationTarget.Checklist, checklist);
+        }
+
+        private void ExportChecklists()
+        {
+            List<Checklist> checklists = [];
+            foreach (var checklistViewModel in Checklists.Where(x => x.Selected))
+            {
+                Checklist checklist = _checklistContext.GetChecklist(checklistViewModel.Id).Result;
+                foreach (var item in checklist.Items)
+                {
+                    item.Checklist = null;
+                }
+                checklists.Add(checklist);
+            }
+            
+            var stream = new MemoryStream(Encoding.Default.GetBytes(JsonSerializer.Serialize(checklists)));
+            _fileSaver.SaveAsync("checklists.json", stream);
         }
 
         #endregion

@@ -61,14 +61,16 @@ public partial class Popup : ContentView
     {
         _opacity = 0;
         _scale = 0;
-        this.IsVisible = false;
+        //this.IsVisible = false;
+        InputTransparent = true;
         CloseCommand = new Command(Close);
         InitializeComponent();
     }
 
     public void Open()
     {
-        this.IsVisible = true;
+        //this.IsVisible = true;
+        this.InputTransparent = false;
         
         var backgroundAnimation = new Animation(x => Opacity = x, 0, BackgroundOpacity);
         backgroundAnimation.Commit(this, "PopupOpacity", 16, 500, Easing.CubicInOut);
@@ -83,7 +85,7 @@ public partial class Popup : ContentView
         animation.Commit(this, "OverlayHide", 16, 500, Easing.CubicInOut);
         
         var popupAnimation = new Animation(x => Scale = x, s_BaseScale, 0);
-        popupAnimation.Commit(this, "PopupScale", 16, 500, Easing.SpringIn, (c, v) => { this.IsVisible = false; });
+        popupAnimation.Commit(this, "PopupScale", 16, 500, Easing.SpringIn, (c, v) => { this.InputTransparent = true; });
         
     }
 

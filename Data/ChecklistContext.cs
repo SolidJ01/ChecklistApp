@@ -48,6 +48,12 @@ namespace ChecklistApp.Data
             await SaveChangesAsync();
         }
 
+        public async void CreateChecklists(List<Checklist> checklists)
+        {
+            await Checklists.AddRangeAsync(checklists);
+            await SaveChangesAsync();
+        }
+
         public async void DeleteChecklist(Checklist checklist)
         {
             if (!ChecklistExists(checklist))

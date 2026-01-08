@@ -38,6 +38,7 @@
                                 Grid.RowSpan="2" />
         <controls:ChecklistExportPopup x:Name="ChecklistExportPopup"
                                        Checklists="{Binding Checklists}"
+                                       ExportCommand="{Binding ExportChecklistsCommand}"
                                        Grid.Row="0"
                                        Grid.RowSpan="2"/>
     </Grid>

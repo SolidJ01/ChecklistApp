@@ -100,5 +100,6 @@ public partial class RoundedCheckbox : ContentView
     {
         IsChecked = !IsChecked;
         OnPropertyChanged(nameof(BaseFrame.Width));
+        Command?.Execute(CommandParameter);
     }
 }

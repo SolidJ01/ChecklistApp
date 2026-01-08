@@ -86,7 +86,7 @@
             
         </Frame>
         <Frame ZIndex="3" BackgroundColor="Transparent" Padding="0">
-            <Button Opacity="0" Clicked="Button_Clicked" Command="{Binding Command}" CommandParameter="{Binding CommandParameter}" />
+            <Button Opacity="0" Clicked="Button_Clicked" />
         </Frame>
     </Grid>
     <!--<Button
