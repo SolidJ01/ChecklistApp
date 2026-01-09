@@ -27,8 +27,9 @@ public partial class ChecklistProgressBar : ContentView
 
 	public void OnProgressChanged()
 	{
+		double start = ProgressContainer.GetLayoutBounds(ProgressIndicator).Width;
 		var animation = new Animation(v => ProgressContainer.SetLayoutBounds(ProgressIndicator, new Rect(0, 0, v, 1)),
-			priorProgress, Progress);
+			start, Progress);
 		animation.Commit(this, "Progress", 16, 750, Easing.CubicInOut, (v, c) => priorProgress = Progress);
 	}
 }
