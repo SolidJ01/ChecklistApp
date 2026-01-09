@@ -26,7 +26,7 @@ namespace ChecklistApp.ViewModel
 
         public ChecklistCardViewModel ChecklistCardViewModel { get; set; }
 
-        public ObservableCollection<Item> Items { get; set; } = [];
+        public ObservableCollection<ItemViewModel> Items { get; set; } = [];
 
         #endregion
 
@@ -79,34 +79,34 @@ namespace ChecklistApp.ViewModel
         private void ToggleItemChecked(int id)
         {
             Item item = _checklist.Items.FirstOrDefault(x => x.Id.Equals(id));
-            if (item != null)
-            {
-                Items.Remove(Items.FirstOrDefault(x => x.Id.Equals(id)));
-                item.IsChecked = !item.IsChecked;
-                _checklist.Items = _checklist.Items.OrderBy(x => x.IsChecked).ThenBy(x => x.Name).ToList();
-                Items.Insert(_checklist.Items.IndexOf(item), new Item { Id = item.Id, IsChecked = item.IsChecked,  Name = item.Name , Checklist = _checklist });
+            ItemViewModel viewModel = Items.FirstOrDefault(x => x.Id.Equals(id));
+            if (item is null || viewModel is null)
+                return;
+            
+            //viewModel.IsChecked = !viewModel.IsChecked;
+            _checklist.Items = _checklist.Items.OrderBy(x => x.IsChecked).ThenBy(x => x.Name).ToList();
+            Items.Remove(viewModel);
+            Items.Insert(_checklist.Items.IndexOf(item), new ItemViewModel(item));
 
-                ChecklistCardViewModel.Update(_checklist);
-                // Checklist = new Checklist
-                // {
-                //     Id = _checklist.Id,
-                //     Name = _checklist.Name,
-                //     Color = _checklist.Color,
-                //     Deadline = _checklist.Deadline,
-                //     Items = _checklist.Items,
-                //     UseDeadline = _checklist.UseDeadline
-                // };
-                // OnPropertyChanged(nameof(Checklist));
-                
-                _checklistContext.UpdateItem(item);
-                //ConstructItemList();
-            }
+            ChecklistCardViewModel.Update(_checklist);
+            
+            _checklistContext.UpdateItem(item);
         }
 
         private void SaveItemChanges((int, string) data)
         {
             Item item = _checklist.Items.FirstOrDefault(x => x.Id.Equals(data.Item1));
             item.Name = data.Item2;
+            
+            _checklist.Items = _checklist.Items.OrderBy(x => x.IsChecked).ThenBy(x => x.Name).ToList();
+            int newIndex = _checklist.Items.IndexOf(item);
+            if (!newIndex.Equals(Items.IndexOf(Items.FirstOrDefault(x => x.Id.Equals(item.Id)))))
+            {
+                ItemViewModel viewModel = Items.FirstOrDefault(x => x.Id.Equals(item.Id));
+                Items.Remove(viewModel);
+                Items.Insert(newIndex, viewModel);
+            }
+            
             _checklistContext.UpdateItem(item);
         }
 
@@ -117,16 +117,6 @@ namespace ChecklistApp.ViewModel
             Items.Remove(Items.FirstOrDefault(x => x.Id.Equals(id)));
             
             ChecklistCardViewModel.Update(_checklist);
-            // Checklist = new Checklist
-            // {
-            //     Id = _checklist.Id,
-            //     Name = _checklist.Name,
-            //     Color = _checklist.Color,
-            //     Deadline = _checklist.Deadline,
-            //     Items = _checklist.Items,
-            //     UseDeadline = _checklist.UseDeadline
-            // };
-            // OnPropertyChanged(nameof(Checklist));
             
             _checklistContext.DeleteItem(checklistItem);
         }
@@ -143,47 +133,19 @@ namespace ChecklistApp.ViewModel
             {
                 ChecklistCardViewModel.Update(_checklist);
             }
-            /*if (Checklist is null)
-            {
-                Checklist = _checklist;
-                OnPropertyChanged(nameof(Checklist));
-            }
-            else
-            {
-                Checklist = new Checklist
-                {
-                    Id = _checklist.Id,
-                    Name = _checklist.Name,
-                    Color = _checklist.Color,
-                    Deadline = _checklist.Deadline,
-                    Items = _checklist.Items,
-                    UseDeadline = _checklist.UseDeadline
-                };
-                OnPropertyChanged(nameof(Checklist));
-            }*/
             foreach (var item in _checklist.Items)
                 item.Checklist = _checklist;
             
             _checklist.Items = _checklist.Items.OrderBy(x => x.IsChecked).ThenBy(x => x.Name).ToList();
 
-            // if (Items.Count == 0)
-            // {
-            //     await Task.Run(() =>
-            //     {
-            //         Items = new ObservableCollection<Item>(_checklist.Items);
-            //         OnPropertyChanged(nameof(Items));
-            //     });
-            //     return;
-            // }
-
             List<Item> addedItems = _checklist.Items.Where(x => !Items.Any(y => y.Id == x.Id)).ToList();
-            List<Item> removedItems = Items.Where(x => !_checklist.Items.Any(y => y.Id == x.Id)).ToList();
+            List<ItemViewModel> removedItems = Items.Where(x => !_checklist.Items.Any(y => y.Id == x.Id)).ToList();
 
             await Task.Run(() =>
             {
                 foreach (Item item in addedItems)
-                    Items.Insert(_checklist.Items.IndexOf(item), item);
-                foreach (Item item in removedItems)
+                    Items.Insert(_checklist.Items.IndexOf(item), new ItemViewModel(item));
+                foreach (ItemViewModel item in removedItems)
                     Items.Remove(item);
             });
         }
