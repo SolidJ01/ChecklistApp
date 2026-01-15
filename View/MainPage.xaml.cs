@@ -20,5 +20,10 @@ public partial class MainPage : ContentPage
 	{
 		ChecklistExportPopup.Open();
 	}
+
+	private void NewButtonClicked(object sender, EventArgs e)
+	{
+		CreateChecklistPopup.Open();
+	}
 }
 

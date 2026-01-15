@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<controls:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ChecklistApp.Controls"
+             xmlns:viewmodel="clr-namespace:ChecklistApp.ViewModel"
+             x:Name="NewChecklist"
+             x:Class="ChecklistApp.Controls.CreateChecklistPopup">
+    <Grid RowDefinitions="*,130"
+          BindingContext="{x:Reference NewChecklist}">
+        <ScrollView Padding="10,20">
+            <controls:ChecklistMetaEditor  />
+        </ScrollView>
+        
+        <controls:ControlBar Grid.Row="1">
+            <Grid RowDefinitions="50,50" 
+                  ColumnDefinitions="50,*" 
+                  RowSpacing="10" 
+                  ColumnSpacing="10">
+                <Button Grid.ColumnSpan="2" 
+                        Text="Import from File" 
+                        Clicked="ImportButtonClicked" />
+                <Button Grid.Column="0" 
+                        Grid.Row="1" 
+                        Text="&#xf060;" 
+                        FontFamily="FontAwSolid" 
+                        Clicked="CloseButtonClicked" />
+                <Button Grid.Column="1" 
+                        Grid.Row="1" 
+                        Text="Save" 
+                        Clicked="SaveButtonClicked"/>
+            </Grid>
+        </controls:ControlBar>
+    </Grid>
+</controls:Popup>

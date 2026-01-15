@@ -1,4 +1,5 @@
-﻿using ChecklistApp.Data;
+﻿using ChecklistApp.Controls;
+using ChecklistApp.Data;
 using ChecklistApp.Services;
 using ChecklistApp.View;
 using ChecklistApp.ViewModel;
@@ -33,6 +34,7 @@ public static class MauiProgram
 
 		builder.Services.AddTransient<CreateChecklistPageViewModel>();
 		builder.Services.AddTransient<CreateChecklistPage>();
+		builder.Services.AddTransient<CreateChecklistPopup>();
 
 		builder.Services.AddTransient<ChecklistPageViewModel>();
 		builder.Services.AddTransient<ChecklistPage>();

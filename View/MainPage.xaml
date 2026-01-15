@@ -27,7 +27,7 @@
         <controls:ControlBar Grid.Row="1">
             <Grid ColumnDefinitions="*, 50" ColumnSpacing="10">
 
-                <Button Grid.Column="0" Text="New List" Command="{Binding CreateNewCommand}" />
+                <Button Grid.Column="0" Text="New List" Clicked="NewButtonClicked" />
                 <Button Grid.Column="1" Text="&#xf013;" FontFamily="FontAwSolid" Clicked="OnSettingsButtonClicked" />
             </Grid>
         </controls:ControlBar>
@@ -41,6 +41,9 @@
                                        ExportCommand="{Binding ExportChecklistsCommand}"
                                        Grid.Row="0"
                                        Grid.RowSpan="2"/>
+        <controls:CreateChecklistPopup x:Name="CreateChecklistPopup"
+                                       Grid.Row="0"
+                                       Grid.RowSpan="2" />
     </Grid>
 
 </ContentPage>
