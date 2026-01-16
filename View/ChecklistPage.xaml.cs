@@ -10,4 +10,9 @@ public partial class ChecklistPage : ContentPage
 		BindingContext = viewModel;
 		NavigatedTo += viewModel.RetrieveChecklist;
 	}
+
+	private void OptionsButtonClicked(object sender, EventArgs e)
+	{
+		OptionsPopup.Open();
+	}
 }

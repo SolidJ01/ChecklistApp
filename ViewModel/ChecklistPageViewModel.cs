@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Maui.Storage;
 
 namespace ChecklistApp.ViewModel
 {
@@ -16,6 +18,7 @@ namespace ChecklistApp.ViewModel
     {
         private ChecklistContext _checklistContext;
         private NavigationService _navigationService;
+        private IFileSaver _fileSaver;
         private Checklist _checklist;
 
         #region Properties
@@ -27,6 +30,8 @@ namespace ChecklistApp.ViewModel
         public ChecklistCardViewModel ChecklistCardViewModel { get; set; }
 
         public ObservableCollection<ItemViewModel> Items { get; set; } = [];
+
+        public Checklist ChecklistEditEntry { get; set; } = new() { Deadline = DateTime.Now };
 
         #endregion
 
@@ -43,13 +48,22 @@ namespace ChecklistApp.ViewModel
         public ICommand SaveItemChangesCommand { get; set; }
         
         public ICommand DeleteItemCommand { get; set; }
+        
+        public ICommand ExportChecklistCommand { get; set; }
+        
+        public ICommand CancelChecklistEditCommand { get; set; }
+        
+        public ICommand SaveChecklistEditCommand { get; set; }
+        
+        public ICommand DeleteChecklistCommand { get; set; }
 
         #endregion
 
-        public ChecklistPageViewModel(ChecklistContext checklistContext, NavigationService navigationService)
+        public ChecklistPageViewModel(ChecklistContext checklistContext, NavigationService navigationService, IFileSaver fileSaver)
         {
             _checklistContext = checklistContext;
             _navigationService = navigationService;
+            _fileSaver = fileSaver;
 
             BackCommand = new Command(Back);
             OptionsCommand = new Command(Options);
@@ -57,6 +71,11 @@ namespace ChecklistApp.ViewModel
             ToggleItemCheckedCommand = new Command<int>(ToggleItemChecked);
             SaveItemChangesCommand = new Command<(int, string)>(SaveItemChanges);
             DeleteItemCommand = new Command<int>(DeleteItem);
+            
+            ExportChecklistCommand = new Command(ExportChecklist);
+            CancelChecklistEditCommand = new Command(CancelChecklistEdit);
+            SaveChecklistEditCommand = new Command<Action>(SaveChecklist);
+            DeleteChecklistCommand = new Command(DeleteChecklist);
         }
 
         #region Methods
@@ -135,6 +154,14 @@ namespace ChecklistApp.ViewModel
             }
             foreach (var item in _checklist.Items)
                 item.Checklist = _checklist;
+            ChecklistEditEntry = new()
+            {
+                Name = _checklist.Name,
+                UseDeadline = _checklist.UseDeadline,
+                Deadline = _checklist.Deadline,
+                Color = _checklist.Color
+            };
+            OnPropertyChanged(nameof(ChecklistEditEntry));
             
             _checklist.Items = _checklist.Items.OrderBy(x => x.IsChecked).ThenBy(x => x.Name).ToList();
 
@@ -148,6 +175,50 @@ namespace ChecklistApp.ViewModel
                 foreach (ItemViewModel item in removedItems)
                     Items.Remove(item);
             });
+        }
+
+        private void ExportChecklist()
+        {
+            foreach (var item in _checklist.Items)
+            {
+                item.Checklist = null;
+            }
+            var stream = new MemoryStream(Encoding.Default.GetBytes(JsonSerializer.Serialize(_checklist)));
+            _fileSaver.SaveAsync($"{_checklist.Name}.json", stream);
+            foreach (var item in _checklist.Items)
+            {
+                item.Checklist = _checklist;
+            }
+        }
+
+        private void CancelChecklistEdit()
+        {
+            ChecklistEditEntry = new()
+            {
+                Name = _checklist.Name,
+                UseDeadline = _checklist.UseDeadline,
+                Deadline = _checklist.Deadline,
+                Color = _checklist.Color
+            };
+            OnPropertyChanged(nameof(ChecklistEditEntry));
+        }
+
+        private void SaveChecklist(Action callback = null)
+        {
+            _checklist.Name = ChecklistEditEntry.Name;
+            _checklist.UseDeadline = ChecklistEditEntry.UseDeadline;
+            _checklist.Deadline = ChecklistEditEntry.Deadline;
+            _checklist.Color = ChecklistEditEntry.Color;
+            _checklistContext.UpdateChecklist(_checklist);
+            
+            RetrieveChecklist(this, EventArgs.Empty);
+            callback?.Invoke();
+        }
+
+        private void DeleteChecklist()
+        {
+            _checklistContext.DeleteChecklist(_checklist);
+            _navigationService.NavigateTo(NavigationService.NavigationTarget.Home);
         }
 
         #endregion

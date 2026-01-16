@@ -74,11 +74,11 @@ public partial class CreateChecklistPopup : Popup
 
     private void ImportButtonClicked(object sender, EventArgs e)
     {
-        ImportCommand.Execute(new Action<Action>(Close));
+        ImportCommand.Execute(() => Close());
     }
 
     private void SaveButtonClicked(object sender, EventArgs e)
     {
-        SaveCommand.Execute(new Action<Action>(Close));
+        SaveCommand.Execute(() => Close());
     }
 }

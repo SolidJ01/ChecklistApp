@@ -5,6 +5,7 @@
              xmlns:controls="clr-namespace:ChecklistApp.Controls"
              xmlns:viewmodel="clr-namespace:ChecklistApp.ViewModel"
              x:Name="ChecklistExport"
+             PopupMargin="15,25"
              x:Class="ChecklistApp.Controls.ChecklistExportPopup">
     <Grid RowDefinitions="*, 60"
           BindingContext="{x:Reference ChecklistExport}">

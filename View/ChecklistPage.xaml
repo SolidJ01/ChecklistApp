@@ -44,8 +44,20 @@
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" FontFamily="FontAwSolid" Text="&#xf060;" Command="{Binding BackCommand}" />
                 <Button Grid.Column="1" Text="Add New" Margin="10,0" Command="{Binding CreateNewCommand}" />
-                <Button Grid.Column="2" FontFamily="FontAwSolid" Text="&#xf013;" Command="{Binding OptionsCommand}" />
+                <Button Grid.Column="2" FontFamily="FontAwSolid" Text="&#xf013;" Clicked="OptionsButtonClicked" />
             </Grid>
         </controls:ControlBar>
+        
+        <controls:ChecklistOptionsPopup x:Name="OptionsPopup"
+                                        Name="{Binding ChecklistEditEntry.Name}"
+                                        UseDeadline="{Binding ChecklistEditEntry.UseDeadline}"
+                                        Deadline="{Binding ChecklistEditEntry.Deadline}"
+                                        ChecklistColor="{Binding ChecklistEditEntry.Color}"
+                                        DeleteCommand="{Binding DeleteChecklistCommand}"
+                                        ExportCommand="{Binding ExportChecklistCommand}"
+                                        CancelCommand="{Binding CancelChecklistEditCommand}"
+                                        SaveCommand="{Binding SaveChecklistEditCommand}"
+                                        Grid.Row="0"
+                                        Grid.RowSpan="2" />
     </Grid>
 </ContentPage>
