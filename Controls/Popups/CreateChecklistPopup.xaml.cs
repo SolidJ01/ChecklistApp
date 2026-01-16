@@ -68,17 +68,17 @@ public partial class CreateChecklistPopup : Popup
 
     private void CloseButtonClicked(object sender, EventArgs e)
     {
-        CancelCommand.Execute(null);
-        Close();
+        //CancelCommand.Execute(null);
+        Close(new Action(() => CancelCommand.Execute(null)));
     }
 
     private void ImportButtonClicked(object sender, EventArgs e)
     {
-        ImportCommand.Execute(new Action(Close));
+        ImportCommand.Execute(new Action<Action>(Close));
     }
 
     private void SaveButtonClicked(object sender, EventArgs e)
     {
-        SaveCommand.Execute(new Action(Close));
+        SaveCommand.Execute(new Action<Action>(Close));
     }
 }

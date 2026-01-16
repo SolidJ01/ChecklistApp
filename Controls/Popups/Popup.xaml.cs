@@ -10,7 +10,7 @@ namespace ChecklistApp.Controls;
 public partial class Popup : ContentView
 {
     public static readonly BindableProperty BackgroundOpacityProperty = BindableProperty.Create(nameof(BackgroundOpacity), typeof(double), typeof(Popup), 0.5);
-    public static readonly BindableProperty PopupMarginProperty = BindableProperty.Create(nameof(PopupMargin), typeof(Thickness), typeof(Popup), new Thickness(10));
+    public static readonly BindableProperty PopupMarginProperty = BindableProperty.Create(nameof(PopupMargin), typeof(Thickness), typeof(Popup), new Thickness(10, 25));
     //private static readonly double s_BaseOpacity = 0.5;
     private static readonly double s_BaseScale = 1;
     private static readonly uint s_AnimRate = 16U;
@@ -64,7 +64,7 @@ public partial class Popup : ContentView
         _scale = 0;
         //this.IsVisible = false;
         InputTransparent = true;
-        CloseCommand = new Command(Close);
+        CloseCommand = new Command<Action>(Close);
         InitializeComponent();
     }
 
@@ -80,13 +80,13 @@ public partial class Popup : ContentView
         popupAnimation.Commit(this, "PopupScale", s_AnimRate, 500, Easing.SpringOut);
     }
 
-    public async void Close()
+    public async void Close(Action callback = null)
     {
         var animation = new Animation(x => Opacity = x, BackgroundOpacity, 0);
         animation.Commit(this, "OverlayHide", s_AnimRate, 500, Easing.CubicInOut);
         
         var popupAnimation = new Animation(x => Scale = x, s_BaseScale, 0);
-        popupAnimation.Commit(this, "PopupScale", s_AnimRate, 500, Easing.SpringIn, (c, v) => { this.InputTransparent = true; });
+        popupAnimation.Commit(this, "PopupScale", s_AnimRate, 500, Easing.SpringIn, (c, v) => { this.InputTransparent = true; callback?.Invoke(); });
         
     }
 

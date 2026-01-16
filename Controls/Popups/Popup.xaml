@@ -22,7 +22,7 @@
                             Margin="{Binding PopupMargin}"
                             Scale="{Binding Scale}"
                             BackgroundColor="{StaticResource Background}"
-                            StrokeShape="RoundRectangle 8,8,8,8">
+                            StrokeShape="RoundRectangle 16">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer />
                         </Border.GestureRecognizers>

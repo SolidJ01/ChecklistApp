@@ -9,10 +9,12 @@
     <controls:Popup.Content>
         <Grid RowDefinitions="*, 60"
               BindingContext="{x:Reference settings}">
-            <VerticalStackLayout Padding="10">
-                <Label Text="Test" />
-                
-            </VerticalStackLayout>
+            <ScrollView>
+                <VerticalStackLayout Padding="10">
+                    <Label Text="Test" />
+                    
+                </VerticalStackLayout>
+            </ScrollView>
             <Grid Grid.Row="1" 
                   ColumnDefinitions="50, *" 
                   ColumnSpacing="10"

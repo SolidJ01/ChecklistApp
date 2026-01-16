@@ -87,6 +87,6 @@ public partial class ChecklistExportPopup : Popup
 
     private void ExportButtonClicked(object sender, EventArgs e)
     {
-        ExportCommand?.Execute(new Action(Close));
+        ExportCommand?.Execute(new Action<Action>(Close));
     }
 }
