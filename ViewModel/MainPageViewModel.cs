@@ -112,6 +112,9 @@ namespace ChecklistApp.ViewModel
 
         private void SaveNewChecklist(Action callback = null)
         {
+            if (ChecklistEntry.Name is null)
+                return;
+            
             ChecklistEntry.Name = StringHelper.FormatItemName(ChecklistEntry.Name);
             _checklistContext.CreateChecklist(ChecklistEntry);
             ReloadList(this, new());

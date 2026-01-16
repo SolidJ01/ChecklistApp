@@ -8,11 +8,13 @@
              x:Class="ChecklistApp.Controls.CreateChecklistPopup">
     <Grid RowDefinitions="*,130"
           BindingContext="{x:Reference NewChecklist}">
-        <controls:ChecklistMetaEditor Margin="10"
-                                      Name="{Binding Name}"
-                                      UseDeadline="{Binding UseDeadline}"
-                                      Deadline="{Binding Deadline}"
-                                      ChecklistColor="{Binding ChecklistColor, Mode=TwoWay}" />
+        <ScrollView>
+            <controls:ChecklistMetaEditor Margin="10"
+                                          Name="{Binding Name}"
+                                          UseDeadline="{Binding UseDeadline}"
+                                          Deadline="{Binding Deadline}"
+                                          ChecklistColor="{Binding ChecklistColor, Mode=TwoWay}" />
+        </ScrollView>
         
         <controls:ControlBar Grid.Row="1">
             <Grid RowDefinitions="50,50" 
