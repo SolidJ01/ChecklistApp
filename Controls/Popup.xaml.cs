@@ -13,6 +13,7 @@ public partial class Popup : ContentView
     public static readonly BindableProperty PopupMarginProperty = BindableProperty.Create(nameof(PopupMargin), typeof(Thickness), typeof(Popup), new Thickness(10));
     //private static readonly double s_BaseOpacity = 0.5;
     private static readonly double s_BaseScale = 1;
+    private static readonly uint s_AnimRate = 16U;
     
     private double _opacity;
     private double _scale;
@@ -73,19 +74,19 @@ public partial class Popup : ContentView
         this.InputTransparent = false;
         
         var backgroundAnimation = new Animation(x => Opacity = x, 0, BackgroundOpacity);
-        backgroundAnimation.Commit(this, "PopupOpacity", 16, 500, Easing.CubicInOut);
+        backgroundAnimation.Commit(this, "PopupOpacity", s_AnimRate, 500, Easing.CubicInOut);
 
         var popupAnimation = new Animation(x => Scale = x, 0, s_BaseScale);
-        popupAnimation.Commit(this, "PopupScale", 16, 500, Easing.SpringOut);
+        popupAnimation.Commit(this, "PopupScale", s_AnimRate, 500, Easing.SpringOut);
     }
 
     public async void Close()
     {
         var animation = new Animation(x => Opacity = x, BackgroundOpacity, 0);
-        animation.Commit(this, "OverlayHide", 16, 500, Easing.CubicInOut);
+        animation.Commit(this, "OverlayHide", s_AnimRate, 500, Easing.CubicInOut);
         
         var popupAnimation = new Animation(x => Scale = x, s_BaseScale, 0);
-        popupAnimation.Commit(this, "PopupScale", 16, 500, Easing.SpringIn, (c, v) => { this.InputTransparent = true; });
+        popupAnimation.Commit(this, "PopupScale", s_AnimRate, 500, Easing.SpringIn, (c, v) => { this.InputTransparent = true; });
         
     }
 

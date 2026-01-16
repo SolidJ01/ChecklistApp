@@ -8,8 +8,8 @@
                    Background="{StaticResource BackgroundBrush}">
                 <Border.Shadow>
                     <Shadow Brush="{StaticResource BackgroundBrush}"
-                            Offset="0, -10"
-                            Radius="8"
+                            Offset="0, -6"
+                            Radius="10"
                             Opacity="1" />
                 </Border.Shadow>
                 <ContentPresenter />
