@@ -1,11 +1,10 @@
-﻿using ChecklistApp.ViewModel;
+﻿using ChecklistApp.View;
+using ChecklistApp.ViewModel;
 
 namespace ChecklistApp;
 
-public partial class MainPage : ContentPage
+public partial class MainPage : PopupPage
 {
-	private Stack<Action> _backButtonActions = [];
-	
 	public MainPage(MainPageViewModel viewModel)
 	{
 		InitializeComponent();
@@ -15,31 +14,17 @@ public partial class MainPage : ContentPage
 
 	private void OnSettingsButtonClicked(object sender, EventArgs e)
 	{
-		SettingsPopup.Open(RegisterBackButtonAction);
+		SettingsPopup.Open(RegisterBackButtonAction, DeregisterBackButtonAction);
 	}
 
 	private void OnExportChecklistsButtonClicked(object sender, EventArgs e)
 	{
-		ChecklistExportPopup.Open(RegisterBackButtonAction);
+		ChecklistExportPopup.Open(RegisterBackButtonAction, DeregisterBackButtonAction);
 	}
 
 	private void NewButtonClicked(object sender, EventArgs e)
 	{
-		CreateChecklistPopup.Open(RegisterBackButtonAction);
-	}
-
-	private void RegisterBackButtonAction(Action action)
-	{
-		_backButtonActions.Push(action);
-	}
-
-	protected override bool OnBackButtonPressed()
-	{
-		if (_backButtonActions.Count.Equals(0))
-			return false;
-		
-		_backButtonActions.Pop().Invoke();
-		return true;
+		CreateChecklistPopup.Open(RegisterBackButtonAction, DeregisterBackButtonAction);
 	}
 }
 

@@ -72,10 +72,10 @@ public partial class ChecklistOptionsPopup : Popup
         InitializeComponent();
     }
 
-    public override void Open(Action<Action> backButtonCallback = null)
+    public override void Open(Action<Action> backButtonRegisterCallback, Action<Action> backButtonDeregisterCallback)
     {
-        backButtonCallback?.Invoke(Cancel);
-        base.Open(backButtonCallback);
+        backButtonRegisterCallback?.Invoke(Cancel);
+        base.Open(backButtonRegisterCallback, backButtonDeregisterCallback);
     }
 
     private void Cancel()
@@ -83,8 +83,9 @@ public partial class ChecklistOptionsPopup : Popup
         Close(() => CancelCommand.Execute(null));
     }
 
-    private void BackButtonClicked(object sender, EventArgs e)
+    protected override void CloseButtonClicked(object sender, EventArgs e)
     {
+        _backButtonDeregisterCallback?.Invoke(Cancel);
         Cancel();
     }
 

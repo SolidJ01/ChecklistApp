@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<view:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:ChecklistApp.Controls"
              xmlns:model="clr-namespace:ChecklistApp.Model"
+             xmlns:view="clr-namespace:ChecklistApp.View"
              xmlns:viewmodel="clr-namespace:ChecklistApp.ViewModel"
              x:Class="ChecklistApp.MainPage"
              x:DataType="viewmodel:MainPageViewModel">
@@ -53,4 +54,4 @@
                                        Grid.RowSpan="2" />
     </Grid>
 
-</ContentPage>
+</view:PopupPage>

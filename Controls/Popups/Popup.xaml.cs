@@ -14,6 +14,8 @@ public partial class Popup : ContentView
     //private static readonly double s_BaseOpacity = 0.5;
     private static readonly double s_BaseScale = 1;
     private static readonly uint s_AnimRate = 16U;
+
+    protected Action<Action> _backButtonDeregisterCallback;
     
     private double _opacity;
     private double _scale;
@@ -68,7 +70,7 @@ public partial class Popup : ContentView
         InitializeComponent();
     }
 
-    public virtual void Open(Action<Action> backButtonCallback = null)
+    public void Open()
     {
         //this.IsVisible = true;
         this.InputTransparent = false;
@@ -78,6 +80,12 @@ public partial class Popup : ContentView
 
         var popupAnimation = new Animation(x => Scale = x, 0, s_BaseScale);
         popupAnimation.Commit(this, "PopupScale", s_AnimRate, 500, Easing.SpringOut);
+    }
+
+    public virtual void Open(Action<Action> backButtonRegisterCallback, Action<Action> backButtonDeregisterCallback)
+    {
+        _backButtonDeregisterCallback = backButtonDeregisterCallback;
+        Open();
     }
 
     public async void Close(Action callback = null)
@@ -90,7 +98,12 @@ public partial class Popup : ContentView
         
     }
 
-    private void OverlayTapped(object sender, TappedEventArgs e)
+    protected void QuickClose()
+    {
+        Close();
+    }
+
+    protected virtual void CloseButtonClicked(object sender, EventArgs e)
     {
         Close();
     }

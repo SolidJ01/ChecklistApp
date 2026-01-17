@@ -12,7 +12,7 @@
                         BackgroundColor="Black"
                         Opacity="{Binding Opacity}">
                     <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding CloseCommand}" />
+                        <TapGestureRecognizer Tapped="CloseButtonClicked" />
                     </Border.GestureRecognizers>
                 </Border>
                 <FlexLayout Direction="Column"

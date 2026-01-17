@@ -41,7 +41,7 @@
                   ColumnSpacing="10">
                 <Button FontFamily="FontAwSolid"
                         Text="&#xf060;"
-                        Clicked="BackButtonClicked" />
+                        Clicked="CloseButtonClicked" />
                 <Button Grid.Column="1"
                         Text="Save"
                         Clicked="SaveButtonClicked" />

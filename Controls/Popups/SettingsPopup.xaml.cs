@@ -19,14 +19,15 @@ public partial class SettingsPopup : Popup
         InitializeComponent();
     }
 
-    public override void Open(Action<Action> backButtonCallback = null)
+    public override void Open(Action<Action> backButtonRegisterCallback, Action<Action> backButtonDeregisterCallback)
     {
-        backButtonCallback?.Invoke(() => Close());
-        base.Open(backButtonCallback);
+        backButtonRegisterCallback?.Invoke(QuickClose);
+        base.Open(backButtonRegisterCallback, backButtonDeregisterCallback);
     }
 
-    private void CloseButtonClicked(object sender, EventArgs e)
+    protected override void CloseButtonClicked(object sender, EventArgs e)
     {
+        _backButtonDeregisterCallback?.Invoke(QuickClose);
         Close();
     }
 
