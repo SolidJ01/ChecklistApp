@@ -15,4 +15,9 @@ public partial class ChecklistPage : ContentPage
 	{
 		OptionsPopup.Open();
 	}
+
+	private void CreateItemsButtonClicked(object sender, EventArgs e)
+	{
+		CreateItemPopup.Open();
+	}
 }

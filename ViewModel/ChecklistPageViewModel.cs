@@ -25,37 +25,34 @@ namespace ChecklistApp.ViewModel
 
         public int Id { get; set; }
 
-        //public Checklist Checklist { get; set; }
-
         public ChecklistCardViewModel ChecklistCardViewModel { get; set; }
 
         public ObservableCollection<ItemViewModel> Items { get; set; } = [];
 
         public Checklist ChecklistEditEntry { get; set; } = new() { Deadline = DateTime.Now };
+        
+        public ObservableCollection<Item> ItemsToAdd { get; set; } = [];
 
         #endregion
 
         #region Commands
 
         public ICommand BackCommand { get; set; }
-
         public ICommand OptionsCommand { get; set; }
-
         public ICommand CreateNewCommand { get; set; }
-
         public ICommand ToggleItemCheckedCommand { get; set; }
-        
         public ICommand SaveItemChangesCommand { get; set; }
-        
         public ICommand DeleteItemCommand { get; set; }
         
         public ICommand ExportChecklistCommand { get; set; }
-        
         public ICommand CancelChecklistEditCommand { get; set; }
-        
         public ICommand SaveChecklistEditCommand { get; set; }
-        
         public ICommand DeleteChecklistCommand { get; set; }
+        
+        public ICommand AddNewItemCommand { get; set; }
+        public ICommand DeleteNewItemCommand { get; set; }
+        public ICommand SaveNewItemsCommand { get; set; }
+        public ICommand CancelNewItemsCommand { get; set; }
 
         #endregion
 
@@ -76,6 +73,11 @@ namespace ChecklistApp.ViewModel
             CancelChecklistEditCommand = new Command(CancelChecklistEdit);
             SaveChecklistEditCommand = new Command<Action>(SaveChecklist);
             DeleteChecklistCommand = new Command(DeleteChecklist);
+
+            AddNewItemCommand = new Command(AddNewItem);
+            DeleteNewItemCommand = new Command<Item>(DeleteNewItem);
+            SaveNewItemsCommand = new Command<Action>(SaveNewItems);
+            CancelNewItemsCommand = new Command(ResetItemsToAdd);
         }
 
         #region Methods
@@ -175,7 +177,13 @@ namespace ChecklistApp.ViewModel
                 foreach (ItemViewModel item in removedItems)
                     Items.Remove(item);
             });
+            
+            ResetItemsToAdd();
         }
+        
+        #endregion
+        
+        #region OptionsMethods
 
         private void ExportChecklist()
         {
@@ -219,6 +227,33 @@ namespace ChecklistApp.ViewModel
         {
             _checklistContext.DeleteChecklist(_checklist);
             _navigationService.NavigateTo(NavigationService.NavigationTarget.Home);
+        }
+        
+        #endregion
+        
+        #region CreateItemsMethods
+
+        private void AddNewItem()
+        {
+            ItemsToAdd.Add(new Item { Checklist = _checklist });
+        }
+
+        private void DeleteNewItem(Item item)
+        {
+            ItemsToAdd.Remove(item);
+        }
+
+        private void SaveNewItems(Action callback = null)
+        {
+            _checklistContext.CreateItems(ItemsToAdd.ToList());
+            RetrieveChecklist(this, EventArgs.Empty);
+            callback?.Invoke();
+        }
+        
+        private void ResetItemsToAdd()
+        {
+            ItemsToAdd.Clear();
+            AddNewItem();
         }
 
         #endregion
