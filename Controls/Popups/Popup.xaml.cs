@@ -68,7 +68,7 @@ public partial class Popup : ContentView
         InitializeComponent();
     }
 
-    public void Open()
+    public virtual void Open(Action<Action> backButtonCallback = null)
     {
         //this.IsVisible = true;
         this.InputTransparent = false;

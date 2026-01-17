@@ -52,9 +52,20 @@ public partial class CreateItemPopup : Popup
         InitializeComponent();
     }
 
-    private void BackButtonClicked(object sender, EventArgs e)
+    public override void Open(Action<Action> backButtonAction = null)
+    {
+        backButtonAction?.Invoke(Cancel);
+        base.Open(backButtonAction);
+    }
+
+    private void Cancel()
     {
         Close(() => CancelCommand.Execute(null));
+    }
+
+    private void BackButtonClicked(object sender, EventArgs e)
+    {
+        Cancel();
     }
 
     private void SaveButtonClicked(object sender, EventArgs e)

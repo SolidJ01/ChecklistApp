@@ -66,10 +66,22 @@ public partial class CreateChecklistPopup : Popup
         InitializeComponent();
     }
 
+    public override void Open(Action<Action> backButtonCallback = null)
+    {
+        backButtonCallback?.Invoke(Cancel);
+        base.Open(backButtonCallback);
+    }
+
+    private void Cancel()
+    {
+        Close(() => CancelCommand.Execute(null));
+    }
+
     private void CloseButtonClicked(object sender, EventArgs e)
     {
         //CancelCommand.Execute(null);
-        Close(new Action(() => CancelCommand.Execute(null)));
+        //Close(new Action(() => CancelCommand.Execute(null)));
+        Cancel();
     }
 
     private void ImportButtonClicked(object sender, EventArgs e)

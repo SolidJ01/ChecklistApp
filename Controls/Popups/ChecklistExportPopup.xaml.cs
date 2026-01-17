@@ -65,6 +65,12 @@ public partial class ChecklistExportPopup : Popup
         InitializeComponent();
     }
 
+    public override void Open(Action<Action> backButtonCallback = null)
+    {
+        backButtonCallback?.Invoke(() => Close());
+        base.Open(backButtonCallback);
+    }
+
     private void CloseButtonClicked(object sender, EventArgs e)
     {
         Close();
