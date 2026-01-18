@@ -94,6 +94,10 @@ public partial class ChecklistExportPopup : Popup
 
     private void ExportButtonClicked(object sender, EventArgs e)
     {
-        ExportCommand?.Execute(() => Close());
+        ExportCommand?.Execute(() =>
+        {
+            _backButtonDeregisterCallback.Invoke(QuickClose);
+            QuickClose();
+        });
     }
 }

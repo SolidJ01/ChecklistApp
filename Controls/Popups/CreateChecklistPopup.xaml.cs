@@ -87,11 +87,19 @@ public partial class CreateChecklistPopup : Popup
 
     private void ImportButtonClicked(object sender, EventArgs e)
     {
-        ImportCommand.Execute(() => Close());
+        ImportCommand.Execute(() =>
+        {
+            _backButtonDeregisterCallback?.Invoke(Cancel);
+            Close();
+        });
     }
 
     private void SaveButtonClicked(object sender, EventArgs e)
     {
-        SaveCommand.Execute(() => Close());
+        SaveCommand.Execute(() =>
+        {
+            _backButtonDeregisterCallback?.Invoke(Cancel);
+            Close();
+        });
     }
 }

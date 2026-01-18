@@ -71,6 +71,10 @@ public partial class CreateItemPopup : Popup
 
     private void SaveButtonClicked(object sender, EventArgs e)
     {
-        SaveCommand.Execute(() => Close(() => CancelCommand.Execute(null)));
+        SaveCommand.Execute(() =>
+        {
+            _backButtonDeregisterCallback?.Invoke(Cancel);
+            Close(() => CancelCommand.Execute(null));
+        });
     }
 }

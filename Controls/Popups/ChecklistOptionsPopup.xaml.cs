@@ -91,6 +91,10 @@ public partial class ChecklistOptionsPopup : Popup
 
     private void SaveButtonClicked(object sender, EventArgs e)
     {
-        SaveCommand.Execute(() => Close());
+        SaveCommand.Execute(() =>
+        {
+            _backButtonDeregisterCallback?.Invoke(Cancel);
+            Close();
+        });
     }
 }
