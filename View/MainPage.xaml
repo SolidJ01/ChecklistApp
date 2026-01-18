@@ -34,15 +34,18 @@
         </controls:ControlBar>
         
         <controls:SettingsPopup x:Name="SettingsPopup" 
+                                BackButtonActionChanged="OnBackButtonActionChanged"
                                 ExportChecklistsClicked="OnExportChecklistsButtonClicked"
                                 Grid.Row="0" 
                                 Grid.RowSpan="2" />
         <controls:ChecklistExportPopup x:Name="ChecklistExportPopup"
+                                       BackButtonActionChanged="OnBackButtonActionChanged"
                                        Checklists="{Binding Checklists}"
                                        ExportCommand="{Binding ExportChecklistsCommand}"
                                        Grid.Row="0"
                                        Grid.RowSpan="2"/>
         <controls:CreateChecklistPopup x:Name="CreateChecklistPopup"
+                                       BackButtonActionChanged="OnBackButtonActionChanged"
                                        Name="{Binding ChecklistEntry.Name}"
                                        UseDeadline="{Binding ChecklistEntry.UseDeadline}"
                                        Deadline="{Binding ChecklistEntry.Deadline}"

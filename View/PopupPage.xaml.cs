@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ChecklistApp.Controls;
+using ChecklistApp.Model;
 
 namespace ChecklistApp.View;
 
@@ -15,17 +17,20 @@ public partial class PopupPage : ContentPage
         InitializeComponent();
     }
 
-    protected void RegisterBackButtonAction(Action action)
+    protected void OnBackButtonActionChanged(object sender, BackButtonActionRegisterEventArgs e)
     {
-        _backButtonActions.Add(action);
-    }
-
-    protected void DeregisterBackButtonAction(Action action)
-    {
-        if (!_backButtonActions.Contains(action))
-            return;
-		
-        _backButtonActions.Remove(action);
+        switch (e.EventIntent)
+        {
+            case BackButtonActionRegisterEventArgs.Intent.Register:
+                _backButtonActions.Add(e.Action);
+                break;
+            case BackButtonActionRegisterEventArgs.Intent.Deregister:
+                if (!_backButtonActions.Contains(e.Action))
+                    break;
+                
+                _backButtonActions.Remove(e.Action);
+                break;
+        }
     }
 
     protected override bool OnBackButtonPressed()
@@ -34,7 +39,7 @@ public partial class PopupPage : ContentPage
             return false;
 		
         _backButtonActions.Last().Invoke();
-        _backButtonActions.RemoveAt(_backButtonActions.Count - 1);
+        //_backButtonActions.RemoveAt(_backButtonActions.Count - 1);
         return true;
     }
 }

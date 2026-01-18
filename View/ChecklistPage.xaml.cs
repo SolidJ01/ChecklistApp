@@ -13,11 +13,11 @@ public partial class ChecklistPage : PopupPage
 
 	private void OptionsButtonClicked(object sender, EventArgs e)
 	{
-		OptionsPopup.Open(RegisterBackButtonAction, DeregisterBackButtonAction);
+		OptionsPopup.Open();
 	}
 
 	private void CreateItemsButtonClicked(object sender, EventArgs e)
 	{
-		CreateItemPopup.Open(RegisterBackButtonAction, DeregisterBackButtonAction);
+		CreateItemPopup.Open();
 	}
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using ChecklistApp.Model;
 
 namespace ChecklistApp.Controls;
 
@@ -14,8 +15,6 @@ public partial class Popup : ContentView
     //private static readonly double s_BaseOpacity = 0.5;
     private static readonly double s_BaseScale = 1;
     private static readonly uint s_AnimRate = 16U;
-
-    protected Action<Action> _backButtonDeregisterCallback;
     
     private double _opacity;
     private double _scale;
@@ -59,6 +58,9 @@ public partial class Popup : ContentView
     }
 
     public ICommand CloseCommand { get; private set; }
+
+    public event EventHandler<BackButtonActionRegisterEventArgs> BackButtonActionChanged;
+    
     
     public Popup()
     {
@@ -72,6 +74,8 @@ public partial class Popup : ContentView
 
     public void Open()
     {
+        BackButtonActionChanged?.Invoke(this, new BackButtonActionRegisterEventArgs(BackButtonActionRegisterEventArgs.Intent.Register, Back));
+        
         //this.IsVisible = true;
         this.InputTransparent = false;
         
@@ -82,14 +86,10 @@ public partial class Popup : ContentView
         popupAnimation.Commit(this, "PopupScale", s_AnimRate, 500, Easing.SpringOut);
     }
 
-    public virtual void Open(Action<Action> backButtonRegisterCallback, Action<Action> backButtonDeregisterCallback)
-    {
-        _backButtonDeregisterCallback = backButtonDeregisterCallback;
-        Open();
-    }
-
     public async void Close(Action callback = null)
     {
+        BackButtonActionChanged?.Invoke(this, new BackButtonActionRegisterEventArgs(BackButtonActionRegisterEventArgs.Intent.Deregister, Back));
+        
         var animation = new Animation(x => Opacity = x, BackgroundOpacity, 0);
         animation.Commit(this, "OverlayHide", s_AnimRate, 500, Easing.CubicInOut);
         
@@ -99,6 +99,11 @@ public partial class Popup : ContentView
     }
 
     protected void QuickClose()
+    {
+        Close();
+    }
+
+    protected virtual void Back()
     {
         Close();
     }

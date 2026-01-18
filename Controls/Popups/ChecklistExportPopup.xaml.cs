@@ -65,15 +65,8 @@ public partial class ChecklistExportPopup : Popup
         InitializeComponent();
     }
 
-    public override void Open(Action<Action> backButtonRegisterCallback, Action<Action> backButtonDeregisterCallback)
-    {
-        backButtonRegisterCallback?.Invoke(QuickClose);
-        base.Open(backButtonRegisterCallback, backButtonDeregisterCallback);
-    }
-
     protected override void CloseButtonClicked(object sender, EventArgs e)
     {
-        _backButtonDeregisterCallback?.Invoke(QuickClose);
         Close();
     }
 
@@ -96,7 +89,6 @@ public partial class ChecklistExportPopup : Popup
     {
         ExportCommand?.Execute(() =>
         {
-            _backButtonDeregisterCallback.Invoke(QuickClose);
             QuickClose();
         });
     }

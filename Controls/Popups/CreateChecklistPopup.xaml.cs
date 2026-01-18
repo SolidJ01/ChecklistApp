@@ -66,13 +66,7 @@ public partial class CreateChecklistPopup : Popup
         InitializeComponent();
     }
 
-    public override void Open(Action<Action> backButtonRegisterCallback, Action<Action> backButtonDeregisterCallback)
-    {
-        backButtonRegisterCallback?.Invoke(Cancel);
-        base.Open(backButtonRegisterCallback, backButtonDeregisterCallback);
-    }
-
-    private void Cancel()
+    protected override void Back()
     {
         Close(() => CancelCommand.Execute(null));
     }
@@ -81,15 +75,13 @@ public partial class CreateChecklistPopup : Popup
     {
         //CancelCommand.Execute(null);
         //Close(new Action(() => CancelCommand.Execute(null)));
-        _backButtonDeregisterCallback?.Invoke(Cancel);
-        Cancel();
+        Back();
     }
 
     private void ImportButtonClicked(object sender, EventArgs e)
     {
         ImportCommand.Execute(() =>
         {
-            _backButtonDeregisterCallback?.Invoke(Cancel);
             Close();
         });
     }
@@ -98,7 +90,6 @@ public partial class CreateChecklistPopup : Popup
     {
         SaveCommand.Execute(() =>
         {
-            _backButtonDeregisterCallback?.Invoke(Cancel);
             Close();
         });
     }

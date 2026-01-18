@@ -50,6 +50,7 @@
         </controls:ControlBar>
         
         <controls:ChecklistOptionsPopup x:Name="OptionsPopup"
+                                        BackButtonActionChanged="OnBackButtonActionChanged"
                                         Name="{Binding ChecklistEditEntry.Name}"
                                         UseDeadline="{Binding ChecklistEditEntry.UseDeadline}"
                                         Deadline="{Binding ChecklistEditEntry.Deadline}"
@@ -62,6 +63,7 @@
                                         Grid.RowSpan="2" />
         
         <controls:CreateItemPopup x:Name="CreateItemPopup"
+                                  BackButtonActionChanged="OnBackButtonActionChanged"
                                   Items="{Binding ItemsToAdd}"
                                   AddCommand="{Binding AddNewItemCommand}"
                                   DeleteCommand="{Binding DeleteNewItemCommand}"
