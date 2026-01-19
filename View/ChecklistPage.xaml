@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<view:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<view:DialoguePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:ChecklistApp.Controls"
              xmlns:viewmodel="clr-namespace:ChecklistApp.ViewModel"
@@ -9,67 +9,70 @@
              x:Class="ChecklistApp.View.ChecklistPage"
              x:DataType="viewmodel:ChecklistPageViewModel"
              Title="ChecklistPage">
-    <ContentPage.Resources>
+    <view:DialoguePage.Resources>
         <valueconverters:ObservableItemCollectionToBooleanConverter x:Key="ItemCollectionToBool" />
-    </ContentPage.Resources>
+    </view:DialoguePage.Resources>
     
-    <Grid Background="{StaticResource BackgroundBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="70" />
-        </Grid.RowDefinitions>
+    <view:DialoguePage.Content>
+        <Grid Background="{StaticResource BackgroundBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="70" />
+            </Grid.RowDefinitions>
 
-        <CollectionView x:Name="itemsView" ItemsSource="{Binding Items}" ItemSizingStrategy="MeasureFirstItem" ItemsUpdatingScrollMode="KeepScrollOffset">
-            <CollectionView.Header>
-                <controls:ChecklistCard Checklist="{Binding ChecklistCardViewModel}" Margin="10, 15, 10, 10"/>
-            </CollectionView.Header>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="viewmodel:ItemViewModel">
-                    <controls:ChecklistItem Id="{Binding Id}"
-                                            Name="{Binding Name}"
-                                            IsChecked="{Binding IsChecked, Mode=TwoWay}"
-                                            ToggleCheckedCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChecklistPageViewModel}}, Path=ToggleItemCheckedCommand}"
-                                            DeleteItemCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChecklistPageViewModel}}, Path=DeleteItemCommand}"
-                                            SaveItemCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChecklistPageViewModel}}, Path=SaveItemChangesCommand}"
-                                            Margin="10, 0, 10, 10"/>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+            <CollectionView x:Name="itemsView" ItemsSource="{Binding Items}" ItemSizingStrategy="MeasureFirstItem" ItemsUpdatingScrollMode="KeepScrollOffset">
+                <CollectionView.Header>
+                    <controls:ChecklistCard Checklist="{Binding ChecklistCardViewModel}" Margin="10, 15, 10, 10"/>
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="viewmodel:ItemViewModel">
+                        <controls:ChecklistItem Id="{Binding Id}"
+                                                Name="{Binding Name}"
+                                                IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                                                ToggleCheckedCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChecklistPageViewModel}}, Path=ToggleItemCheckedCommand}"
+                                                DeleteItemCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChecklistPageViewModel}}, Path=DeleteItemCommand}"
+                                                SaveItemCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChecklistPageViewModel}}, Path=SaveItemChangesCommand}"
+                                                Margin="10, 0, 10, 10"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
-        <controls:ControlBar Grid.Row="1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="50" />
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" FontFamily="FontAwSolid" Text="&#xf060;" Command="{Binding BackCommand}" />
-                <Button Grid.Column="1" Text="Add Items" Margin="10,0" Clicked="CreateItemsButtonClicked" />
-                <Button Grid.Column="2" FontFamily="FontAwSolid" Text="&#xf013;" Clicked="OptionsButtonClicked" />
-            </Grid>
-        </controls:ControlBar>
-        
-        <controls:ChecklistOptionsPopup x:Name="OptionsPopup"
-                                        BackButtonActionChanged="OnBackButtonActionChanged"
-                                        Name="{Binding ChecklistEditEntry.Name}"
-                                        UseDeadline="{Binding ChecklistEditEntry.UseDeadline}"
-                                        Deadline="{Binding ChecklistEditEntry.Deadline}"
-                                        ChecklistColor="{Binding ChecklistEditEntry.Color}"
-                                        DeleteCommand="{Binding DeleteChecklistCommand}"
-                                        ExportCommand="{Binding ExportChecklistCommand}"
-                                        CancelCommand="{Binding CancelChecklistEditCommand}"
-                                        SaveCommand="{Binding SaveChecklistEditCommand}"
-                                        Grid.Row="0"
-                                        Grid.RowSpan="2" />
-        
-        <controls:CreateItemPopup x:Name="CreateItemPopup"
-                                  BackButtonActionChanged="OnBackButtonActionChanged"
-                                  Items="{Binding ItemsToAdd}"
-                                  AddCommand="{Binding AddNewItemCommand}"
-                                  DeleteCommand="{Binding DeleteNewItemCommand}"
-                                  SaveCommand="{Binding SaveNewItemsCommand}"
-                                  CancelCommand="{Binding CancelNewItemsCommand}"
-                                  Grid.Row="0"
-                                  Grid.RowSpan="2" />
-    </Grid>
-</view:PopupPage>
+            <controls:ControlBar Grid.Row="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="50" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" FontFamily="FontAwSolid" Text="&#xf060;" Command="{Binding BackCommand}" />
+                    <Button Grid.Column="1" Text="Add Items" Margin="10,0" Clicked="CreateItemsButtonClicked" />
+                    <Button Grid.Column="2" FontFamily="FontAwSolid" Text="&#xf013;" Clicked="OptionsButtonClicked" />
+                </Grid>
+            </controls:ControlBar>
+            
+            <controls:ChecklistOptionsPopup x:Name="OptionsPopup"
+                                            BackButtonActionChanged="OnBackButtonActionChanged"
+                                            Name="{Binding ChecklistEditEntry.Name}"
+                                            UseDeadline="{Binding ChecklistEditEntry.UseDeadline}"
+                                            Deadline="{Binding ChecklistEditEntry.Deadline}"
+                                            ChecklistColor="{Binding ChecklistEditEntry.Color}"
+                                            DeleteCommand="{Binding DeleteChecklistCommand}"
+                                            ExportCommand="{Binding ExportChecklistCommand}"
+                                            CancelCommand="{Binding CancelChecklistEditCommand}"
+                                            SaveCommand="{Binding SaveChecklistEditCommand}"
+                                            DialogueQueried="OnQueryDialogue"
+                                            Grid.Row="0"
+                                            Grid.RowSpan="2" />
+            
+            <controls:CreateItemPopup x:Name="CreateItemPopup"
+                                      BackButtonActionChanged="OnBackButtonActionChanged"
+                                      Items="{Binding ItemsToAdd}"
+                                      AddCommand="{Binding AddNewItemCommand}"
+                                      DeleteCommand="{Binding DeleteNewItemCommand}"
+                                      SaveCommand="{Binding SaveNewItemsCommand}"
+                                      CancelCommand="{Binding CancelNewItemsCommand}"
+                                      Grid.Row="0"
+                                      Grid.RowSpan="2" />
+        </Grid>
+    </view:DialoguePage.Content>
+</view:DialoguePage>

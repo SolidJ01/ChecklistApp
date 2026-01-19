@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<controls:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ChecklistApp.Controls"
+             x:Name="Dialogue"
+             x:Class="ChecklistApp.Controls.Popups.DialoguePopup"
+             PopupMargin="15,25">
+    <Grid BindingContext="{x:Reference Dialogue}"
+          RowDefinitions="*,50"
+          RowSpacing="10"
+          ColumnDefinitions="*,*"
+          ColumnSpacing="10"
+          Padding="10">
+        <Label Text="{Binding Query}"
+               TextColor="{StaticResource Text}"
+               FontSize="25"
+               FontAttributes="Bold"
+               HorizontalTextAlignment="Center"
+               Grid.ColumnSpan="2" />
+        <Button Text="{Binding DenyPrompt}"
+                Clicked="DenyButtonClicked"
+                Grid.Row="1"
+                Grid.Column="0" />
+        <Button Text="{Binding ConfirmPrompt}"
+                Clicked="ConfirmButtonClicked"
+                Grid.Row="1"
+                Grid.Column="1">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding Type}" Value="Neutral">
+                            <Setter Property="Background" Value="{StaticResource Foreground}" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button" Binding="{Binding Type}" Value="Negative">
+                            <Setter Property="Background" Value="{StaticResource ForegroundRed}" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button" Binding="{Binding Type}" Value="Positive">
+                            <Setter Property="Background" Value="{StaticResource ForegroundCyan}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+    </Grid>
+</controls:Popup>

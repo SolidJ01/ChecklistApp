@@ -24,7 +24,7 @@
                         Grid.ColumnSpan="2" 
                         Text="Delete" 
                         Style="{StaticResource DeleteButton}"
-                        Command="{Binding DeleteCommand}" />
+                        Clicked="DeleteButtonClicked" />
                 <Button Grid.Row="0" 
                         Grid.Column="2" 
                         Grid.ColumnSpan="2" 

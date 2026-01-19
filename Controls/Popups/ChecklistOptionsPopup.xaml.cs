@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using ChecklistApp.Controls.Popups;
 using ChecklistApp.Model;
 
 namespace ChecklistApp.Controls;
@@ -66,6 +67,8 @@ public partial class ChecklistOptionsPopup : Popup
         get => (ICommand)GetValue(SaveCommandProperty);
         set => SetValue(SaveCommandProperty, value);
     }
+
+    public event EventHandler<DialogueQueryEventArgs> DialogueQueried;
     
     public ChecklistOptionsPopup()
     {
@@ -88,5 +91,10 @@ public partial class ChecklistOptionsPopup : Popup
         {
             Close();
         });
+    }
+
+    private void DeleteButtonClicked(object sender, EventArgs e)
+    {
+        DialogueQueried?.Invoke(this, new DialogueQueryEventArgs("Delete List?", () => DeleteCommand.Execute(null), "Delete", type:DialoguePopup.QueryType.Negative));
     }
 }

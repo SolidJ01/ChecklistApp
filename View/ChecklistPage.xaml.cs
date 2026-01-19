@@ -2,7 +2,7 @@ using ChecklistApp.ViewModel;
 
 namespace ChecklistApp.View;
 
-public partial class ChecklistPage : PopupPage
+public partial class ChecklistPage : DialoguePage
 {
 	public ChecklistPage(ChecklistPageViewModel viewModel)
 	{

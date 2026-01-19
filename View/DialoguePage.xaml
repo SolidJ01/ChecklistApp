@@ -3,9 +3,14 @@
 <view:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:view="clr-namespace:ChecklistApp.View"
+             xmlns:popups="clr-namespace:ChecklistApp.Controls.Popups"
              x:Class="ChecklistApp.View.DialoguePage">
-    <Grid>
-        <ContentPresenter />
-        
-    </Grid>
+    <view:PopupPage.ControlTemplate>
+        <ControlTemplate>
+            <Grid>
+                <ContentPresenter />
+                <popups:DialoguePopup x:Name="Dialogue" />
+            </Grid>
+        </ControlTemplate>
+    </view:PopupPage.ControlTemplate>
 </view:PopupPage>
