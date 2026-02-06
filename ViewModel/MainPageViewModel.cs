@@ -18,6 +18,7 @@ namespace ChecklistApp.ViewModel
         private ChecklistContext _checklistContext;
         private NavigationService _navigationService;
         private IFileSaver _fileSaver;
+        private INotificationManagerService _notificationService;
 
         public ObservableCollection<SelectableChecklistCardViewModel> Checklists { get; set; } = [];
         public Checklist ChecklistEntry { get; set; } = new Checklist { Deadline = DateTime.Now };
@@ -30,14 +31,16 @@ namespace ChecklistApp.ViewModel
         public ICommand SaveNewChecklistCommand { get; set; }
         public ICommand CancelNewChecklistCommand { get; set; }
         public ICommand ImportNewChecklistCommand { get; set; }
+        public ICommand Test_SendNotificationCommand { get; set; }
 
         #endregion
 
-        public MainPageViewModel(ChecklistContext checklistContext, NavigationService navigationService, IFileSaver  fileSaver)
+        public MainPageViewModel(ChecklistContext checklistContext, NavigationService navigationService, IFileSaver  fileSaver, INotificationManagerService notificationService)
         {
             _checklistContext = checklistContext;
             _navigationService = navigationService;
             _fileSaver = fileSaver;
+            _notificationService = notificationService;
 
             CreateNewCommand = new Command(CreateNew);
             GoToChecklistCommand = new Command<int>(GoToChecklist);
@@ -45,6 +48,13 @@ namespace ChecklistApp.ViewModel
             SaveNewChecklistCommand = new Command<Action>(SaveNewChecklist);
             CancelNewChecklistCommand = new Command(CancelNewChecklist);
             ImportNewChecklistCommand = new Command<Action>(ImportnewChecklist);
+            Test_SendNotificationCommand = new Command(async () =>
+            {
+                PermissionStatus status = await Permissions.RequestAsync<NotificationPermission>();
+                if (status != PermissionStatus.Granted)
+                    return;
+                _notificationService.SendNotification("Title", "Message");
+            });
         }
 
         #region Methods
