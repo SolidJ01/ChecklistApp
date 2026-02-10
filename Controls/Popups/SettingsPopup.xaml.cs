@@ -13,11 +13,18 @@ namespace ChecklistApp.Controls;
 public partial class SettingsPopup : Popup
 {
     public static readonly BindableProperty Test_SendNotificationCommandProperty = BindableProperty.Create(nameof(Test_SendNotificationCommand), typeof(ICommand), typeof(SettingsPopup));
+    public static readonly BindableProperty Test_CancelNotificationCommandProperty = BindableProperty.Create(nameof(Test_CancelNotificationCommand), typeof(ICommand), typeof(SettingsPopup));
 
     public ICommand Test_SendNotificationCommand
     {
         get => (ICommand)GetValue(Test_SendNotificationCommandProperty);
         set => SetValue(Test_SendNotificationCommandProperty, value);
+    }
+
+    public ICommand Test_CancelNotificationCommand
+    {
+        get => (ICommand)GetValue(Test_CancelNotificationCommandProperty);
+        set => SetValue(Test_CancelNotificationCommandProperty, value);
     }
     
     public event EventHandler ExportChecklistsClicked;

@@ -2,6 +2,24 @@
 
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Controls="clr-namespace:ChecklistApp.Controls"
+             x:Name="this"
              x:Class="ChecklistApp.Controls.NotificationScheduler">
-    
+    <CollectionView BindingContext="{x:Reference this}"
+                    ItemsSource="{Binding Notifications}">
+        <CollectionView.Header>
+            <FlexLayout Direction="Row">
+                <Controls:RoundedCheckbox IsChecked="{Binding Enabled}"
+                                          HeightRequest="50"
+                                          WidthRequest="50" />
+                <Label FontSize="22" 
+                       FontAttributes="Bold" 
+                       Text="Notifications" 
+                       TextColor="{StaticResource Text}" 
+                       Margin="5,0,0,0"
+                       VerticalOptions="Center" 
+                       HorizontalOptions="Fill" />
+            </FlexLayout>
+        </CollectionView.Header>
+    </CollectionView>
 </ContentView>

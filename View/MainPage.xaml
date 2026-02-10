@@ -37,6 +37,7 @@
                                 BackButtonActionChanged="OnBackButtonActionChanged"
                                 ExportChecklistsClicked="OnExportChecklistsButtonClicked"
                                 Test_SendNotificationCommand="{Binding Test_SendNotificationCommand}"
+                                Test_CancelNotificationCommand="{Binding Test_CancelNotificationCommand}"
                                 Grid.Row="0" 
                                 Grid.RowSpan="2" />
         <controls:ChecklistExportPopup x:Name="ChecklistExportPopup"

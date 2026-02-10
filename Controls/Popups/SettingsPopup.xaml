@@ -10,9 +10,15 @@
         <Grid RowDefinitions="*, 60"
               BindingContext="{x:Reference settings}">
             <ScrollView>
-                <VerticalStackLayout Padding="10">
-                    <Label Text="Test" />
-                    <Button Command="{Binding Test_SendNotificationCommand}" Text="Notify Me" />
+                <VerticalStackLayout Padding="10" 
+                                     Spacing="10">
+                    <Label FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Text}"
+                           Text="Default Settings"
+                           HorizontalTextAlignment="Center"
+                           Margin="0,10,0,0"/>
+                    <controls:NotificationScheduler />
                 </VerticalStackLayout>
             </ScrollView>
             <Grid Grid.Row="1" 

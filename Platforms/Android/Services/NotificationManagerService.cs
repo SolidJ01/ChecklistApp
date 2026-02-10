@@ -5,6 +5,7 @@ using Android.OS;
 using AndroidX.Core.App;
 using ChecklistApp.Handlers;
 using ChecklistApp.Model;
+using Notification = Android.App.Notification;
 
 namespace ChecklistApp.Services;
 
@@ -66,6 +67,19 @@ public class NotificationManagerService : INotificationManagerService
         }
     }
 
+    public void CancelNotification()
+    {
+        Intent intent = new Intent(Platform.AppContext, typeof(AlarmHandler));
+        var pendingIntentFlags = (Build.VERSION.SdkInt >= BuildVersionCodes.S)
+            ? PendingIntentFlags.CancelCurrent | PendingIntentFlags.Immutable
+            : PendingIntentFlags.CancelCurrent;
+        PendingIntent pendingIntent = PendingIntent.GetBroadcast(Platform.AppContext, pendingIntentId - 1, intent, pendingIntentFlags);
+        AlarmManager alarmManager = Platform.AppContext.GetSystemService(Context.AlarmService) as AlarmManager;
+        
+        alarmManager.Cancel(pendingIntent);
+        pendingIntent.Cancel();
+    }
+
     public void ReceiveNotification(string title, string message)
     {
         var args = new NotificationEventArgs(title, message);
@@ -88,8 +102,7 @@ public class NotificationManagerService : INotificationManagerService
             .SetContentIntent(pendingIntent)
             .SetContentTitle(title)
             .SetContentText(message)
-            .SetLargeIcon(BitmapFactory.DecodeResource(Platform.AppContext.Resources, Resource.Drawable.splash))
-            .SetSmallIcon(Resource.Drawable.splash);
+            .SetSmallIcon(Resource.Drawable.smallicon);
 
         Notification notification = builder.Build();
         compatManager.Notify(messageId++, notification);  

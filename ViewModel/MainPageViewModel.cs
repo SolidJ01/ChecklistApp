@@ -32,6 +32,7 @@ namespace ChecklistApp.ViewModel
         public ICommand CancelNewChecklistCommand { get; set; }
         public ICommand ImportNewChecklistCommand { get; set; }
         public ICommand Test_SendNotificationCommand { get; set; }
+        public ICommand Test_CancelNotificationCommand { get; set; }
 
         #endregion
 
@@ -48,12 +49,17 @@ namespace ChecklistApp.ViewModel
             SaveNewChecklistCommand = new Command<Action>(SaveNewChecklist);
             CancelNewChecklistCommand = new Command(CancelNewChecklist);
             ImportNewChecklistCommand = new Command<Action>(ImportnewChecklist);
+            
             Test_SendNotificationCommand = new Command(async () =>
             {
                 PermissionStatus status = await Permissions.RequestAsync<NotificationPermission>();
                 if (status != PermissionStatus.Granted)
                     return;
-                _notificationService.SendNotification("Title", "Message");
+                _notificationService.SendNotification("Title", "Message", DateTime.Now.AddSeconds(10));
+            });
+            Test_CancelNotificationCommand = new Command(() =>
+            {
+                _notificationService.CancelNotification();
             });
         }
 
