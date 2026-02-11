@@ -8,4 +8,5 @@
     <valueconverters:BoolToIntConverter x:Key="BoolToInt" />
     <valueconverters:ChecklistColorToBooleanConverter x:Key="ChecklistColorToBool" />
     <valueconverters:FloatToProgressBarLayoutBoundsConverter x:Key="FloatToProgress" />
+    <valueconverters:ConditionalItemDisplayConverter x:Key="ConditionalDisplay" />
 </ResourceDictionary>

@@ -3,13 +3,16 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Controls="clr-namespace:ChecklistApp.Controls"
+             xmlns:ViewModel="clr-namespace:ChecklistApp.ViewModel"
              x:Name="this"
              x:Class="ChecklistApp.Controls.NotificationScheduler">
     <CollectionView BindingContext="{x:Reference this}"
-                    ItemsSource="{Binding Notifications}">
+                    ItemsSource="{Binding Notifications,
+                                  Converter={StaticResource ConditionalDisplay}, 
+                                  ConverterParameter={Binding UseNotifications}}">
         <CollectionView.Header>
             <FlexLayout Direction="Row">
-                <Controls:RoundedCheckbox IsChecked="{Binding Enabled}"
+                <Controls:RoundedCheckbox IsChecked="{Binding UseNotifications, Mode=TwoWay}"
                                           HeightRequest="50"
                                           WidthRequest="50" />
                 <Label FontSize="22" 
@@ -18,8 +21,34 @@
                        TextColor="{StaticResource Text}" 
                        Margin="5,0,0,0"
                        VerticalOptions="Center" 
-                       HorizontalOptions="Fill" />
+                       FlexLayout.Grow="1" />
+                <Button Text="&#x2b;"
+                        FontFamily="FontAwSolid"
+                        TextColor="{StaticResource Text}"
+                        Command="{Binding AddCommand}"
+                        IsVisible="{Binding UseNotifications}"
+                        HeightRequest="50"
+                        WidthRequest="50" />
             </FlexLayout>
         </CollectionView.Header>
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="ViewModel:NotificationViewModel">
+                <FlexLayout Direction="Row"
+                            HeightRequest="50"
+                            Margin="0,10,0,0"
+                            IsVisible="{Binding Source={RelativeSource AncestorType={x:Type Controls:NotificationScheduler}}, Path=UseNotifications}">
+                    <Controls:RoundedEntry Text="{Binding Value}"
+                                           Keyboard="Numeric"
+                                           HeightRequest="50"
+                                           MinimumWidthRequest="90" />
+                    
+                    <Button Text="&#xf1f8;"
+                            FontFamily="FontAwSolid"
+                            Background="{StaticResource ForegroundRedBrush}"
+                            Margin="5,0,0,0"
+                            TextColor="{StaticResource Text}" />
+                </FlexLayout>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
     </CollectionView>
 </ContentView>
