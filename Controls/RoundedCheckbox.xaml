@@ -4,58 +4,62 @@
              x:Name="this"
              x:Class="ChecklistApp.Controls.RoundedCheckbox">
     <Grid BindingContext="{x:Reference this}">
-        <Frame ZIndex="1" CornerRadius="8" Margin="{Binding ClickablePadding}" Padding="0" HasShadow="false"
-               x:Name="BaseFrame">
-            <Frame.Triggers>
-                <!--<DataTrigger TargetType="Frame" Binding="{Binding IsChecked}" Value="false">
-                    <Setter Property="Background" Value="{Binding Background}" />
-                </DataTrigger>
-                <DataTrigger TargetType="Frame" Binding="{Binding IsChecked}" Value="true">
-                    <Setter Property="Background" Value="{Binding BackgroundChecked}" />
-                </DataTrigger>-->
-                <DataTrigger TargetType="Frame" Binding="{Binding EnsureSquare}" Value="true">
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer Tapped="Button_Clicked" NumberOfTapsRequired="1" />
+        </Grid.GestureRecognizers>
+        <Border Margin="{Binding ClickablePadding}" 
+                Padding="0"
+                x:Name="BaseFrame">
+            <Border.Triggers>
+                <DataTrigger TargetType="Border" Binding="{Binding EnsureSquare}" Value="true">
                     <Setter Property="HeightRequest" Value="{Binding Width, Source={RelativeSource AncestorType={x:Type Grid}}}" />
                 </DataTrigger>
                 
-                <MultiTrigger TargetType="Frame">
+                <DataTrigger TargetType="Border" 
+                             Binding="{Binding ClickablePadding, Converter={StaticResource GreaterThanZero}}" 
+                             Value="true">
+                    <Setter Property="StrokeShape" Value="RoundRectangle 7" />
+                </DataTrigger>
+                
+                <MultiTrigger TargetType="Border">
                     <MultiTrigger.Conditions>
                         <BindingCondition Binding="{Binding Design}" Value="DynamicForegroundDark" />
                         <BindingCondition Binding="{Binding IsChecked}" Value="false" />
                     </MultiTrigger.Conditions>
                     <Setter Property="Background" Value="{StaticResource ForegroundDarkBrush}" />
                 </MultiTrigger>
-                <MultiTrigger TargetType="Frame">
+                <MultiTrigger TargetType="Border">
                     <MultiTrigger.Conditions>
                         <BindingCondition Binding="{Binding Design}" Value="DynamicForegroundDark" />
                         <BindingCondition Binding="{Binding IsChecked}" Value="true" />
                     </MultiTrigger.Conditions>
                     <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
                 </MultiTrigger>
-                <DataTrigger TargetType="Frame" Binding="{Binding Design}" Value="StaticForeground">
+                <DataTrigger TargetType="Border" Binding="{Binding Design}" Value="StaticForeground">
                     <Setter Property="Background" Value="{StaticResource ForegroundBrush}" />
                 </DataTrigger>
-                <DataTrigger TargetType="Frame" Binding="{Binding Design}" Value="StaticForegroundCyan">
+                <DataTrigger TargetType="Border" Binding="{Binding Design}" Value="StaticForegroundCyan">
                     <Setter Property="Background" Value="{StaticResource ForegroundCyanBrush}" />
                 </DataTrigger>
-                <DataTrigger TargetType="Frame" Binding="{Binding Design}" Value="StaticForegroundBlue">
+                <DataTrigger TargetType="Border" Binding="{Binding Design}" Value="StaticForegroundBlue">
                     <Setter Property="Background" Value="{StaticResource ForegroundBlueBrush}" />
                 </DataTrigger>
-                <DataTrigger TargetType="Frame" Binding="{Binding Design}" Value="StaticForegroundPurple">
+                <DataTrigger TargetType="Border" Binding="{Binding Design}" Value="StaticForegroundPurple">
                     <Setter Property="Background" Value="{StaticResource ForegroundPurpleBrush}" />
                 </DataTrigger>
-                <DataTrigger TargetType="Frame" Binding="{Binding Design}" Value="StaticForegroundMagenta">
+                <DataTrigger TargetType="Border" Binding="{Binding Design}" Value="StaticForegroundMagenta">
                     <Setter Property="Background" Value="{StaticResource ForegroundMagentaBrush}" />
                 </DataTrigger>
-                <DataTrigger TargetType="Frame" Binding="{Binding Design}" Value="StaticForegroundRed">
+                <DataTrigger TargetType="Border" Binding="{Binding Design}" Value="StaticForegroundRed">
                     <Setter Property="Background" Value="{StaticResource ForegroundRedBrush}" />
                 </DataTrigger>
-                <DataTrigger TargetType="Frame" Binding="{Binding Design}" Value="StaticForegroundOrange">
+                <DataTrigger TargetType="Border" Binding="{Binding Design}" Value="StaticForegroundOrange">
                     <Setter Property="Background" Value="{StaticResource ForegroundOrangeBrush}" />
                 </DataTrigger>
-                <DataTrigger TargetType="Frame" Binding="{Binding Design}" Value="StaticForegroundGreen">
+                <DataTrigger TargetType="Border" Binding="{Binding Design}" Value="StaticForegroundGreen">
                     <Setter Property="Background" Value="{StaticResource ForegroundGreenBrush}" />
                 </DataTrigger>
-            </Frame.Triggers>
+            </Border.Triggers>
             
             <Label FontSize="{Binding FontSize}"
                    FontFamily="FontAwSolid"
@@ -73,36 +77,9 @@
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
-        </Frame>
-        <Frame ZIndex="2" CornerRadius="8" Margin="{Binding ClickablePadding}" Padding="0" HasShadow="false" Background="{Binding Background}" IsVisible="false">
-            <Frame.Triggers>
-                <DataTrigger TargetType="Frame" Binding="{Binding IsChecked}" Value="false">
-                    <Setter Property="Opacity" Value="0" />
-                </DataTrigger>
-                <DataTrigger TargetType="Frame" Binding="{Binding IsChecked}" Value="true">
-                    <Setter Property="Opacity" Value="0" />
-                </DataTrigger>
-            </Frame.Triggers>
-            
-        </Frame>
-        <Frame ZIndex="3" BackgroundColor="Transparent" Padding="0">
+        </Border>
+        <!--<Frame ZIndex="3" BackgroundColor="Transparent" Padding="0">
             <Button Opacity="0" Clicked="Button_Clicked" />
-        </Frame>
+        </Frame>-->
     </Grid>
-    <!--<Button
-            Clicked="Button_Clicked"
-            FontSize="{Binding FontSize}"
-            FontFamily="FontAwSolid"
-            TextColor="{StaticResource Text}">
-            <Button.Triggers>
-                <DataTrigger TargetType="Button" Binding="{Binding IsChecked}" Value="false">
-                    <Setter Property="Background" Value="{StaticResource ForegroundDarkBrush}" />
-                    <Setter Property="Text" Value="" />
-                </DataTrigger>
-                <DataTrigger TargetType="Button" Binding="{Binding IsChecked}" Value="true">
-                    <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
-                    <Setter Property="Text" Value="&#xf00c;" />
-                </DataTrigger>
-            </Button.Triggers>
-        </Button>-->
 </ContentView>

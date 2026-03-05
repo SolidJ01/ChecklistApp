@@ -4,26 +4,33 @@
              x:Name="this"
              x:Class="ChecklistApp.Controls.DateTimePicker">
     <Border BindingContext="{x:Reference this}"
-            BackgroundColor="{StaticResource ForegroundDark}"
-            StrokeShape="RoundRectangle 8,8,8,8"
-            Padding="5">
+            BackgroundColor="{StaticResource ForegroundDark}">
         <Border.Style>
             <Style TargetType="Border">
                 <Style.Triggers>
                     <DataTrigger TargetType="Border" Binding="{Binding Use}" Value="false">
                         <Setter Property="Background" Value="transparent" />
-                        <Setter Property="Padding" Value="0,5" />
+                        <Setter Property="Padding" Value="0" />
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
         </Border.Style>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <DatePicker Grid.Column="0" Date="{Binding Date, Mode=TwoWay}" TextColor="{StaticResource Text}" Margin="5,0" IsVisible="{Binding Use}" />
-            <TimePicker Grid.Column="1" Time="{Binding Time, Mode=TwoWay}" TextColor="{StaticResource Text}" Margin="5,0" IsVisible="{Binding Use}" />
+        <Grid ColumnDefinitions="*,*"
+              ColumnSpacing="10"
+              Padding="5,0">
+            <DatePicker Grid.Column="0" 
+                        Date="{Binding Date, Mode=TwoWay}" 
+                        TextColor="{StaticResource Text}" 
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        VerticalOptions="Center"
+                        IsVisible="{Binding Use}" />
+            <TimePicker Grid.Column="1" Time="{Binding Time, Mode=TwoWay}" 
+                        TextColor="{StaticResource Text}" 
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        VerticalOptions="Center"
+                        IsVisible="{Binding Use}" />
             <Label Grid.Column="0" 
                    Grid.ColumnSpan="2" 
                    Text="Deadline"

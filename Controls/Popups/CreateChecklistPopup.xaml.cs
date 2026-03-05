@@ -11,54 +11,12 @@ namespace ChecklistApp.Controls;
 
 public partial class CreateChecklistPopup : Popup
 {
-    public static readonly BindableProperty NameProperty = BindableProperty.Create(nameof(Name), typeof(string), typeof(CreateChecklistPopup), string.Empty,  BindingMode.TwoWay);
-    public static readonly BindableProperty UseDeadlineProperty = BindableProperty.Create(nameof(UseDeadline), typeof(bool),  typeof(CreateChecklistPopup), false, BindingMode.TwoWay);
-    public static readonly BindableProperty DeadlineProperty = BindableProperty.Create(nameof(Deadline), typeof(DateTime), typeof(CreateChecklistPopup), DateTime.Now, BindingMode.TwoWay);
-    public static readonly BindableProperty ChecklistColorProperty = BindableProperty.Create(nameof(ChecklistColor), typeof(Checklist.ChecklistColor),  typeof(CreateChecklistPopup), Checklist.ChecklistColor.Grey, BindingMode.TwoWay);
-    public static readonly BindableProperty SaveCommandProperty = BindableProperty.Create(nameof(SaveCommand), typeof(ICommand), typeof(CreateChecklistPopup));
-    public static readonly BindableProperty CancelCommandProperty = BindableProperty.Create(nameof(CancelCommand), typeof(ICommand), typeof(CreateChecklistPopup));
-    public static readonly BindableProperty ImportCommandProperty = BindableProperty.Create(nameof(ImportCommand), typeof(ICommand), typeof(CreateChecklistPopup));
+    public static readonly BindableProperty ViewModelProperty = BindableProperty.Create(nameof(ViewModel), typeof(CreateChecklistPopupViewModel), typeof(CreateChecklistPopup));
 
-    public string Name
+    public CreateChecklistPopupViewModel ViewModel
     {
-        get => (string)GetValue(NameProperty);
-        set => SetValue(NameProperty, value);
-    }
-
-    public bool UseDeadline
-    {
-        get => (bool)GetValue(UseDeadlineProperty);
-        set => SetValue(UseDeadlineProperty, value);
-    }
-
-    public DateTime Deadline
-    {
-        get => (DateTime)GetValue(DeadlineProperty);
-        set => SetValue(DeadlineProperty, value);
-    }
-
-    public Checklist.ChecklistColor ChecklistColor
-    {
-        get => (Checklist.ChecklistColor)GetValue(ChecklistColorProperty);
-        set => SetValue(ChecklistColorProperty, value);
-    }
-    
-    public ICommand SaveCommand
-    {
-        get => (ICommand)GetValue(SaveCommandProperty);
-        set => SetValue(SaveCommandProperty, value);
-    }
-
-    public ICommand CancelCommand
-    {
-        get => (ICommand)GetValue(CancelCommandProperty);
-        set => SetValue(CancelCommandProperty, value);
-    }
-    
-    public ICommand ImportCommand
-    {
-        get => (ICommand)GetValue(ImportCommandProperty);
-        set => SetValue(ImportCommandProperty, value);
+        get => (CreateChecklistPopupViewModel)GetValue(ViewModelProperty);
+        set => SetValue(ViewModelProperty, value);
     }
     
     public CreateChecklistPopup()
@@ -68,19 +26,17 @@ public partial class CreateChecklistPopup : Popup
 
     protected override void Back()
     {
-        Close(() => CancelCommand.Execute(null));
+        Close(() => ViewModel.CancelCommand.Execute(null));
     }
 
     protected override void CloseButtonClicked(object sender, EventArgs e)
     {
-        //CancelCommand.Execute(null);
-        //Close(new Action(() => CancelCommand.Execute(null)));
         Back();
     }
 
     private void ImportButtonClicked(object sender, EventArgs e)
     {
-        ImportCommand.Execute(() =>
+        ViewModel.ImportCommand.Execute(() =>
         {
             Close();
         });
@@ -88,9 +44,6 @@ public partial class CreateChecklistPopup : Popup
 
     private void SaveButtonClicked(object sender, EventArgs e)
     {
-        SaveCommand.Execute(() =>
-        {
-            Close();
-        });
+        ViewModel.SaveCommand.Execute(Back);
     }
 }

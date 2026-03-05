@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using ChecklistApp.Controls;
 using CommunityToolkit.Maui.Storage;
 
 namespace ChecklistApp.ViewModel
@@ -19,36 +20,38 @@ namespace ChecklistApp.ViewModel
         private NavigationService _navigationService;
         private IFileSaver _fileSaver;
         private INotificationManagerService _notificationService;
+        private CreateChecklistPopupViewModel _createChecklistVM;
 
         public ObservableCollection<SelectableChecklistCardViewModel> Checklists { get; set; } = [];
-        public Checklist ChecklistEntry { get; set; } = new Checklist { Deadline = DateTime.Now };
+
+        public CreateChecklistPopupViewModel CreateChecklistViewModel
+        {
+            get => _createChecklistVM;
+            set => _createChecklistVM = value;
+        }
 
         #region Commands
 
         public ICommand CreateNewCommand { get; set; }
         public ICommand GoToChecklistCommand { get; set; }
         public ICommand ExportChecklistsCommand { get; set; }
-        public ICommand SaveNewChecklistCommand { get; set; }
-        public ICommand CancelNewChecklistCommand { get; set; }
-        public ICommand ImportNewChecklistCommand { get; set; }
         public ICommand Test_SendNotificationCommand { get; set; }
         public ICommand Test_CancelNotificationCommand { get; set; }
 
         #endregion
 
-        public MainPageViewModel(ChecklistContext checklistContext, NavigationService navigationService, IFileSaver  fileSaver, INotificationManagerService notificationService)
+        public MainPageViewModel(ChecklistContext checklistContext, NavigationService navigationService, IFileSaver  fileSaver, INotificationManagerService notificationService, CreateChecklistPopupViewModel createChecklistVm)
         {
             _checklistContext = checklistContext;
             _navigationService = navigationService;
             _fileSaver = fileSaver;
             _notificationService = notificationService;
+            _createChecklistVM = createChecklistVm;
+            _createChecklistVM.ChecklistAdded += ReloadList;
 
             CreateNewCommand = new Command(CreateNew);
             GoToChecklistCommand = new Command<int>(GoToChecklist);
             ExportChecklistsCommand = new Command<Action>(ExportChecklists);
-            SaveNewChecklistCommand = new Command<Action>(SaveNewChecklist);
-            CancelNewChecklistCommand = new Command(CancelNewChecklist);
-            ImportNewChecklistCommand = new Command<Action>(ImportnewChecklist);
             
             Test_SendNotificationCommand = new Command(async () =>
             {
@@ -124,79 +127,6 @@ namespace ChecklistApp.ViewModel
             
             if (fileSaverResult.IsSuccessful)
                 callback?.Invoke();
-        }
-
-        private void SaveNewChecklist(Action callback = null)
-        {
-            if (ChecklistEntry.Name is null)
-                return;
-            
-            ChecklistEntry.Name = StringHelper.FormatItemName(ChecklistEntry.Name);
-            _checklistContext.CreateChecklist(ChecklistEntry);
-            ReloadList(this, new());
-            ChecklistEntry = new Checklist { Deadline = DateTime.Now };
-            OnPropertyChanged(nameof(ChecklistEntry));
-            callback?.Invoke();
-        }
-
-        private void CancelNewChecklist()
-        {
-            ChecklistEntry =  new Checklist { Deadline = DateTime.Now };
-            OnPropertyChanged(nameof(ChecklistEntry));
-        }
-
-        private async void ImportnewChecklist(Action callback = null)
-        {
-            try
-            {
-                PickOptions options = new PickOptions
-                {
-                    PickerTitle = "Select a .json file",
-                    FileTypes = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
-                    {
-                        { DevicePlatform.Android, ["application/json"] },
-                    })
-                };
-                var result = await FilePicker.Default.PickAsync(options);
-                if (result != null)
-                {
-                    var stream = await result.OpenReadAsync();
-                    try
-                    {
-                        Checklist checklist = JsonSerializer.Deserialize<Checklist>(stream);
-                        checklist.Id = 0;
-                        foreach (Item item in checklist.Items)
-                        {
-                            item.Id = 0;
-                        }
-
-                        _checklistContext.CreateChecklist(checklist);
-                    }
-                    catch (JsonException e)
-                    {
-                        stream = await result.OpenReadAsync();
-                        
-                        List<Checklist> checklists = JsonSerializer.Deserialize<List<Checklist>>(stream);
-                        foreach (Checklist checklist in checklists)
-                        {
-                            checklist.Id = 0;
-                            foreach (Item item in checklist.Items)
-                            {
-                                item.Id = 0;
-                                item.Checklist = checklist;
-                            }
-                            _checklistContext.CreateChecklist(checklist);
-                        }
-                        //_checklistContext.CreateChecklists(checklists);
-                    }
-                    ReloadList(this, EventArgs.Empty);
-                    callback?.Invoke();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
         }
 
         #endregion

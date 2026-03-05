@@ -9,7 +9,7 @@ public class NotificationViewModel : ViewModel
         Minutes, 
         Hours, 
         Days
-    }
+    } 
     
     private Notification _notification;
     private TimeScale _scale;
@@ -35,7 +35,7 @@ public class NotificationViewModel : ViewModel
             switch (Scale)
             {
                 case TimeScale.Minutes:
-                    _notification.Value = new TimeSpan(0, value, 0);
+                    _notification.Value = new TimeSpan(0, Math.Clamp(value, 0, 60), 0);
                     break;
                 case TimeScale.Hours:
                     _notification.Value = new TimeSpan(value,0, 0);

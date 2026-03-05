@@ -28,6 +28,11 @@ public class MainApplication : MauiApplication
 			r.PlatformView.BackgroundTintList = 
 				Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.ParseColor("#424A4E"));
 		});
+		Microsoft.Maui.Handlers.PickerHandler.Mapper.AppendToMapping("RemoveUnderline", (r, v) =>
+		{
+			r.PlatformView.BackgroundTintList =
+				Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.ParseColor("#757575"));
+		});
 
 		return MauiProgram.CreateMauiApp();
 	}

@@ -1,6 +1,8 @@
+using System.ComponentModel;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
 using System.Windows.Input;
+using Microsoft.Maui.Controls.Shapes;
 
 namespace ChecklistApp.Controls;
 

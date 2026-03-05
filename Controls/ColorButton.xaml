@@ -5,7 +5,6 @@
              x:Class="ChecklistApp.Controls.ColorButton">
     <Grid BindingContext="{x:Reference this}" IsClippedToBounds="False" Margin="7.5">
         <Border BackgroundColor="{Binding BackgroundColor}"
-               StrokeShape="RoundRectangle 8,8,8,8"
                Padding="0"
                HeightRequest="{Binding Width, Source={RelativeSource AncestorType={x:Type Grid}}}">
             <Border.Shadow>

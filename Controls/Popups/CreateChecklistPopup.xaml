@@ -10,10 +10,10 @@
           BindingContext="{x:Reference NewChecklist}">
         <ScrollView>
             <controls:ChecklistMetaEditor Margin="10"
-                                          Name="{Binding Name}"
-                                          UseDeadline="{Binding UseDeadline}"
-                                          Deadline="{Binding Deadline}"
-                                          ChecklistColor="{Binding ChecklistColor, Mode=TwoWay}" />
+                                          Name="{Binding ViewModel.Name}"
+                                          UseDeadline="{Binding ViewModel.UseDeadline}"
+                                          Deadline="{Binding ViewModel.Deadline}"
+                                          ChecklistColor="{Binding ViewModel.Color, Mode=TwoWay}" />
         </ScrollView>
         
         <controls:ControlBar Grid.Row="1">

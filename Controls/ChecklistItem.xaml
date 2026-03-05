@@ -28,7 +28,6 @@
         
         <Border Grid.ColumnSpan="3" 
                 Background="{StaticResource ForegroundBrush}"
-                StrokeShape="RoundRectangle 8,8,8,8"
                 Padding="0">
             <Border.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding ToggleIsEditingCommand}" />

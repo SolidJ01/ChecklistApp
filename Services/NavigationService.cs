@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Java.Security;
 
 namespace ChecklistApp.Services
 {
@@ -27,7 +28,8 @@ namespace ChecklistApp.Services
                     await Shell.Current.GoToAsync($"//{nameof(MainPage)}", true);
                     break;
                 case NavigationTarget.CreateChecklist:
-                    await Shell.Current.GoToAsync($"{nameof(CreateChecklistPage)}", true);
+                    //await Shell.Current.GoToAsync($"{nameof(CreateChecklistPage)}", true);
+                    throw new InvalidParameterException("Page no longer exists");
                     break;
                 case NavigationTarget.Checklist:
                     throw new Exception("Must pass a Checklist index to navigate to");
@@ -48,10 +50,12 @@ namespace ChecklistApp.Services
                     await Shell.Current.GoToAsync($"{nameof(ChecklistPage)}?id={id}");
                     break;
                 case NavigationTarget.ChecklistOptions:
-                    await Shell.Current.GoToAsync($"{nameof(ChecklistOptionsPage)}?id={id}");
+                    //await Shell.Current.GoToAsync($"{nameof(ChecklistOptionsPage)}?id={id}");
+                    throw new InvalidParameterException("Page no longer exists");
                     break;
                 case NavigationTarget.CreateItem:
-                    await Shell.Current.GoToAsync($"{nameof(CreateItemPage)}?id={id}");
+                    //await Shell.Current.GoToAsync($"{nameof(CreateItemPage)}?id={id}");
+                    throw new InvalidParameterException("Page no longer exists");
                     break;
                 default:
                     NavigateTo(target);

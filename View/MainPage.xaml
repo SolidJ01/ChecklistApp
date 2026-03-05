@@ -48,13 +48,7 @@
                                        Grid.RowSpan="2"/>
         <controls:CreateChecklistPopup x:Name="CreateChecklistPopup"
                                        BackButtonActionChanged="OnBackButtonActionChanged"
-                                       Name="{Binding ChecklistEntry.Name}"
-                                       UseDeadline="{Binding ChecklistEntry.UseDeadline}"
-                                       Deadline="{Binding ChecklistEntry.Deadline}"
-                                       ChecklistColor="{Binding ChecklistEntry.Color, Mode=TwoWay}"
-                                       SaveCommand="{Binding SaveNewChecklistCommand}"
-                                       CancelCommand="{Binding CancelNewChecklistCommand}"
-                                       ImportCommand="{Binding ImportNewChecklistCommand}"
+                                       ViewModel="{Binding CreateChecklistViewModel}"
                                        Grid.Row="0"
                                        Grid.RowSpan="2" />
     </Grid>

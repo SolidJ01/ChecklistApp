@@ -11,10 +11,10 @@ using System.Windows.Input;
 
 namespace ChecklistApp.ViewModel
 {
-    public class CreateChecklistPageViewModel : ViewModel
+    public class CreateChecklistPopupViewModel : ViewModel
     {
+        public event EventHandler ChecklistAdded;
         private ChecklistContext _checklistContext;
-        private NavigationService _navigationService;
         private Checklist _checklist;
 
         #region Properties
@@ -28,36 +28,47 @@ namespace ChecklistApp.ViewModel
 
         #region Commands
 
-        public ICommand BackCommand { get; set; }
+        public ICommand CancelCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand ImportCommand { get; set; }
 
         #endregion
 
-        public CreateChecklistPageViewModel(ChecklistContext checklistContext, NavigationService navigationService)
+        public CreateChecklistPopupViewModel(ChecklistContext checklistContext)
         {
             _checklistContext = checklistContext;
-            _navigationService = navigationService;
-            _checklist = new Checklist();
-            _checklist.Deadline = DateTime.Now;
+            ResetChecklist();
 
-            BackCommand = new Command(Back);
-            SaveCommand = new Command(Save);
-            ImportCommand = new Command(Import);
+            CancelCommand = new Command(Cancel);
+            SaveCommand = new Command<Action>(Save);
+            ImportCommand = new Command<Action>(Import);
         }
 
-        private void Back()
+        private void ResetChecklist()
         {
-            _navigationService.NavigateTo(NavigationService.NavigationTarget.Back);
+            _checklist = new Checklist { Deadline = DateTime.Now };
+            OnPropertyChanged(nameof(Name));
+            OnPropertyChanged(nameof(UseDeadline));
+            OnPropertyChanged(nameof(Deadline));
+            OnPropertyChanged(nameof(Color));
         }
 
-        private void Save()
+        private void Cancel()
         {
+            ResetChecklist();
+        }
+
+        private void Save(Action callback = null)
+        {
+            if (Name is null)
+                return;
+            
             try
             {
                 _checklist.Name = StringHelper.FormatItemName(Name);
                 _checklistContext.CreateChecklist(_checklist);
-                _navigationService.NavigateTo(NavigationService.NavigationTarget.Home);
+                ChecklistAdded?.Invoke(this, EventArgs.Empty);
+                callback?.Invoke();
             }
             catch
             {
@@ -65,7 +76,7 @@ namespace ChecklistApp.ViewModel
             }
         }
 
-        private async void Import()
+        private async void Import(Action callback = null)
         {
             try
             {
@@ -109,7 +120,8 @@ namespace ChecklistApp.ViewModel
                         }
                         //_checklistContext.CreateChecklists(checklists);
                     }
-                    Back();
+                    ChecklistAdded?.Invoke(this, EventArgs.Empty);
+                    callback?.Invoke();
                 }
             }
             catch (Exception e)

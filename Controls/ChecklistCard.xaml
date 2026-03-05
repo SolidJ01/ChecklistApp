@@ -5,7 +5,6 @@
              x:Name="this"
              x:Class="ChecklistApp.Controls.ChecklistCard">
     <Border BindingContext="{x:Reference this}"
-           StrokeShape="RoundRectangle 8,8,8,8"
            StrokeThickness="0"
            Padding="0"
            HeightRequest="95">
@@ -13,7 +12,8 @@
             <TapGestureRecognizer Command="{Binding Command}" CommandParameter="{Binding Checklist.Id}" />
         </Border.GestureRecognizers>
         <Grid RowDefinitions="*, 8">
-            <Border Background="{StaticResource ForegroundBrush}">
+            <Border Background="{StaticResource ForegroundBrush}"
+                    StrokeShape="Rectangle">
                 <Border.Style>
                     <Style TargetType="Border">
                         <Style.Triggers>

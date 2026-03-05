@@ -9,4 +9,5 @@
     <valueconverters:ChecklistColorToBooleanConverter x:Key="ChecklistColorToBool" />
     <valueconverters:FloatToProgressBarLayoutBoundsConverter x:Key="FloatToProgress" />
     <valueconverters:ConditionalItemDisplayConverter x:Key="ConditionalDisplay" />
+    <valueconverters:GreaterThanZeroConverter x:Key="GreaterThanZero" />
 </ResourceDictionary>

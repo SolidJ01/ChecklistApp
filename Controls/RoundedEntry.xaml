@@ -4,7 +4,6 @@
              x:Name="this"
              x:Class="ChecklistApp.Controls.RoundedEntry">
     <Frame BindingContext="{x:Reference this}"
-           CornerRadius="8"
            IsClippedToBounds="True"
            BackgroundColor="{StaticResource ForegroundDark}"
            Padding="0">

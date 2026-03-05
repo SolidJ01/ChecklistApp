@@ -34,20 +34,14 @@ public static class MauiProgram
 		#endif
 
 		builder.Services.AddTransient<MainPageViewModel>();
+		builder.Services.AddTransient<CreateChecklistPopupViewModel>();
 		builder.Services.AddTransient<MainPage>();
 
-		builder.Services.AddTransient<CreateChecklistPageViewModel>();
-		builder.Services.AddTransient<CreateChecklistPage>();
-		builder.Services.AddTransient<CreateChecklistPopup>();
 
 		builder.Services.AddTransient<ChecklistPageViewModel>();
-		builder.Services.AddTransient<ChecklistPage>();
-
 		builder.Services.AddTransient<ChecklistOptionsPageViewModel>();
-		builder.Services.AddTransient<ChecklistOptionsPage>();
-
 		builder.Services.AddTransient<CreateItemPageViewModel>();
-		builder.Services.AddTransient<CreateItemPage>();
+		builder.Services.AddTransient<ChecklistPage>();
 
 		return builder.Build();
 	}

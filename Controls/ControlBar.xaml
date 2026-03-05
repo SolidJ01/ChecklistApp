@@ -5,7 +5,7 @@
     <ContentView.ControlTemplate>
         <ControlTemplate>
             <Border Padding="10,10,10,10" 
-                   Background="{StaticResource BackgroundBrush}">
+                    Background="{StaticResource BackgroundBrush}">
                 <Border.Shadow>
                     <Shadow Brush="{StaticResource BackgroundBrush}"
                             Offset="0, -6"
