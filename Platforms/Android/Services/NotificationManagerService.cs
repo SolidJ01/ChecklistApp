@@ -38,7 +38,7 @@ public class NotificationManagerService : INotificationManagerService
         }
     }
 
-    public void SendNotification(string title, string message, DateTime? notifyTime = null)
+    public void SendNotification(int id, string title, string message, DateTime? notifyTime = null)
     {
         if (!channelInitialized)
         {
@@ -56,7 +56,7 @@ public class NotificationManagerService : INotificationManagerService
                 ? PendingIntentFlags.CancelCurrent | PendingIntentFlags.Immutable
                 : PendingIntentFlags.CancelCurrent;
 
-            PendingIntent pendingIntent = PendingIntent.GetBroadcast(Platform.AppContext, pendingIntentId++, intent, pendingIntentFlags);
+            PendingIntent pendingIntent = PendingIntent.GetBroadcast(Platform.AppContext, id, intent, pendingIntentFlags);
             long triggerTime = GetNotifyTime(notifyTime.Value);
             AlarmManager alarmManager = Platform.AppContext.GetSystemService(Context.AlarmService) as AlarmManager;
             alarmManager.Set(AlarmType.RtcWakeup, triggerTime, pendingIntent);
@@ -67,13 +67,13 @@ public class NotificationManagerService : INotificationManagerService
         }
     }
 
-    public void CancelNotification()
+    public void CancelNotification(int id)
     {
         Intent intent = new Intent(Platform.AppContext, typeof(AlarmHandler));
         var pendingIntentFlags = (Build.VERSION.SdkInt >= BuildVersionCodes.S)
             ? PendingIntentFlags.CancelCurrent | PendingIntentFlags.Immutable
             : PendingIntentFlags.CancelCurrent;
-        PendingIntent pendingIntent = PendingIntent.GetBroadcast(Platform.AppContext, pendingIntentId - 1, intent, pendingIntentFlags);
+        PendingIntent pendingIntent = PendingIntent.GetBroadcast(Platform.AppContext, id, intent, pendingIntentFlags);
         AlarmManager alarmManager = Platform.AppContext.GetSystemService(Context.AlarmService) as AlarmManager;
         
         alarmManager.Cancel(pendingIntent);

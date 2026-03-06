@@ -16,6 +16,7 @@ namespace ChecklistApp.ViewModel
     {
         public event EventHandler ChecklistAdded;
         private ChecklistContext _checklistContext;
+        private INotificationManagerService _notificationManagerService;
         private Checklist _checklist;
         private bool _notificationsEnabled;
 
@@ -47,9 +48,10 @@ namespace ChecklistApp.ViewModel
 
         #endregion
 
-        public CreateChecklistPopupViewModel(ChecklistContext checklistContext)
+        public CreateChecklistPopupViewModel(ChecklistContext checklistContext, INotificationManagerService notificationManagerService)
         {
             _checklistContext = checklistContext;
+            _notificationManagerService = notificationManagerService;
             ResetChecklist();
 
             CancelCommand = new Command(Cancel);
@@ -83,10 +85,22 @@ namespace ChecklistApp.ViewModel
             try
             {
                 _checklist.Name = StringHelper.FormatItemName(Name);
-                // _checklist.Notifications = NotificationsEnabled ? Notifications.Select(x => x.Notification).ToList() : [];
-                // foreach (Notification notification in _checklist.Notifications)
-                //     notification.Checklist = _checklist;
+                _checklist.Notifications = NotificationsEnabled ? Notifications.Select(x => x.Notification).ToList() : [];
+                foreach (Notification notification in _checklist.Notifications) 
+                    notification.Checklist = _checklist;
                 _checklistContext.CreateChecklist(_checklist);
+
+                foreach (Notification notification in _checklist.Notifications)
+                {
+                    _notificationManagerService.SendNotification
+                    (
+                        notification.Id, 
+                        StringHelper.GenerateNotificationTitle(notification), 
+                        StringHelper.GenerateNotificationMessage(notification), 
+                        _checklist.Deadline.Subtract(notification.Value)
+                    );
+                }
+                
                 ChecklistAdded?.Invoke(this, EventArgs.Empty);
                 callback?.Invoke();
             }

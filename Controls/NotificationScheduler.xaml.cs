@@ -39,10 +39,12 @@ public partial class NotificationScheduler : ContentView
     // }
     
     public ICommand AddCommand { get; set; }
+    public ICommand ToggleNotificationsEnabledCommand { get; set; }
     
     public NotificationScheduler()
     {
         AddCommand = new Command(Add);
+        ToggleNotificationsEnabledCommand = new Command(() => ToggleNotificationsEnabled());
         InitializeComponent();
     }
 
@@ -66,5 +68,18 @@ public partial class NotificationScheduler : ContentView
             }
         }
         Notifications.Add(new NotificationViewModel(new Notification { Value = timeSpan }));
+    }
+
+    private async Task ToggleNotificationsEnabled()
+    {
+        if (NotificationsEnabled)
+        {
+            NotificationsEnabled = !NotificationsEnabled;
+            return;
+        }
+        PermissionStatus status = await Permissions.RequestAsync<NotificationPermission>();
+        if (status != PermissionStatus.Granted)
+            return;
+        NotificationsEnabled = !NotificationsEnabled;
     }
 }

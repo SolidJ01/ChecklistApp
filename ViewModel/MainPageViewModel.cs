@@ -58,11 +58,11 @@ namespace ChecklistApp.ViewModel
                 PermissionStatus status = await Permissions.RequestAsync<NotificationPermission>();
                 if (status != PermissionStatus.Granted)
                     return;
-                _notificationService.SendNotification("Title", "Message", DateTime.Now.AddSeconds(10));
+                //_notificationService.SendNotification("Title", "Message", DateTime.Now.AddSeconds(10));
             });
             Test_CancelNotificationCommand = new Command(() =>
             {
-                _notificationService.CancelNotification();
+                //_notificationService.CancelNotification();
             });
         }
 

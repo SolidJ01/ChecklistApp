@@ -25,7 +25,7 @@ namespace ChecklistApp.Model
         public bool UseDeadline { get; set; }
         public DateTime Deadline { get; set; }
         public List<Item> Items { get; set; }
-        //public List<Notification> Notifications { get; set; }
+        public List<Notification> Notifications { get; set; }
 
         public override bool Equals(object obj)
         {
