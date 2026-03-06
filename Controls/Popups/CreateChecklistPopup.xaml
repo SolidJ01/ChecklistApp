@@ -13,7 +13,9 @@
                                           Name="{Binding ViewModel.Name}"
                                           UseDeadline="{Binding ViewModel.UseDeadline}"
                                           Deadline="{Binding ViewModel.Deadline}"
-                                          ChecklistColor="{Binding ViewModel.Color, Mode=TwoWay}" />
+                                          ChecklistColor="{Binding ViewModel.Color, Mode=TwoWay}"
+                                          NotificationsEnabled="{Binding ViewModel.NotificationsEnabled}"
+                                          Notifications="{Binding ViewModel.Notifications}" />
         </ScrollView>
         
         <controls:ControlBar Grid.Row="1">

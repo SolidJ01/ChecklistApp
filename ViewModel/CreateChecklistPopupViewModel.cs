@@ -3,6 +3,7 @@ using ChecklistApp.Model;
 using ChecklistApp.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -16,6 +17,7 @@ namespace ChecklistApp.ViewModel
         public event EventHandler ChecklistAdded;
         private ChecklistContext _checklistContext;
         private Checklist _checklist;
+        private bool _notificationsEnabled;
 
         #region Properties
 
@@ -23,6 +25,17 @@ namespace ChecklistApp.ViewModel
         public bool UseDeadline { get { return _checklist.UseDeadline; } set { _checklist.UseDeadline = value; } }
         public DateTime Deadline { get { return _checklist.Deadline; } set { _checklist.Deadline = value; } }
         public Checklist.ChecklistColor Color { get { return _checklist.Color; } set { _checklist.Color = value; } }
+
+        public bool NotificationsEnabled
+        {
+            get { return _notificationsEnabled; }
+            set
+            {
+                _notificationsEnabled = value; 
+                OnPropertyChanged(nameof(NotificationsEnabled));
+            }
+        }
+        public ObservableCollection<NotificationViewModel> Notifications { get; set; }
 
         #endregion
 
@@ -47,10 +60,14 @@ namespace ChecklistApp.ViewModel
         private void ResetChecklist()
         {
             _checklist = new Checklist { Deadline = DateTime.Now };
+            NotificationsEnabled = false;
+            Notifications = [];
             OnPropertyChanged(nameof(Name));
             OnPropertyChanged(nameof(UseDeadline));
             OnPropertyChanged(nameof(Deadline));
             OnPropertyChanged(nameof(Color));
+            OnPropertyChanged(nameof(NotificationsEnabled));
+            OnPropertyChanged(nameof(Notifications));
         }
 
         private void Cancel()
@@ -66,6 +83,9 @@ namespace ChecklistApp.ViewModel
             try
             {
                 _checklist.Name = StringHelper.FormatItemName(Name);
+                // _checklist.Notifications = NotificationsEnabled ? Notifications.Select(x => x.Notification).ToList() : [];
+                // foreach (Notification notification in _checklist.Notifications)
+                //     notification.Checklist = _checklist;
                 _checklistContext.CreateChecklist(_checklist);
                 ChecklistAdded?.Invoke(this, EventArgs.Empty);
                 callback?.Invoke();

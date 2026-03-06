@@ -12,6 +12,7 @@ namespace ChecklistApp.Data
     {
         private DbSet<Checklist> Checklists { get; set; }
         private DbSet<Item> Items { get; set; }
+        private DbSet<Notification> Notifications { get; set; }
 
         public ChecklistContext(DbContextOptions dbContextOptions) : base(dbContextOptions) 
         {

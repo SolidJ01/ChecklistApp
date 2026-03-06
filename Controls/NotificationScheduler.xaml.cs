@@ -12,10 +12,10 @@ namespace ChecklistApp.Controls;
 
 public partial class NotificationScheduler : ContentView
 {
-    public static readonly BindableProperty NotificationsEnabledProperty = BindableProperty.Create(nameof(NotificationsEnabled), typeof(bool), typeof(NotificationScheduler), false);
+    public static readonly BindableProperty NotificationsEnabledProperty = BindableProperty.Create(nameof(NotificationsEnabled), typeof(bool), typeof(NotificationScheduler), false, BindingMode.TwoWay);
     public static readonly BindableProperty NotificationsProperty = BindableProperty.Create(nameof(Notifications), typeof(ObservableCollection<NotificationViewModel>), typeof(NotificationScheduler), new ObservableCollection<NotificationViewModel>(), BindingMode.TwoWay);
 
-    private bool _useNotifications = false;
+    //private bool _useNotifications = false;
     
     public bool NotificationsEnabled
     {
@@ -28,15 +28,15 @@ public partial class NotificationScheduler : ContentView
         set => SetValue(NotificationsProperty, value);
     }
 
-    public bool UseNotifications
-    {
-        get => _useNotifications;
-        set
-        {
-            _useNotifications = value;
-            OnPropertyChanged();
-        }
-    }
+    // public bool UseNotifications
+    // {
+    //     get => _useNotifications;
+    //     set
+    //     {
+    //         _useNotifications = value;
+    //         OnPropertyChanged();
+    //     }
+    // }
     
     public ICommand AddCommand { get; set; }
     

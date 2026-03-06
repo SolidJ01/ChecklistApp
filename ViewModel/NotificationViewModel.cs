@@ -60,6 +60,8 @@ public class NotificationViewModel : ViewModel
             OnPropertyChanged(nameof(Scale));
         }
     }
+    
+    public Notification Notification { get => _notification; }
 
     public NotificationViewModel(Notification notification)
     {

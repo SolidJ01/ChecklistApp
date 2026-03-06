@@ -10,12 +10,12 @@
         <CollectionView.ItemsSource>
             <MultiBinding Converter="{StaticResource ConditionalDisplay}">
                 <Binding Path="Notifications" />
-                <Binding Path="UseNotifications" />
+                <Binding Path="NotificationsEnabled" />
             </MultiBinding>
         </CollectionView.ItemsSource>
         <CollectionView.Header>
             <FlexLayout Direction="Row">
-                <Controls:RoundedCheckbox IsChecked="{Binding UseNotifications, Mode=TwoWay}"
+                <Controls:RoundedCheckbox IsChecked="{Binding NotificationsEnabled}"
                                           HeightRequest="50"
                                           WidthRequest="50" />
                 <Label FontSize="22" 
@@ -29,7 +29,7 @@
                         FontFamily="FontAwSolid"
                         TextColor="{StaticResource Text}"
                         Command="{Binding AddCommand}"
-                        IsVisible="{Binding UseNotifications}"
+                        IsVisible="{Binding NotificationsEnabled}"
                         HeightRequest="50"
                         WidthRequest="50" />
             </FlexLayout>
