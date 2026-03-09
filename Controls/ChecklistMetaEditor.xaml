@@ -19,7 +19,7 @@
             <controls:RoundedCheckbox Grid.Column="0" 
                                       IsChecked="{Binding UseDeadline}"
                                       Command="{Binding UseDeadlineUpdatedComand}"/>
-            <controls:DateTimePicker Grid.Column="1" Margin="0,0,0,0" Use="{Binding UseDeadline}" Value="{Binding Deadline, Mode=TwoWay}" />
+            <controls:DateTimePicker Grid.Column="1" Margin="10,0,0,0" Use="{Binding UseDeadline}" Value="{Binding Deadline, Mode=TwoWay}" />
         </Grid>
         <controls:NotificationScheduler x:Name="NotificationScheduler"
                                         IsVisible="{Binding UseDeadline}"

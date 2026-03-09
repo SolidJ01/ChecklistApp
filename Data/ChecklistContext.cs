@@ -94,6 +94,15 @@ namespace ChecklistApp.Data
             await SaveChangesAsync();
         }
 
+        public async void DeleteNotification(Notification notification)
+        {
+            if (notification is null || !Notifications.Contains(notification))
+                return;
+            
+            Notifications.Remove(notification);
+            await SaveChangesAsync();
+        }
+
         public void DiscardChanges()
         {
             var changedEntries = ChangeTracker.Entries().Where(x => x.State != EntityState.Unchanged).ToList();

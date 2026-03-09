@@ -39,7 +39,7 @@
                    FontAttributes="Bold"
                    HorizontalTextAlignment="Start"
                    VerticalTextAlignment="Center"
-                   Margin="10,0"
+                   Margin="0,0"
                    IsVisible="{Binding Use, Converter={StaticResource BooleanInverter}}">
             </Label>
         </Grid>

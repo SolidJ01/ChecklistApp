@@ -39,11 +39,13 @@ public partial class NotificationScheduler : ContentView
     // }
     
     public ICommand AddCommand { get; set; }
+    public ICommand RemoveCommand { get; set; }
     public ICommand ToggleNotificationsEnabledCommand { get; set; }
     
     public NotificationScheduler()
     {
         AddCommand = new Command(Add);
+        RemoveCommand = new Command<NotificationViewModel>(Remove);
         ToggleNotificationsEnabledCommand = new Command(() => ToggleNotificationsEnabled());
         InitializeComponent();
     }
@@ -68,6 +70,12 @@ public partial class NotificationScheduler : ContentView
             }
         }
         Notifications.Add(new NotificationViewModel(new Notification { Value = timeSpan }));
+    }
+
+    private void Remove(NotificationViewModel notification)
+    {
+        try { Notifications.Remove(notification); }
+        catch (Exception e) { Console.WriteLine(e.Message); }
     }
 
     private async Task ToggleNotificationsEnabled()

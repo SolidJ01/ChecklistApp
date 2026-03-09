@@ -20,6 +20,7 @@ namespace ChecklistApp.ViewModel
         private ChecklistContext _checklistContext;
         private NavigationService _navigationService;
         private IFileSaver _fileSaver;
+        private INotificationManagerService _notificationService;
         private Checklist _checklist;
 
         #region Properties
@@ -59,11 +60,12 @@ namespace ChecklistApp.ViewModel
 
         #endregion
 
-        public ChecklistPageViewModel(ChecklistContext checklistContext, NavigationService navigationService, IFileSaver fileSaver)
+        public ChecklistPageViewModel(ChecklistContext checklistContext, NavigationService navigationService, IFileSaver fileSaver, INotificationManagerService notificationService)
         {
             _checklistContext = checklistContext;
             _navigationService = navigationService;
             _fileSaver = fileSaver;
+            _notificationService = notificationService;
 
             BackCommand = new Command(Back);
             OptionsCommand = new Command(Options);
@@ -206,7 +208,26 @@ namespace ChecklistApp.ViewModel
             _checklist.UseDeadline = ChecklistEditEntry.UseDeadline;
             _checklist.Deadline = ChecklistEditEntry.Deadline;
             _checklist.Color = ChecklistEditEntry.Color;
-            _checklistContext.UpdateChecklist(_checklist);
+
+            List<Notification> newNotifications = ChecklistEditEntryNotifications.Select(x => x.Notification).ToList();
+            foreach (Notification notification in _checklist.Notifications)
+            {
+                _notificationService.CancelNotification(notification.Id);
+            }
+            foreach (Notification notification in _checklist.Notifications.Where(x => !newNotifications.Contains(x)).ToList())
+            {
+                _checklist.Notifications.Remove(notification);
+                _checklistContext.DeleteNotification(notification);
+            }
+
+            _checklist.Notifications = newNotifications;
+            
+            _ = _checklistContext.UpdateChecklist(_checklist);
+
+            foreach (Notification notification in _checklist.Notifications)
+            {
+                _notificationService.SendNotification(notification.Id, StringHelper.GenerateNotificationTitle(notification), StringHelper.GenerateNotificationMessage(notification), _checklist.Deadline.Subtract(notification.Value));
+            }
             
             RetrieveChecklist(this, EventArgs.Empty);
             callback?.Invoke();
@@ -214,6 +235,13 @@ namespace ChecklistApp.ViewModel
 
         private void DeleteChecklist()
         {
+            for (int i = _checklist.Notifications.Count - 1; i >= 0; i--)
+            {
+                Notification notification = _checklist.Notifications[i];
+                _notificationService.CancelNotification(notification.Id);
+                _checklistContext.DeleteNotification(notification);
+            }
+            
             _checklistContext.DeleteChecklist(_checklist);
             _navigationService.NavigateTo(NavigationService.NavigationTarget.Home);
         }
