@@ -22,7 +22,7 @@ namespace ChecklistApp.Services
 
         public static string GenerateNotificationMessage(Notification notification)
         {
-            return $"Only {notification.Value.Humanize()} left";
+            return $"{notification.Value.Humanize()} remaining";
         }
     }
 }

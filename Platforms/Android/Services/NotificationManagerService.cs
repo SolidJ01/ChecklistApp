@@ -74,6 +74,10 @@ public class NotificationManagerService : INotificationManagerService
             ? PendingIntentFlags.CancelCurrent | PendingIntentFlags.Immutable
             : PendingIntentFlags.CancelCurrent;
         PendingIntent pendingIntent = PendingIntent.GetBroadcast(Platform.AppContext, id, intent, pendingIntentFlags);
+
+        if (pendingIntent is null)
+            return;
+        
         AlarmManager alarmManager = Platform.AppContext.GetSystemService(Context.AlarmService) as AlarmManager;
         
         alarmManager.Cancel(pendingIntent);
