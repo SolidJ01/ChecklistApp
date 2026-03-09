@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Maui.Storage;
 
 namespace ChecklistApp.ViewModel
@@ -29,7 +30,9 @@ namespace ChecklistApp.ViewModel
 
         public ObservableCollection<ItemViewModel> Items { get; set; } = [];
 
-        public Checklist ChecklistEditEntry { get; set; } = new() { Deadline = DateTime.Now };
+        public Checklist ChecklistEditEntry { get; set; } = new() { Deadline = DateTime.Now, Notifications = []};
+        public bool ChecklistEditEntryUseNotifications { get; set; } = false;
+        public ObservableCollection<NotificationViewModel> ChecklistEditEntryNotifications { get; set; } = [];
         
         public ObservableCollection<Item> ItemsToAdd { get; set; } = [];
 
@@ -156,14 +159,7 @@ namespace ChecklistApp.ViewModel
             }
             foreach (var item in _checklist.Items)
                 item.Checklist = _checklist;
-            ChecklistEditEntry = new()
-            {
-                Name = _checklist.Name,
-                UseDeadline = _checklist.UseDeadline,
-                Deadline = _checklist.Deadline,
-                Color = _checklist.Color
-            };
-            OnPropertyChanged(nameof(ChecklistEditEntry));
+            ResetEditEntry();
             
             _checklist.Items = _checklist.Items.OrderBy(x => x.IsChecked).ThenBy(x => x.Name).ToList();
 
@@ -201,14 +197,7 @@ namespace ChecklistApp.ViewModel
 
         private void CancelChecklistEdit()
         {
-            ChecklistEditEntry = new()
-            {
-                Name = _checklist.Name,
-                UseDeadline = _checklist.UseDeadline,
-                Deadline = _checklist.Deadline,
-                Color = _checklist.Color
-            };
-            OnPropertyChanged(nameof(ChecklistEditEntry));
+            ResetEditEntry();
         }
 
         private void SaveChecklist(Action callback = null)
@@ -227,6 +216,25 @@ namespace ChecklistApp.ViewModel
         {
             _checklistContext.DeleteChecklist(_checklist);
             _navigationService.NavigateTo(NavigationService.NavigationTarget.Home);
+        }
+
+        private void ResetEditEntry()
+        {
+            ChecklistEditEntry = new()
+            {
+                Name = _checklist.Name,
+                UseDeadline = _checklist.UseDeadline,
+                Deadline = _checklist.Deadline,
+                Color = _checklist.Color,
+                Notifications = _checklist.Notifications
+            };
+            OnPropertyChanged(nameof(ChecklistEditEntry));
+
+            ChecklistEditEntryUseNotifications = _checklist.Notifications.Count > 0;
+            OnPropertyChanged(nameof(ChecklistEditEntryUseNotifications));
+
+            ChecklistEditEntryNotifications = _checklist.Notifications.Select(x => new NotificationViewModel(x)).ToObservableCollection();
+            OnPropertyChanged(nameof(ChecklistEditEntryNotifications));
         }
         
         #endregion

@@ -12,7 +12,9 @@
                                           Name="{Binding Name}"
                                           UseDeadline="{Binding UseDeadline}"
                                           Deadline="{Binding Deadline}"
-                                          ChecklistColor="{Binding ChecklistColor, Mode=TwoWay}" />
+                                          ChecklistColor="{Binding ChecklistColor, Mode=TwoWay}"
+                                          NotificationsEnabled="{Binding NotificationsEnabled}"
+                                          Notifications="{Binding Notifications}" />
         </ScrollView>
         
         <controls:ControlBar Grid.Row="1">

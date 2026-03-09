@@ -15,7 +15,8 @@
         </CollectionView.ItemsSource>
         <CollectionView.Header>
             <FlexLayout Direction="Row">
-                <Controls:RoundedCheckbox IsChecked="{Binding NotificationsEnabled, Mode=OneWay}"
+                <Controls:RoundedCheckbox x:Name="Checkbox"
+                                          IsChecked="{Binding NotificationsEnabled, Mode=OneWay}"
                                           Command="{Binding ToggleNotificationsEnabledCommand}"
                                           HeightRequest="50"
                                           WidthRequest="50" />

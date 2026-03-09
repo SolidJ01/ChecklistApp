@@ -66,5 +66,10 @@ public class NotificationViewModel : ViewModel
     public NotificationViewModel(Notification notification)
     {
         _notification = notification;
+        _scale = _notification.Value.Minutes > 0 
+            ? TimeScale.Minutes
+            : _notification.Value.Hours > 0
+                ? TimeScale.Hours
+                : TimeScale.Days;
     }
 }

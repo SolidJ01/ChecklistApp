@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 using ChecklistApp.Model;
 using ChecklistApp.ViewModel;
 
@@ -53,8 +54,21 @@ public partial class ChecklistMetaEditor : ContentView
 		set => SetValue(ChecklistColorProperty, value);
     }
 
+	public ICommand UseDeadlineUpdatedComand { get; set; }
+
     public ChecklistMetaEditor()
 	{
+		UseDeadlineUpdatedComand = new Command(OnUseDeadlineUpdated);
 		InitializeComponent();
+	}
+
+	private void OnUseDeadlineUpdated()
+	{
+		if (UseDeadline)
+			return;
+
+		NotificationScheduler.DisableNotifications();
+		//NotificationsEnabled = false;
+		//OnPropertyChanged(nameof(NotificationsEnabled));
 	}
 }

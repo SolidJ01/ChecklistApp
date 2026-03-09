@@ -56,6 +56,8 @@
                                             UseDeadline="{Binding ChecklistEditEntry.UseDeadline}"
                                             Deadline="{Binding ChecklistEditEntry.Deadline}"
                                             ChecklistColor="{Binding ChecklistEditEntry.Color}"
+                                            NotificationsEnabled="{Binding ChecklistEditEntryUseNotifications}"
+                                            Notifications="{Binding ChecklistEditEntryNotifications}"
                                             DeleteCommand="{Binding DeleteChecklistCommand}"
                                             ExportCommand="{Binding ExportChecklistCommand}"
                                             CancelCommand="{Binding CancelChecklistEditCommand}"

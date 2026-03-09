@@ -82,4 +82,11 @@ public partial class NotificationScheduler : ContentView
             return;
         NotificationsEnabled = !NotificationsEnabled;
     }
+
+    public void DisableNotifications()
+    {
+        NotificationsEnabled = false;
+        Checkbox.IsChecked = NotificationsEnabled;
+        
+    }
 }

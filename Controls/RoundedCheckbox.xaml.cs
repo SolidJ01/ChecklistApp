@@ -22,7 +22,13 @@ public partial class RoundedCheckbox : ContentView
 	}
 
 
-	public static readonly BindableProperty IsCheckedProperty = BindableProperty.Create(nameof(IsChecked), typeof(bool), typeof(RoundedCheckbox), false, BindingMode.TwoWay);
+	public static readonly BindableProperty IsCheckedProperty = BindableProperty.Create(nameof(IsChecked), typeof(bool), typeof(RoundedCheckbox), false, BindingMode.TwoWay, propertyChanged:IsCheckedPropertyChanged);
+
+	private static void IsCheckedPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		((RoundedCheckbox)bindable).OnPropertyChanged(nameof(IsChecked));
+	}
+
 	public bool IsChecked
 	{
 		get => (bool)GetValue(IsCheckedProperty);

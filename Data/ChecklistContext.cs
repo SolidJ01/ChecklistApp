@@ -32,7 +32,9 @@ namespace ChecklistApp.Data
 
         public async Task<Checklist> GetChecklist(int id)
         {
-            return await Checklists.Include(x => x.Items.OrderBy(y => y.Name)).Where(x => x.Id == id).FirstOrDefaultAsync();
+            return await Checklists.Include(x => x.Items.OrderBy(y => y.Name))
+                                   .Include(x => x.Notifications)
+                                   .Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task UpdateChecklist(Checklist checklist)
