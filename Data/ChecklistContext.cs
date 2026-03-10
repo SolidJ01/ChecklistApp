@@ -103,6 +103,11 @@ namespace ChecklistApp.Data
             await SaveChangesAsync();
         }
 
+        public async Task<List<Notification>> GetNotificationDefaults()
+        {
+            return await Notifications.Where(x => x.Checklist == null).ToListAsync();
+        }
+
         public void DiscardChanges()
         {
             var changedEntries = ChangeTracker.Entries().Where(x => x.State != EntityState.Unchanged).ToList();

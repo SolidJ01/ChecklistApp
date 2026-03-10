@@ -20,14 +20,21 @@ namespace ChecklistApp.ViewModel
         private NavigationService _navigationService;
         private IFileSaver _fileSaver;
         private INotificationManagerService _notificationService;
-        private CreateChecklistPopupViewModel _createChecklistVM;
+        private CreateChecklistPopupViewModel _createChecklistVm;
+        private SettingsPopupViewModel _settingsVm;
 
         public ObservableCollection<SelectableChecklistCardViewModel> Checklists { get; set; } = [];
 
         public CreateChecklistPopupViewModel CreateChecklistViewModel
         {
-            get => _createChecklistVM;
-            set => _createChecklistVM = value;
+            get => _createChecklistVm;
+            set => _createChecklistVm = value;
+        }
+
+        public SettingsPopupViewModel SettingsPopupViewModel
+        {
+            get => _settingsVm;
+            set => _settingsVm = value;
         }
 
         #region Commands
@@ -40,14 +47,20 @@ namespace ChecklistApp.ViewModel
 
         #endregion
 
-        public MainPageViewModel(ChecklistContext checklistContext, NavigationService navigationService, IFileSaver  fileSaver, INotificationManagerService notificationService, CreateChecklistPopupViewModel createChecklistVm)
+        public MainPageViewModel(ChecklistContext checklistContext, 
+                                 NavigationService navigationService, 
+                                 IFileSaver  fileSaver, 
+                                 INotificationManagerService notificationService, 
+                                 CreateChecklistPopupViewModel createChecklistVm,
+                                 SettingsPopupViewModel settingsVm)
         {
             _checklistContext = checklistContext;
             _navigationService = navigationService;
             _fileSaver = fileSaver;
             _notificationService = notificationService;
-            _createChecklistVM = createChecklistVm;
-            _createChecklistVM.ChecklistAdded += ReloadList;
+            _createChecklistVm = createChecklistVm;
+            _createChecklistVm.ChecklistAdded += ReloadList;
+            _settingsVm = settingsVm;
 
             CreateNewCommand = new Command(CreateNew);
             GoToChecklistCommand = new Command<int>(GoToChecklist);

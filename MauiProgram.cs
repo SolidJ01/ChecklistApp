@@ -28,12 +28,14 @@ public static class MauiProgram
 		builder.Services.AddDbContext<ChecklistContext>(options => options.UseSqlite($"DataSource = {Path.Combine(FileSystem.AppDataDirectory, "Checklist.db")}"));
 		builder.Services.AddSingleton<NavigationService>();
 		builder.Services.AddSingleton<IFileSaver>(FileSaver.Default);
+		builder.Services.AddSingleton<IPreferences>(Preferences.Default);
 		
 		#if ANDROID
 		builder.Services.AddTransient<INotificationManagerService, NotificationManagerService>();
 		#endif
 
 		builder.Services.AddTransient<MainPageViewModel>();
+		builder.Services.AddTransient<SettingsPopupViewModel>();
 		builder.Services.AddTransient<CreateChecklistPopupViewModel>();
 		builder.Services.AddTransient<MainPage>();
 
