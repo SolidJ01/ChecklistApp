@@ -209,7 +209,7 @@ namespace ChecklistApp.ViewModel
             _checklist.Deadline = ChecklistEditEntry.Deadline;
             _checklist.Color = ChecklistEditEntry.Color;
 
-            List<Notification> newNotifications = ChecklistEditEntryNotifications.Select(x => x.Notification).ToList();
+            List<Notification> newNotifications = ChecklistEditEntry.UseDeadline && ChecklistEditEntryUseNotifications ? ChecklistEditEntryNotifications.Select(x => x.Notification).ToList() : [];
             foreach (Notification notification in _checklist.Notifications)
             {
                 _notificationService.CancelNotification(notification.Id);

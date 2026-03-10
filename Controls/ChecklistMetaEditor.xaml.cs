@@ -54,16 +54,17 @@ public partial class ChecklistMetaEditor : ContentView
 		set => SetValue(ChecklistColorProperty, value);
     }
 
-	public ICommand UseDeadlineUpdatedComand { get; set; }
+	public ICommand UseDeadlineUpdatedCommand { get; set; }
 
     public ChecklistMetaEditor()
 	{
-		UseDeadlineUpdatedComand = new Command(OnUseDeadlineUpdated);
+		UseDeadlineUpdatedCommand = new Command(OnUseDeadlineUpdated);
 		InitializeComponent();
 	}
 
 	private void OnUseDeadlineUpdated()
 	{
+		return;
 		if (UseDeadline)
 			return;
 
