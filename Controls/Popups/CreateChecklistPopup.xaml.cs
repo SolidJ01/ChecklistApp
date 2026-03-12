@@ -29,6 +29,12 @@ public partial class CreateChecklistPopup : Popup
         Close(() => ViewModel.CancelCommand.Execute(null));
     }
 
+    public override void Open()
+    {
+        ViewModel.ResetChecklist();
+        base.Open();
+    }
+
     protected override void CloseButtonClicked(object sender, EventArgs e)
     {
         Back();

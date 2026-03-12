@@ -72,7 +72,7 @@ public partial class Popup : ContentView
         InitializeComponent();
     }
 
-    public void Open()
+    public virtual void Open()
     {
         BackButtonActionChanged?.Invoke(this, new BackButtonActionRegisterEventArgs(BackButtonActionRegisterEventArgs.Intent.Register, Back));
         

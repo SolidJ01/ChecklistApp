@@ -10,6 +10,8 @@ namespace ChecklistApp.Services
 {
     public static class StringHelper
     {
+        public static readonly string S_PreferenceNotificationsEnabled = "NotificationsEnabled";
+        
         public static string FormatItemName(string name)
         {
             return name.ToLower().Titleize();

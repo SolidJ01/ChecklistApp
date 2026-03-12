@@ -94,18 +94,30 @@ namespace ChecklistApp.Data
             await SaveChangesAsync();
         }
 
-        public async void DeleteNotification(Notification notification)
+        public async Task CreateNotification(Notification notification)
         {
-            if (notification is null || !Notifications.Contains(notification))
-                return;
-            
-            Notifications.Remove(notification);
+            Notifications.Add(notification);
             await SaveChangesAsync();
         }
 
         public async Task<List<Notification>> GetNotificationDefaults()
         {
             return await Notifications.Where(x => x.Checklist == null).ToListAsync();
+        }
+
+        public async Task UpdateNotification(Notification notification)
+        {
+            Notifications.Update(notification);
+            await SaveChangesAsync();
+        }
+
+        public async Task DeleteNotification(Notification notification)
+        {
+            if (notification is null || !Notifications.Contains(notification))
+                return;
+            
+            Notifications.Remove(notification);
+            await SaveChangesAsync();
         }
 
         public void DiscardChanges()

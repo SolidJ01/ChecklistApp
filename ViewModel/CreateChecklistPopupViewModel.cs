@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Maui.Core.Extensions;
 
 namespace ChecklistApp.ViewModel
 {
@@ -16,8 +17,9 @@ namespace ChecklistApp.ViewModel
     {
         public event EventHandler ChecklistAdded;
         private ChecklistContext _checklistContext;
-        private INotificationManagerService _notificationManagerService;
         private Checklist _checklist;
+        private INotificationManagerService _notificationManagerService;
+        private IPreferences _preferences;
         private bool _notificationsEnabled;
 
         #region Properties
@@ -48,10 +50,11 @@ namespace ChecklistApp.ViewModel
 
         #endregion
 
-        public CreateChecklistPopupViewModel(ChecklistContext checklistContext, INotificationManagerService notificationManagerService)
+        public CreateChecklistPopupViewModel(ChecklistContext checklistContext, INotificationManagerService notificationManagerService, IPreferences preferences)
         {
             _checklistContext = checklistContext;
             _notificationManagerService = notificationManagerService;
+            _preferences = preferences;
             ResetChecklist();
 
             CancelCommand = new Command(Cancel);
@@ -59,11 +62,11 @@ namespace ChecklistApp.ViewModel
             ImportCommand = new Command<Action>(Import);
         }
 
-        private void ResetChecklist()
+        public void ResetChecklist()
         {
             _checklist = new Checklist { Deadline = DateTime.Now };
-            NotificationsEnabled = false;
-            Notifications = [];
+            NotificationsEnabled = _preferences.Get(StringHelper.S_PreferenceNotificationsEnabled, false);
+            Notifications = _checklistContext.GetNotificationDefaults().Result.Select(x => new NotificationViewModel(x)).ToObservableCollection();
             OnPropertyChanged(nameof(Name));
             OnPropertyChanged(nameof(UseDeadline));
             OnPropertyChanged(nameof(Deadline));
