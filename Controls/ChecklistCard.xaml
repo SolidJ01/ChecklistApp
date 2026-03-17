@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:ChecklistApp.Controls"
              x:Name="this"
-             x:Class="ChecklistApp.Controls.ChecklistCard">
+             x:Class="ChecklistApp.Controls.ChecklistCard"
+             x:DataType="controls:ChecklistCard">
     <Border BindingContext="{x:Reference this}"
            StrokeThickness="0"
            Padding="0"

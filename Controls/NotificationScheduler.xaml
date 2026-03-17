@@ -5,7 +5,8 @@
              xmlns:Controls="clr-namespace:ChecklistApp.Controls"
              xmlns:ViewModel="clr-namespace:ChecklistApp.ViewModel"
              x:Name="this"
-             x:Class="ChecklistApp.Controls.NotificationScheduler">
+             x:Class="ChecklistApp.Controls.NotificationScheduler"
+             x:DataType="Controls:NotificationScheduler">
     <CollectionView BindingContext="{x:Reference this}">
         <CollectionView.ItemsSource>
             <MultiBinding Converter="{StaticResource ConditionalDisplay}">

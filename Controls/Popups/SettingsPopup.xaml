@@ -5,7 +5,8 @@
              xmlns:controls="clr-namespace:ChecklistApp.Controls"
              xmlns:viewmodel="clr-namespace:ChecklistApp.ViewModel"
              x:Name="settings"
-             x:Class="ChecklistApp.Controls.SettingsPopup">
+             x:Class="ChecklistApp.Controls.SettingsPopup"
+             x:DataType="controls:SettingsPopup">
     <controls:Popup.Content>
         <Grid RowDefinitions="*, 60"
               BindingContext="{x:Reference settings}">

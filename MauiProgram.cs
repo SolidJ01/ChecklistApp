@@ -34,15 +34,14 @@ public static class MauiProgram
 		builder.Services.AddTransient<INotificationManagerService, NotificationManagerService>();
 		#endif
 
-		builder.Services.AddTransient<MainPageViewModel>();
 		builder.Services.AddTransient<SettingsPopupViewModel>();
 		builder.Services.AddTransient<CreateChecklistPopupViewModel>();
+		builder.Services.AddTransient<MainPageViewModel>();
 		builder.Services.AddTransient<MainPage>();
 
-
-		builder.Services.AddTransient<ChecklistPageViewModel>();
 		builder.Services.AddTransient<ChecklistOptionsPageViewModel>();
 		builder.Services.AddTransient<CreateItemPageViewModel>();
+		builder.Services.AddTransient<ChecklistPageViewModel>();
 		builder.Services.AddTransient<ChecklistPage>();
 
 		return builder.Build();

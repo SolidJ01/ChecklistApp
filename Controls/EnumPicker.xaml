@@ -2,8 +2,10 @@
 
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ChecklistApp.Controls"
              x:Name="This"
-             x:Class="ChecklistApp.Controls.EnumPicker">
+             x:Class="ChecklistApp.Controls.EnumPicker"
+             x:DataType="controls:EnumPicker">
     <Border BackgroundColor="{StaticResource Foreground}"
             Padding="10,0">
         <Picker x:Name="Picker"

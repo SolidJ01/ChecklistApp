@@ -4,7 +4,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:ChecklistApp.Controls"
              x:Name="this"
-             x:Class="ChecklistApp.Controls.ChecklistItem">
+             x:Class="ChecklistApp.Controls.ChecklistItem"
+             x:DataType="controls:ChecklistItem">
     <Grid ColumnDefinitions="50, *, 50"
           ColumnSpacing="10"
           HeightRequest="50"

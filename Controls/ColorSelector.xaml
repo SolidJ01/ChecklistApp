@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:ChecklistApp.Controls"
              x:Name="this"
-             x:Class="ChecklistApp.Controls.ColorSelector">
+             x:Class="ChecklistApp.Controls.ColorSelector"
+             x:DataType="controls:ColorSelector">
     <Frame BindingContext="{x:Reference this}" 
            BackgroundColor="{StaticResource ForegroundDark}"
            Padding="7.5"

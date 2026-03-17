@@ -68,7 +68,7 @@ public partial class Popup : ContentView
         _scale = 0;
         //this.IsVisible = false;
         InputTransparent = true;
-        CloseCommand = new Command<Action>(Close);
+        CloseCommand = new Command(Back);
         InitializeComponent();
     }
 

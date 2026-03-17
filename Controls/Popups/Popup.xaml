@@ -2,25 +2,25 @@
 
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Name="this"
-             x:Class="ChecklistApp.Controls.Popup">
+             xmlns:controls="clr-namespace:ChecklistApp.Controls"
+             x:Class="ChecklistApp.Controls.Popup"
+             x:DataType="controls:Popup">
     <ContentView.ControlTemplate>
-        <ControlTemplate>
-            <Grid BindingContext="{x:Reference this}"
-                  IsClippedToBounds="False">
+        <ControlTemplate x:DataType="controls:Popup">
+            <Grid IsClippedToBounds="False">
                 <Border x:Name="overlay"
                         BackgroundColor="Black"
-                        Opacity="{Binding Opacity}">
+                        Opacity="{TemplateBinding Opacity}">
                     <Border.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="CloseButtonClicked" />
+                        <TapGestureRecognizer Command="{TemplateBinding CloseCommand}" />
                     </Border.GestureRecognizers>
                 </Border>
                 <FlexLayout Direction="Column"
                             AlignContent="Stretch"
                             JustifyContent="Center">
                     <Border x:Name="popup"
-                            Margin="{Binding PopupMargin}"
-                            Scale="{Binding Scale}"
+                            Margin="{TemplateBinding PopupMargin}"
+                            Scale="{TemplateBinding Scale}"
                             BackgroundColor="{StaticResource Background}"
                             StrokeShape="RoundRectangle 14">
                         <Border.GestureRecognizers>

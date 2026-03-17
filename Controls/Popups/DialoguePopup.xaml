@@ -3,8 +3,10 @@
 <controls:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:ChecklistApp.Controls"
+             xmlns:popups="clr-namespace:ChecklistApp.Controls.Popups"
              x:Name="Dialogue"
              x:Class="ChecklistApp.Controls.Popups.DialoguePopup"
+             x:DataType="popups:DialoguePopup"
              PopupMargin="15,25">
     <Grid BindingContext="{x:Reference Dialogue}"
           RowDefinitions="*,50"

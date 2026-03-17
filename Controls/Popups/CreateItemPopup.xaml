@@ -5,7 +5,8 @@
              xmlns:controls="clr-namespace:ChecklistApp.Controls"
              xmlns:model="clr-namespace:ChecklistApp.Model"
              x:Name="CreateItem"
-             x:Class="ChecklistApp.Controls.CreateItemPopup">
+             x:Class="ChecklistApp.Controls.CreateItemPopup"
+             x:DataType="controls:CreateItemPopup">
     <Grid BindingContext="{x:Reference CreateItem}" 
           RowDefinitions="*,70">
         <CollectionView ItemsSource="{Binding Items}">

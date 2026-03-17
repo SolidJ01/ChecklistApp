@@ -27,11 +27,6 @@ public partial class SettingsPopup : Popup
         InitializeComponent();
     }
 
-    protected override void CloseButtonClicked(object sender, EventArgs e)
-    {
-        Close();
-    }
-
     private void ExportButtonClicked(object sender, EventArgs e)
     {
         ExportChecklistsClicked?.Invoke(sender, e);

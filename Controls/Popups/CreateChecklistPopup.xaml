@@ -5,7 +5,8 @@
              xmlns:controls="clr-namespace:ChecklistApp.Controls"
              xmlns:viewmodel="clr-namespace:ChecklistApp.ViewModel"
              x:Name="NewChecklist"
-             x:Class="ChecklistApp.Controls.CreateChecklistPopup">
+             x:Class="ChecklistApp.Controls.CreateChecklistPopup"
+             x:DataType="controls:CreateChecklistPopup">
     <Grid RowDefinitions="*,130"
           BindingContext="{x:Reference NewChecklist}">
         <ScrollView>

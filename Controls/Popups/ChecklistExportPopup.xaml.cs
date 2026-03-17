@@ -65,11 +65,6 @@ public partial class ChecklistExportPopup : Popup
         InitializeComponent();
     }
 
-    protected override void CloseButtonClicked(object sender, EventArgs e)
-    {
-        Close();
-    }
-
     private void ToggleAll()
     {
         bool targetCondition = !AllSelected;

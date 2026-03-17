@@ -35,11 +35,6 @@ public partial class CreateChecklistPopup : Popup
         base.Open();
     }
 
-    protected override void CloseButtonClicked(object sender, EventArgs e)
-    {
-        Back();
-    }
-
     private void ImportButtonClicked(object sender, EventArgs e)
     {
         ViewModel.ImportCommand.Execute(() =>
