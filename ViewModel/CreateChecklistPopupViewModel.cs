@@ -66,7 +66,10 @@ namespace ChecklistApp.ViewModel
         {
             _checklist = new Checklist { Deadline = DateTime.Now };
             NotificationsEnabled = _preferences.Get(StringHelper.S_PreferenceNotificationsEnabled, false);
-            Notifications = _checklistContext.GetNotificationDefaults().Result.Select(x => new NotificationViewModel(x)).ToObservableCollection();
+            Notifications = NotificationsEnabled
+                ? _checklistContext.GetNotificationDefaults().Result.Select(x => new NotificationViewModel(x))
+                    .ToObservableCollection()
+                : [];
             OnPropertyChanged(nameof(Name));
             OnPropertyChanged(nameof(UseDeadline));
             OnPropertyChanged(nameof(Deadline));
