@@ -1,14 +1,15 @@
 ﻿using System.Windows.Input;
+using ChecklistApp.Services;
 using ChecklistApp.View;
 using ChecklistApp.ViewModel;
 
 namespace ChecklistApp;
 
-public partial class MainPage : PopupPage
+public partial class MainPage : DialoguePage
 {
 	public ICommand RegisterBackButtonCommand { get; set; }
 	
-	public MainPage(MainPageViewModel viewModel)
+	public MainPage(MainPageViewModel viewModel, ToastService toastService) : base(toastService)
 	{
 		InitializeComponent();
 		this.BindingContext = viewModel;

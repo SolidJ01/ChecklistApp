@@ -20,6 +20,7 @@ namespace ChecklistApp.ViewModel
         private NavigationService _navigationService;
         private IFileSaver _fileSaver;
         private INotificationManagerService _notificationService;
+        private ToastService _toastService;
         private CreateChecklistPopupViewModel _createChecklistVm;
         private SettingsPopupViewModel _settingsVm;
 
@@ -51,6 +52,7 @@ namespace ChecklistApp.ViewModel
                                  NavigationService navigationService, 
                                  IFileSaver  fileSaver, 
                                  INotificationManagerService notificationService, 
+                                 ToastService toastService,
                                  CreateChecklistPopupViewModel createChecklistVm,
                                  SettingsPopupViewModel settingsVm)
         {
@@ -58,6 +60,7 @@ namespace ChecklistApp.ViewModel
             _navigationService = navigationService;
             _fileSaver = fileSaver;
             _notificationService = notificationService;
+            _toastService = toastService;
             _createChecklistVm = createChecklistVm;
             _createChecklistVm.ChecklistAdded += ReloadList;
             _settingsVm = settingsVm;
@@ -147,7 +150,14 @@ namespace ChecklistApp.ViewModel
             var fileSaverResult = await _fileSaver.SaveAsync("checklists.json", stream);
             
             if (fileSaverResult.IsSuccessful)
+            {
+                _toastService.QueueToast("Successfully exported checklists");
                 callback?.Invoke();
+            }
+            else
+            {
+                _toastService.QueueToast($"Error: {fileSaverResult.Exception?.Message}");
+            }
         }
 
         #endregion

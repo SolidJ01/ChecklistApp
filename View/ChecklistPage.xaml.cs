@@ -1,10 +1,11 @@
+using ChecklistApp.Services;
 using ChecklistApp.ViewModel;
 
 namespace ChecklistApp.View;
 
 public partial class ChecklistPage : DialoguePage
 {
-	public ChecklistPage(ChecklistPageViewModel viewModel)
+	public ChecklistPage(ChecklistPageViewModel viewModel, ToastService toastService) : base(toastService)
 	{
 		InitializeComponent();
 		BindingContext = viewModel;

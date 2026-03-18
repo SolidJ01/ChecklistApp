@@ -20,7 +20,7 @@ namespace ChecklistApp.Services
             CreateItem, 
             Back
         }
-        public async void NavigateTo(NavigationTarget target)
+        public async Task NavigateTo(NavigationTarget target)
         {
             switch (target)
             {
@@ -42,7 +42,7 @@ namespace ChecklistApp.Services
                     break;
             }
         }
-        public async void NavigateTo(NavigationTarget target, int id)
+        public async Task NavigateTo(NavigationTarget target, int id)
         {
             switch (target)
             {

@@ -18,6 +18,7 @@ public partial class Popup : ContentView
     
     private double _opacity;
     private double _scale;
+    private bool _isAnimating = false;
 
     public double Opacity
     {
@@ -74,6 +75,10 @@ public partial class Popup : ContentView
 
     public virtual void Open()
     {
+        if (_isAnimating)
+            return;
+        _isAnimating = true;
+        
         BackButtonActionChanged?.Invoke(this, new BackButtonActionRegisterEventArgs(BackButtonActionRegisterEventArgs.Intent.Register, Back));
         
         //this.IsVisible = true;
@@ -83,18 +88,22 @@ public partial class Popup : ContentView
         backgroundAnimation.Commit(this, "PopupOpacity", s_AnimRate, 500, Easing.CubicInOut);
 
         var popupAnimation = new Animation(x => Scale = x, 0, s_BaseScale);
-        popupAnimation.Commit(this, "PopupScale", s_AnimRate, 500, Easing.SpringOut);
+        popupAnimation.Commit(this, "PopupScale", s_AnimRate, 500, Easing.SpringOut, (d, b) => { _isAnimating = false; });
     }
 
     public async void Close(Action callback = null)
     {
+        if (_isAnimating)
+            return;
+        _isAnimating = true;
+        
         BackButtonActionChanged?.Invoke(this, new BackButtonActionRegisterEventArgs(BackButtonActionRegisterEventArgs.Intent.Deregister, Back));
         
         var animation = new Animation(x => Opacity = x, BackgroundOpacity, 0);
         animation.Commit(this, "OverlayHide", s_AnimRate, 500, Easing.CubicInOut);
         
         var popupAnimation = new Animation(x => Scale = x, s_BaseScale, 0);
-        popupAnimation.Commit(this, "PopupScale", s_AnimRate, 500, Easing.SpringIn, (c, v) => { this.InputTransparent = true; callback?.Invoke(); });
+        popupAnimation.Commit(this, "PopupScale", s_AnimRate, 500, Easing.SpringIn, (c, v) => { this.InputTransparent = true; callback?.Invoke(); _isAnimating = false; });
         
     }
 

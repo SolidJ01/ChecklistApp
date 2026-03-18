@@ -17,6 +17,7 @@ public class ChecklistOptionsPopupViewModel : ViewModel
     private readonly IFileSaver _fileSaver;
     private readonly INotificationManagerService _notificationService;
     private readonly NavigationService _navigationService;
+    private readonly ToastService _toastService;
 
     private Checklist _checklist;
     private Checklist _checklistEdit = new Checklist { Deadline = DateTime.Now };
@@ -43,12 +44,13 @@ public class ChecklistOptionsPopupViewModel : ViewModel
     public ICommand SaveChecklistEditCommand { get; set; }
     public ICommand DeleteChecklistCommand { get; set; }
 
-    public ChecklistOptionsPopupViewModel(ChecklistContext context, IFileSaver fileSaver, INotificationManagerService notificationService, NavigationService navigationService)
+    public ChecklistOptionsPopupViewModel(ChecklistContext context, IFileSaver fileSaver, INotificationManagerService notificationService, NavigationService navigationService, ToastService toastService)
     {
         _context = context;
         _fileSaver = fileSaver;
         _notificationService = notificationService;
         _navigationService = navigationService;
+        _toastService = toastService;
             
         ExportChecklistCommand = new Command(ExportChecklist);
         CancelChecklistEditCommand = new Command(CancelChecklistEdit);
@@ -62,7 +64,7 @@ public class ChecklistOptionsPopupViewModel : ViewModel
         ResetEditEntry();
     }
     
-    private void ExportChecklist()
+    private async void ExportChecklist()
         {
             List<Notification> notifications = _checklist.Notifications;
             _checklist.Notifications = [];
@@ -71,13 +73,14 @@ public class ChecklistOptionsPopupViewModel : ViewModel
                 item.Checklist = null;
             }
             var stream = new MemoryStream(Encoding.Default.GetBytes(JsonSerializer.Serialize(_checklist)));
-            _fileSaver.SaveAsync($"{_checklist.Name}.json", stream);
+            var result = await _fileSaver.SaveAsync($"{_checklist.Name}.json", stream);
             foreach (var item in _checklist.Items)
             {
                 item.Checklist = _checklist;
             }
-
             _checklist.Notifications = notifications;
+            if (result.IsSuccessful)
+                _toastService.QueueToast("Successfully exported checklist");
         }
 
         private void CancelChecklistEdit()
@@ -116,17 +119,18 @@ public class ChecklistOptionsPopupViewModel : ViewModel
             callback?.Invoke();
         }
 
-        private void DeleteChecklist()
+        private async void DeleteChecklist()
         {
             for (int i = _checklist.Notifications.Count - 1; i >= 0; i--)
             {
                 Notification notification = _checklist.Notifications[i];
                 _notificationService.CancelNotification(notification.Id);
-                _context.DeleteNotification(notification);
+                await _context.DeleteNotification(notification);
             }
             
             _context.DeleteChecklist(_checklist);
-            _navigationService.NavigateTo(NavigationService.NavigationTarget.Home);
+            await _navigationService.NavigateTo(NavigationService.NavigationTarget.Home);
+            _toastService.QueueToast("Checklist deleted");
         }
 
         private void ResetEditEntry()

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ChecklistApp.Controls"
+             x:Name="this"
+             x:Class="ChecklistApp.Controls.Toast"
+             x:DataType="controls:Toast">
+    <FlexLayout BindingContext="{x:Reference this}" 
+                Direction="ColumnReverse"
+                Padding="0,0,0,60">
+        <Border x:Name="Box" 
+                Margin="5"
+                BackgroundColor="{StaticResource Text}"
+                Padding="10"
+                MinimumHeightRequest="50">
+            <Label Text="{Binding Message}"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   VerticalOptions="Center" />
+        </Border>
+    </FlexLayout>
+</ContentView>

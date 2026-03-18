@@ -20,6 +20,8 @@ namespace ChecklistApp.ViewModel
         private Checklist _checklist;
         private INotificationManagerService _notificationManagerService;
         private IPreferences _preferences;
+        private ToastService _toastService;
+        
         private bool _notificationsEnabled;
 
         #region Properties
@@ -50,11 +52,12 @@ namespace ChecklistApp.ViewModel
 
         #endregion
 
-        public CreateChecklistPopupViewModel(ChecklistContext checklistContext, INotificationManagerService notificationManagerService, IPreferences preferences)
+        public CreateChecklistPopupViewModel(ChecklistContext checklistContext, INotificationManagerService notificationManagerService, IPreferences preferences, ToastService toastService)
         {
             _checklistContext = checklistContext;
             _notificationManagerService = notificationManagerService;
             _preferences = preferences;
+            _toastService = toastService;
             ResetChecklist();
 
             CancelCommand = new Command(Cancel);
@@ -142,6 +145,7 @@ namespace ChecklistApp.ViewModel
                         }
 
                         _checklistContext.CreateChecklist(checklist);
+                        _toastService.QueueToast("Successfully imported checklist");
                     }
                     catch (JsonException e)
                     {
@@ -158,6 +162,7 @@ namespace ChecklistApp.ViewModel
                             }
                             _checklistContext.CreateChecklist(checklist);
                         }
+                        _toastService.QueueToast($"Successfully imported {checklists.Count}  checklists");
                         //_checklistContext.CreateChecklists(checklists);
                     }
                     ChecklistAdded?.Invoke(this, EventArgs.Empty);
@@ -167,6 +172,7 @@ namespace ChecklistApp.ViewModel
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                _toastService.QueueToast(e.Message);
             }
         }
     }
