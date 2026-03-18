@@ -110,6 +110,6 @@ public partial class Popup : ContentView
 
     protected virtual void CloseButtonClicked(object sender, EventArgs e)
     {
-        Close();
+        Back();
     }
 }

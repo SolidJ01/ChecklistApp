@@ -27,7 +27,7 @@
                 </Grid>
             </CollectionView.Header>
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="viewmodel:SelectableChecklistCardViewModel">
+                <DataTemplate x:DataType="viewmodel:SelectableChecklistViewModel">
                     <controls:ChecklistItem IsChecked="{Binding Selected, Mode=TwoWay}"
                                             ToggleCheckedCommand="{Binding Source={RelativeSource AncestorType={x:Type controls:ChecklistExportPopup}}, Path=UpdateAllSelectedCommand}"
                                             Name="{Binding Name}"

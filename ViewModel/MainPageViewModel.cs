@@ -23,7 +23,7 @@ namespace ChecklistApp.ViewModel
         private CreateChecklistPopupViewModel _createChecklistVm;
         private SettingsPopupViewModel _settingsVm;
 
-        public ObservableCollection<SelectableChecklistCardViewModel> Checklists { get; set; } = [];
+        public ObservableCollection<SelectableChecklistViewModel> Checklists { get; set; } = [];
 
         public CreateChecklistPopupViewModel CreateChecklistViewModel
         {
@@ -94,24 +94,24 @@ namespace ChecklistApp.ViewModel
             {
                 foreach (Checklist checklist in checklists)
                 {
-                    Checklists.Add(new SelectableChecklistCardViewModel(checklist));
+                    Checklists.Add(new SelectableChecklistViewModel(checklist));
                 }
 
                 return;
             }
             
-            List<SelectableChecklistCardViewModel> removedChecklists = Checklists.Where(x => !checklists.Any(y => y.Id == x.Id)).ToList();
+            List<SelectableChecklistViewModel> removedChecklists = Checklists.Where(x => !checklists.Any(y => y.Id == x.Id)).ToList();
             List<Checklist> addedChecklists = checklists.Where(x => !Checklists.Any(y => y.Id == x.Id)).ToList();
             // List<Checklist> editedChecklists = checklists.Where(x => Checklists.Any(y => y.Id == x.Id) 
             //                                                               && !Checklists.First(y => y.Id == x.Id).ModelEquals(x))
             //                                                               .ToList();
-            foreach (SelectableChecklistCardViewModel checklist in removedChecklists)
+            foreach (SelectableChecklistViewModel checklist in removedChecklists)
                 Checklists.Remove(checklist);
             foreach (Checklist checklist in addedChecklists)
-                Checklists.Insert(checklists.IndexOf(checklist), new SelectableChecklistCardViewModel(checklist));
+                Checklists.Insert(checklists.IndexOf(checklist), new SelectableChecklistViewModel(checklist));
             // foreach (Checklist checklist in editedChecklists)
             //     Checklists[Checklists.IndexOf(Checklists.First(x => x.Id == checklist.Id))].Update(checklist);
-            foreach (ChecklistCardViewModel checklist in Checklists)
+            foreach (ChecklistViewModel checklist in Checklists)
             {
                 checklist.Update();
             }
@@ -124,16 +124,24 @@ namespace ChecklistApp.ViewModel
 
         private async void ExportChecklists(Action callback = null)
         {
-            List<Checklist> checklists = [];
-            foreach (var checklistViewModel in Checklists.Where(x => x.Selected))
+            List<Checklist> checklists = Checklists.Where(x => x.Selected).Select(x => x.Checklist).ToList();
+            foreach (Checklist checklist in checklists)
             {
-                Checklist checklist = _checklistContext.GetChecklist(checklistViewModel.Id).Result;
+                checklist.Notifications = [];
                 foreach (var item in checklist.Items)
                 {
                     item.Checklist = null;
                 }
-                checklists.Add(checklist);
             }
+            // foreach (var checklistViewModel in Checklists.Where(x => x.Selected))
+            // {
+            //     Checklist checklist = _checklistContext.GetChecklist(checklistViewModel.Id).Result;
+            //     foreach (var item in checklist.Items)
+            //     {
+            //         item.Checklist = null;
+            //     }
+            //     checklists.Add(checklist);
+            // }
             
             var stream = new MemoryStream(Encoding.Default.GetBytes(JsonSerializer.Serialize(checklists)));
             var fileSaverResult = await _fileSaver.SaveAsync("checklists.json", stream);

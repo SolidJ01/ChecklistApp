@@ -6,7 +6,7 @@ namespace ChecklistApp.Controls;
 
 public partial class ChecklistCard : ContentView
 {
-    public static readonly BindableProperty ChecklistProperty = BindableProperty.Create(nameof(Checklist), typeof(ChecklistCardViewModel), typeof(ChecklistCard), propertyChanged:ChecklistPropertyChanged);
+    public static readonly BindableProperty ChecklistProperty = BindableProperty.Create(nameof(Checklist), typeof(ChecklistViewModel), typeof(ChecklistCard), propertyChanged:ChecklistPropertyChanged);
 
     private static void ChecklistPropertyChanged(BindableObject bindable, object oldValue, object newValue)
     {
@@ -16,9 +16,9 @@ public partial class ChecklistCard : ContentView
 
     public static readonly BindableProperty CommandProperty = BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(ChecklistCard));
     
-	public ChecklistCardViewModel Checklist
+	public ChecklistViewModel Checklist
 	{
-		get => (ChecklistCardViewModel)GetValue(ChecklistProperty);
+		get => (ChecklistViewModel)GetValue(ChecklistProperty);
 		set => SetValue(ChecklistProperty, value);
 	}
 

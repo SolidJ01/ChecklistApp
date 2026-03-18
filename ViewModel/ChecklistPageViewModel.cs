@@ -21,20 +21,15 @@ namespace ChecklistApp.ViewModel
         private NavigationService _navigationService;
         private IFileSaver _fileSaver;
         private INotificationManagerService _notificationService;
-        private Checklist _checklist;
 
         #region Properties
 
         public int Id { get; set; }
 
-        public ChecklistCardViewModel ChecklistCardViewModel { get; set; }
-
-        public ObservableCollection<ItemViewModel> Items { get; set; } = [];
-
-        public Checklist ChecklistEditEntry { get; set; } = new() { Deadline = DateTime.Now, Notifications = []};
-        public bool ChecklistEditEntryUseNotifications { get; set; } = false;
-        public ObservableCollection<NotificationViewModel> ChecklistEditEntryNotifications { get; set; } = [];
+        public ChecklistViewModel Checklist { get; set; }
         
+        public ChecklistOptionsPopupViewModel ChecklistOptions { get; }
+
         public ObservableCollection<Item> ItemsToAdd { get; set; } = [];
 
         #endregion
@@ -42,16 +37,9 @@ namespace ChecklistApp.ViewModel
         #region Commands
 
         public ICommand BackCommand { get; set; }
-        public ICommand OptionsCommand { get; set; }
-        public ICommand CreateNewCommand { get; set; }
         public ICommand ToggleItemCheckedCommand { get; set; }
         public ICommand SaveItemChangesCommand { get; set; }
         public ICommand DeleteItemCommand { get; set; }
-        
-        public ICommand ExportChecklistCommand { get; set; }
-        public ICommand CancelChecklistEditCommand { get; set; }
-        public ICommand SaveChecklistEditCommand { get; set; }
-        public ICommand DeleteChecklistCommand { get; set; }
         
         public ICommand AddNewItemCommand { get; set; }
         public ICommand DeleteNewItemCommand { get; set; }
@@ -60,24 +48,19 @@ namespace ChecklistApp.ViewModel
 
         #endregion
 
-        public ChecklistPageViewModel(ChecklistContext checklistContext, NavigationService navigationService, IFileSaver fileSaver, INotificationManagerService notificationService)
+        public ChecklistPageViewModel(ChecklistContext checklistContext, NavigationService navigationService, IFileSaver fileSaver, INotificationManagerService notificationService, ChecklistOptionsPopupViewModel checklistOptionsPopupViewModel)
         {
             _checklistContext = checklistContext;
             _navigationService = navigationService;
             _fileSaver = fileSaver;
             _notificationService = notificationService;
+            ChecklistOptions = checklistOptionsPopupViewModel;
+            ChecklistOptions.ChangesSaved += RetrieveChecklist;
 
             BackCommand = new Command(Back);
-            OptionsCommand = new Command(Options);
-            CreateNewCommand = new Command(CreateNew);
             ToggleItemCheckedCommand = new Command<int>(ToggleItemChecked);
             SaveItemChangesCommand = new Command<(int, string)>(SaveItemChanges);
             DeleteItemCommand = new Command<int>(DeleteItem);
-            
-            ExportChecklistCommand = new Command(ExportChecklist);
-            CancelChecklistEditCommand = new Command(CancelChecklistEdit);
-            SaveChecklistEditCommand = new Command<Action>(SaveChecklist);
-            DeleteChecklistCommand = new Command(DeleteChecklist);
 
             AddNewItemCommand = new Command(AddNewItem);
             DeleteNewItemCommand = new Command<Item>(DeleteNewItem);
@@ -92,19 +75,9 @@ namespace ChecklistApp.ViewModel
             _navigationService.NavigateTo(NavigationService.NavigationTarget.Back);
         }
 
-        private void Options()
-        {
-            _navigationService.NavigateTo(NavigationService.NavigationTarget.ChecklistOptions, Id);
-        }
-
-        private void CreateNew()
-        {
-            _navigationService.NavigateTo(NavigationService.NavigationTarget.CreateItem, Id);
-        }
-
         private void ToggleItemChecked(int id)
         {
-            Item item = _checklist.Items.FirstOrDefault(x => x.Id.Equals(id));
+            /*Item item = _checklist.Items.FirstOrDefault(x => x.Id.Equals(id));
             ItemViewModel viewModel = Items.FirstOrDefault(x => x.Id.Equals(id));
             if (item is null || viewModel is null)
                 return;
@@ -114,164 +87,61 @@ namespace ChecklistApp.ViewModel
             Items.Remove(viewModel);
             Items.Insert(_checklist.Items.IndexOf(item), new ItemViewModel(item));
 
-            ChecklistCardViewModel.Update(_checklist);
+            ChecklistViewModel.Update(_checklist);
             
-            _checklistContext.UpdateItem(item);
+            _checklistContext.UpdateItem(item);*/
         }
 
         private void SaveItemChanges((int, string) data)
         {
-            Item item = _checklist.Items.FirstOrDefault(x => x.Id.Equals(data.Item1));
+            ItemViewModel item = Checklist.Items.FirstOrDefault(x => x.Id.Equals(data.Item1));
             item.Name = data.Item2;
             
-            _checklist.Items = _checklist.Items.OrderBy(x => x.IsChecked).ThenBy(x => x.Name).ToList();
-            int newIndex = _checklist.Items.IndexOf(item);
-            if (!newIndex.Equals(Items.IndexOf(Items.FirstOrDefault(x => x.Id.Equals(item.Id)))))
-            {
-                ItemViewModel viewModel = Items.FirstOrDefault(x => x.Id.Equals(item.Id));
-                Items.Remove(viewModel);
-                Items.Insert(newIndex, viewModel);
-            }
+            int newIndex = Checklist.Items.OrderBy(x => x.IsChecked).ThenBy(x => x.Name).ToList().IndexOf(item);
+            Checklist.Items.Move(Checklist.Items.IndexOf(item), newIndex);
             
-            _checklistContext.UpdateItem(item);
+            _checklistContext.UpdateItem(item.Item);
         }
 
         private void DeleteItem(int id)
         {
-            var checklistItem = _checklist.Items.FirstOrDefault(x => x.Id.Equals(id));
-            _checklist.Items.Remove(checklistItem);
-            Items.Remove(Items.FirstOrDefault(x => x.Id.Equals(id)));
+            var checklistItem = Checklist.Items.FirstOrDefault(x => x.Id.Equals(id));
+            Checklist.Items.Remove(checklistItem);
             
-            ChecklistCardViewModel.Update(_checklist);
+            Checklist.Update(Checklist.Checklist);
             
-            _checklistContext.DeleteItem(checklistItem);
+            _checklistContext.DeleteItem(checklistItem.Item);
         }
 
         public async void RetrieveChecklist(object sender, EventArgs e)
         {
-            _checklist = await _checklistContext.GetChecklist(Id);
-            if (ChecklistCardViewModel is null)
+            Checklist checklist = await _checklistContext.GetChecklist(Id);
+            foreach (var item in checklist.Items)
+                item.Checklist = checklist;
+            checklist.Items = checklist.Items.OrderBy(x => x.IsChecked).ThenBy(x => x.Name).ToList();
+            
+            if (Checklist is null)
             {
-                ChecklistCardViewModel = new ChecklistCardViewModel(_checklist);
-                OnPropertyChanged(nameof(ChecklistCardViewModel));
+                Checklist = new ChecklistViewModel(checklist);
+                OnPropertyChanged(nameof(Checklist));
             }
             else
             {
-                ChecklistCardViewModel.Update(_checklist);
+                await Checklist.Update(checklist);
             }
-            foreach (var item in _checklist.Items)
-                item.Checklist = _checklist;
-            ResetEditEntry();
             
-            _checklist.Items = _checklist.Items.OrderBy(x => x.IsChecked).ThenBy(x => x.Name).ToList();
-
-            List<Item> addedItems = _checklist.Items.Where(x => !Items.Any(y => y.Id == x.Id)).ToList();
-            List<ItemViewModel> removedItems = Items.Where(x => !_checklist.Items.Any(y => y.Id == x.Id)).ToList();
-
-            await Task.Run(() =>
-            {
-                foreach (Item item in addedItems)
-                    Items.Insert(_checklist.Items.IndexOf(item), new ItemViewModel(item));
-                foreach (ItemViewModel item in removedItems)
-                    Items.Remove(item);
-            });
-            
+            ChecklistOptions.Load(Id);
             ResetItemsToAdd();
         }
         
         #endregion
         
-        #region OptionsMethods
-
-        private void ExportChecklist()
-        {
-            foreach (var item in _checklist.Items)
-            {
-                item.Checklist = null;
-            }
-            var stream = new MemoryStream(Encoding.Default.GetBytes(JsonSerializer.Serialize(_checklist)));
-            _fileSaver.SaveAsync($"{_checklist.Name}.json", stream);
-            foreach (var item in _checklist.Items)
-            {
-                item.Checklist = _checklist;
-            }
-        }
-
-        private void CancelChecklistEdit()
-        {
-            ResetEditEntry();
-        }
-
-        private void SaveChecklist(Action callback = null)
-        {
-            _checklist.Name = ChecklistEditEntry.Name;
-            _checklist.UseDeadline = ChecklistEditEntry.UseDeadline;
-            _checklist.Deadline = ChecklistEditEntry.Deadline;
-            _checklist.Color = ChecklistEditEntry.Color;
-
-            List<Notification> newNotifications = ChecklistEditEntry.UseDeadline && ChecklistEditEntryUseNotifications ? ChecklistEditEntryNotifications.Select(x => x.Notification).ToList() : [];
-            foreach (Notification notification in _checklist.Notifications)
-            {
-                _notificationService.CancelNotification(notification.Id);
-            }
-            foreach (Notification notification in _checklist.Notifications.Where(x => !newNotifications.Contains(x)).ToList())
-            {
-                _checklist.Notifications.Remove(notification);
-                _checklistContext.DeleteNotification(notification);
-            }
-
-            _checklist.Notifications = newNotifications;
-            
-            _ = _checklistContext.UpdateChecklist(_checklist);
-
-            foreach (Notification notification in _checklist.Notifications)
-            {
-                _notificationService.SendNotification(notification.Id, StringHelper.GenerateNotificationTitle(notification), StringHelper.GenerateNotificationMessage(notification), _checklist.Deadline.Subtract(notification.Value));
-            }
-            
-            RetrieveChecklist(this, EventArgs.Empty);
-            callback?.Invoke();
-        }
-
-        private void DeleteChecklist()
-        {
-            for (int i = _checklist.Notifications.Count - 1; i >= 0; i--)
-            {
-                Notification notification = _checklist.Notifications[i];
-                _notificationService.CancelNotification(notification.Id);
-                _checklistContext.DeleteNotification(notification);
-            }
-            
-            _checklistContext.DeleteChecklist(_checklist);
-            _navigationService.NavigateTo(NavigationService.NavigationTarget.Home);
-        }
-
-        private void ResetEditEntry()
-        {
-            ChecklistEditEntry = new()
-            {
-                Name = _checklist.Name,
-                UseDeadline = _checklist.UseDeadline,
-                Deadline = _checklist.Deadline,
-                Color = _checklist.Color,
-                Notifications = _checklist.Notifications
-            };
-            OnPropertyChanged(nameof(ChecklistEditEntry));
-
-            ChecklistEditEntryUseNotifications = _checklist.Notifications.Count > 0;
-            OnPropertyChanged(nameof(ChecklistEditEntryUseNotifications));
-
-            ChecklistEditEntryNotifications = _checklist.Notifications.Select(x => new NotificationViewModel(x)).ToObservableCollection();
-            OnPropertyChanged(nameof(ChecklistEditEntryNotifications));
-        }
-        
-        #endregion
         
         #region CreateItemsMethods
 
         private void AddNewItem()
         {
-            ItemsToAdd.Add(new Item { Checklist = _checklist });
+            ItemsToAdd.Add(new Item { Checklist = Checklist.Checklist });
         }
 
         private void DeleteNewItem(Item item)

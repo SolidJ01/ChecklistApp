@@ -5,6 +5,8 @@ namespace ChecklistApp.ViewModel;
 public class ItemViewModel : ViewModel
 {
     private Item _item;
+    
+    public Item Item { get => _item; }
 
     public int Id
     {
@@ -26,6 +28,8 @@ public class ItemViewModel : ViewModel
         get { return _item.IsChecked; }
         set
         {
+            if (_item.IsChecked == value)
+                return;
             _item.IsChecked = value;
             OnPropertyChanged();
         }

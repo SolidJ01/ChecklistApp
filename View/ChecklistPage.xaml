@@ -20,9 +20,9 @@
                 <RowDefinition Height="70" />
             </Grid.RowDefinitions>
 
-            <CollectionView x:Name="itemsView" ItemsSource="{Binding Items}" ItemSizingStrategy="MeasureFirstItem" ItemsUpdatingScrollMode="KeepScrollOffset">
+            <CollectionView x:Name="itemsView" ItemsSource="{Binding Checklist.Items}" ItemSizingStrategy="MeasureFirstItem" ItemsUpdatingScrollMode="KeepScrollOffset">
                 <CollectionView.Header>
-                    <controls:ChecklistCard Checklist="{Binding ChecklistCardViewModel}" Margin="10, 15, 10, 10"/>
+                    <controls:ChecklistCard Checklist="{Binding Checklist}" Margin="10, 15, 10, 10"/>
                 </CollectionView.Header>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="viewmodel:ItemViewModel">
@@ -52,16 +52,16 @@
             
             <controls:ChecklistOptionsPopup x:Name="OptionsPopup"
                                             BackButtonActionChanged="OnBackButtonActionChanged"
-                                            Name="{Binding ChecklistEditEntry.Name}"
-                                            UseDeadline="{Binding ChecklistEditEntry.UseDeadline}"
-                                            Deadline="{Binding ChecklistEditEntry.Deadline}"
-                                            ChecklistColor="{Binding ChecklistEditEntry.Color}"
-                                            NotificationsEnabled="{Binding ChecklistEditEntryUseNotifications}"
-                                            Notifications="{Binding ChecklistEditEntryNotifications}"
-                                            DeleteCommand="{Binding DeleteChecklistCommand}"
-                                            ExportCommand="{Binding ExportChecklistCommand}"
-                                            CancelCommand="{Binding CancelChecklistEditCommand}"
-                                            SaveCommand="{Binding SaveChecklistEditCommand}"
+                                            Name="{Binding ChecklistOptions.Name}"
+                                            UseDeadline="{Binding ChecklistOptions.UseDeadline}"
+                                            Deadline="{Binding ChecklistOptions.Deadline}"
+                                            ChecklistColor="{Binding ChecklistOptions.Color}"
+                                            NotificationsEnabled="{Binding ChecklistOptions.NotificationsEnabled}"
+                                            Notifications="{Binding ChecklistOptions.Notifications}"
+                                            DeleteCommand="{Binding ChecklistOptions.DeleteChecklistCommand}"
+                                            ExportCommand="{Binding ChecklistOptions.ExportChecklistCommand}"
+                                            CancelCommand="{Binding ChecklistOptions.CancelChecklistEditCommand}"
+                                            SaveCommand="{Binding ChecklistOptions.SaveChecklistEditCommand}"
                                             DialogueQueried="OnQueryDialogue"
                                             Grid.Row="0"
                                             Grid.RowSpan="2" />

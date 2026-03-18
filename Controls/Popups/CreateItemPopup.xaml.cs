@@ -57,11 +57,6 @@ public partial class CreateItemPopup : Popup
         Close(() => CancelCommand.Execute(null));
     }
 
-    protected override void CloseButtonClicked(object sender, EventArgs e)
-    {
-        Back();
-    }
-
     private void SaveButtonClicked(object sender, EventArgs e)
     {
         SaveCommand.Execute(Back);

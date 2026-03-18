@@ -16,7 +16,7 @@
 
         <CollectionView ItemsSource="{Binding Checklists}" Margin="0,15,0,0">
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="viewmodel:ChecklistCardViewModel">
+                <DataTemplate x:DataType="viewmodel:ChecklistViewModel">
                     <controls:ChecklistCard Checklist="{Binding}" 
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=GoToChecklistCommand}"
                                             Margin="10,0,10,15">

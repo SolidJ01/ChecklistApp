@@ -13,12 +13,12 @@ namespace ChecklistApp.Controls;
 
 public partial class ChecklistExportPopup : Popup
 {
-    public static readonly BindableProperty ChecklistsProperty = BindableProperty.Create(nameof(Checklists), typeof(ObservableCollection<SelectableChecklistCardViewModel>), typeof(ChecklistExportPopup), propertyChanged:ChecklistsPropertyChanged);
+    public static readonly BindableProperty ChecklistsProperty = BindableProperty.Create(nameof(Checklists), typeof(ObservableCollection<SelectableChecklistViewModel>), typeof(ChecklistExportPopup), propertyChanged:ChecklistsPropertyChanged);
 
     private static void ChecklistsPropertyChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        ObservableCollection<SelectableChecklistCardViewModel> oldChecklists = oldValue as ObservableCollection<SelectableChecklistCardViewModel>;
-        ObservableCollection<SelectableChecklistCardViewModel> newChecklists = newValue as ObservableCollection<SelectableChecklistCardViewModel>;
+        ObservableCollection<SelectableChecklistViewModel> oldChecklists = oldValue as ObservableCollection<SelectableChecklistViewModel>;
+        ObservableCollection<SelectableChecklistViewModel> newChecklists = newValue as ObservableCollection<SelectableChecklistViewModel>;
         ChecklistExportPopup bindablePopup = bindable as ChecklistExportPopup;
         if (newChecklists is not null)
         {
@@ -37,9 +37,9 @@ public partial class ChecklistExportPopup : Popup
 
     public static readonly BindableProperty ExportCommandProperty = BindableProperty.Create(nameof(ExportCommand), typeof(ICommand), typeof(ChecklistExportPopup));
 
-    public ObservableCollection<SelectableChecklistCardViewModel> Checklists
+    public ObservableCollection<SelectableChecklistViewModel> Checklists
     {
-        get => (ObservableCollection<SelectableChecklistCardViewModel>)GetValue(ChecklistsProperty);
+        get => (ObservableCollection<SelectableChecklistViewModel>)GetValue(ChecklistsProperty);
         set => SetValue(ChecklistsProperty, value);
     }
 

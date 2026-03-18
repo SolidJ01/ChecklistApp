@@ -2,7 +2,7 @@ using ChecklistApp.Model;
 
 namespace ChecklistApp.ViewModel;
 
-public class SelectableChecklistCardViewModel : ChecklistCardViewModel
+public class SelectableChecklistViewModel : ChecklistViewModel
 {
     private bool _selected;
 
@@ -16,7 +16,7 @@ public class SelectableChecklistCardViewModel : ChecklistCardViewModel
         }
     }
     
-    public SelectableChecklistCardViewModel(Checklist checklist, bool selected = false) : base(checklist)
+    public SelectableChecklistViewModel(Checklist checklist, bool selected = false) : base(checklist)
     {
         Selected = selected;
     }
