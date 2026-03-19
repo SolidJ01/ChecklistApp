@@ -12,6 +12,7 @@ public class SettingsPopupViewModel : ViewModel
 {
     private IPreferences _preferences;
     private ChecklistContext _context;
+    private ToastService _toastService;
 
     private bool _notificationsEnabled = false;
 
@@ -27,10 +28,11 @@ public class SettingsPopupViewModel : ViewModel
     }
     public ObservableCollection<NotificationViewModel> Notifications { get; set; } = [];
 
-    public SettingsPopupViewModel(IPreferences preferences, ChecklistContext context)
+    public SettingsPopupViewModel(IPreferences preferences, ChecklistContext context, ToastService toastService)
     {
         _preferences = preferences;
         _context = context;
+        _toastService = toastService;
         
         GetPreferences();
         GetNotificationDefaults();
@@ -86,7 +88,7 @@ public class SettingsPopupViewModel : ViewModel
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            //  TODO: toast
+            _toastService.QueueToast($"Error: {ex.Message}");
         }
     }
 
@@ -101,7 +103,7 @@ public class SettingsPopupViewModel : ViewModel
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            //  TODO: toast
+            _toastService.QueueToast($"Error: {ex.Message}");
         }
     }
 }

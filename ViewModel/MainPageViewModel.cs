@@ -43,8 +43,6 @@ namespace ChecklistApp.ViewModel
         public ICommand CreateNewCommand { get; set; }
         public ICommand GoToChecklistCommand { get; set; }
         public ICommand ExportChecklistsCommand { get; set; }
-        public ICommand Test_SendNotificationCommand { get; set; }
-        public ICommand Test_CancelNotificationCommand { get; set; }
 
         #endregion
 
@@ -65,29 +63,11 @@ namespace ChecklistApp.ViewModel
             _createChecklistVm.ChecklistAdded += ReloadList;
             _settingsVm = settingsVm;
 
-            CreateNewCommand = new Command(CreateNew);
             GoToChecklistCommand = new Command<int>(GoToChecklist);
             ExportChecklistsCommand = new Command<Action>(ExportChecklists);
-            
-            Test_SendNotificationCommand = new Command(async () =>
-            {
-                PermissionStatus status = await Permissions.RequestAsync<NotificationPermission>();
-                if (status != PermissionStatus.Granted)
-                    return;
-                //_notificationService.SendNotification("Title", "Message", DateTime.Now.AddSeconds(10));
-            });
-            Test_CancelNotificationCommand = new Command(() =>
-            {
-                //_notificationService.CancelNotification();
-            });
         }
 
         #region Methods
-
-        private void CreateNew()
-        {
-            _navigationService.NavigateTo(NavigationService.NavigationTarget.CreateChecklist);
-        }
 
         public async void ReloadList(object sender, EventArgs e)
         {

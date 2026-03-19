@@ -113,9 +113,9 @@ namespace ChecklistApp.ViewModel
                 ChecklistAdded?.Invoke(this, EventArgs.Empty);
                 callback?.Invoke();
             }
-            catch
+            catch (Exception e)
             {
-                //  TODO: Notify user something went wrong
+                _toastService.QueueToast($"Error: {e.Message}");
             }
         }
 

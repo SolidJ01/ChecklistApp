@@ -90,6 +90,8 @@ namespace ChecklistApp.ViewModel
             ChecklistViewModel.Update(_checklist);
             
             _checklistContext.UpdateItem(item);*/
+            Item item = Checklist.Items.First(x => x.Id == id).Item;
+            _checklistContext.UpdateItem(item);
         }
 
         private void SaveItemChanges((int, string) data)
