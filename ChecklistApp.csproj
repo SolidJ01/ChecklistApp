@@ -15,11 +15,11 @@
 		<ApplicationTitle>Checklist</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.fastcode.checklistapp</ApplicationId>
+		<ApplicationId>fastcode.checklistapp</ApplicationId>
 		<ApplicationIdGuid>5788c601-15d4-45a8-937a-c67fad268a87</ApplicationIdGuid>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationDisplayVersion>0.9.2</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
