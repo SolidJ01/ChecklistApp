@@ -108,8 +108,10 @@ namespace ChecklistApp.ViewModel
         private void DeleteItem(int id)
         {
             var checklistItem = Checklist.Items.FirstOrDefault(x => x.Id.Equals(id));
-            Checklist.Items.Remove(checklistItem);
-            
+            if (checklistItem is null)
+                return;
+
+            Checklist.Checklist.Items.Remove(checklistItem.Item);
             Checklist.Update(Checklist.Checklist);
             
             _checklistContext.DeleteItem(checklistItem.Item);
@@ -137,7 +139,6 @@ namespace ChecklistApp.ViewModel
         }
         
         #endregion
-        
         
         #region CreateItemsMethods
 

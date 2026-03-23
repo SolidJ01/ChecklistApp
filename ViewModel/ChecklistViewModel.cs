@@ -97,18 +97,24 @@ namespace ChecklistApp.ViewModel
                 case NotifyCollectionChangedAction.Add:
                     if (e.NewItems is null)
                         return;
+                    
                     foreach (ItemViewModel item in e.NewItems)
                     {
                         item.PropertyChanged += ItemOnPropertyChanged;
                     }
+                    
+                    Update();
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     if (e.OldItems is null)
                         return;
+                    
                     foreach (ItemViewModel item in e.OldItems)
                     {
                         item.PropertyChanged -= ItemOnPropertyChanged;
                     }
+
+                    Update();
                     break;
             }
         }
@@ -134,7 +140,7 @@ namespace ChecklistApp.ViewModel
             {
                 foreach (var item in newItems)
                 {
-                    Items.Add(item);
+                    Items.Insert(_checklist.Items.IndexOf(item.Item), item);
                     item.PropertyChanged += ItemOnPropertyChanged;
                 }
 
