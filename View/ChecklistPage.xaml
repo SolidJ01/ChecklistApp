@@ -52,6 +52,7 @@
             
             <controls:ChecklistOptionsPopup x:Name="OptionsPopup"
                                             BackButtonActionChanged="OnBackButtonActionChanged"
+                                            ToastAnchorChanged="OnToastAnchorChanged"
                                             Name="{Binding ChecklistOptions.Name}"
                                             UseDeadline="{Binding ChecklistOptions.UseDeadline}"
                                             Deadline="{Binding ChecklistOptions.Deadline}"

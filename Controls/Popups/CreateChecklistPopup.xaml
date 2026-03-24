@@ -7,7 +7,7 @@
              x:Name="NewChecklist"
              x:Class="ChecklistApp.Controls.CreateChecklistPopup"
              x:DataType="controls:CreateChecklistPopup">
-    <Grid RowDefinitions="*,130"
+    <Grid x:Name="Base" RowDefinitions="*,130"
           BindingContext="{x:Reference NewChecklist}">
         <ScrollView>
             <controls:ChecklistMetaEditor Margin="10"
@@ -19,7 +19,8 @@
                                           Notifications="{Binding ViewModel.Notifications}" />
         </ScrollView>
         
-        <controls:ControlBar Grid.Row="1">
+        <controls:ControlBar x:Name="ControlBar" 
+                             Grid.Row="1">
             <Grid RowDefinitions="50,50" 
                   ColumnDefinitions="50,*" 
                   RowSpacing="10" 

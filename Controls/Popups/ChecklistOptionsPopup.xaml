@@ -6,7 +6,8 @@
              x:Name="ChecklistOptions"
              x:Class="ChecklistApp.Controls.ChecklistOptionsPopup"
              x:DataType="controls:ChecklistOptionsPopup">
-    <Grid RowDefinitions="*,130"
+    <Grid x:Name="Base" 
+          RowDefinitions="*,130"
           BindingContext="{x:Reference ChecklistOptions}">
         <ScrollView>
             <controls:ChecklistMetaEditor Margin="10"
@@ -18,7 +19,8 @@
                                           Notifications="{Binding Notifications}" />
         </ScrollView>
         
-        <controls:ControlBar Grid.Row="1">
+        <controls:ControlBar x:Name="ControlBar"
+                             Grid.Row="1">
             <Grid RowDefinitions="50,50" 
                   ColumnDefinitions="50,*,*,50" 
                   RowSpacing="10" 

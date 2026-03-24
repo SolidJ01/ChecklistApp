@@ -108,4 +108,11 @@ public partial class ChecklistOptionsPopup : Popup
     {
         DialogueQueried?.Invoke(this, new DialogueQueryEventArgs("Delete List?", () => DeleteCommand.Execute(null), "Delete", type:DialoguePopup.QueryType.Negative));
     }
+    
+    protected override Task CalculateToastAnchor()
+    {
+        _toastAnchor = ControlBar.Bounds;
+        _toastAnchor.Y += (ChecklistOptions.Height / 2) - (Base.Height / 2);
+        return base.CalculateToastAnchor();
+    }
 }

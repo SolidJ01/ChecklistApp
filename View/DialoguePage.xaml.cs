@@ -13,6 +13,7 @@ namespace ChecklistApp.View;
 public partial class DialoguePage : PopupPage
 {
     private ToastService _toastService;
+    private Dictionary<object, Rect> _toastSpacingLayers = [];
     
     public DialoguePage(ToastService toastService)
     {
@@ -40,6 +41,28 @@ public partial class DialoguePage : PopupPage
     private void OnToastCompleted(object sender, EventArgs e)
     {
         CheckQueuedToasts();
+    }
+
+    protected void OnToastAnchorChanged(object sender, ToastAnchorChangeEventArgs e)
+    {
+        switch (e.EventIntent)
+        {
+            case ToastAnchorChangeEventArgs.Intent.Apply:
+                _toastSpacingLayers.Add(sender, e.Value);
+                ((Toast)GetTemplateChild("Toast")).AdjustToNewAnchor(_toastSpacingLayers.Last().Value);
+                break;
+            case ToastAnchorChangeEventArgs.Intent.Remove:
+                _toastSpacingLayers.Remove(sender);
+                if (_toastSpacingLayers.Count > 0)
+                {
+                    ((Toast)GetTemplateChild("Toast")).AdjustToNewAnchor(_toastSpacingLayers.Last().Value);
+                }
+                else
+                {
+                    ((Toast)GetTemplateChild("Toast")).ResetAnchoring();
+                }
+                break;
+        }
     }
 
     protected void OnQueryDialogue(object sender, DialogueQueryEventArgs e)

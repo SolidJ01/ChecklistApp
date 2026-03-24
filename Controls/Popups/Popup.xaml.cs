@@ -19,6 +19,7 @@ public partial class Popup : ContentView
     private double _opacity;
     private double _scale;
     private bool _isAnimating = false;
+    protected Rect _toastAnchor;
 
     public double Opacity
     {
@@ -61,7 +62,7 @@ public partial class Popup : ContentView
     public ICommand CloseCommand { get; private set; }
 
     public event EventHandler<BackButtonActionRegisterEventArgs> BackButtonActionChanged;
-    
+    public event EventHandler<ToastAnchorChangeEventArgs> ToastAnchorChanged;
     
     public Popup()
     {
@@ -88,7 +89,12 @@ public partial class Popup : ContentView
         backgroundAnimation.Commit(this, "PopupOpacity", s_AnimRate, 500, Easing.CubicInOut);
 
         var popupAnimation = new Animation(x => Scale = x, 0, s_BaseScale);
-        popupAnimation.Commit(this, "PopupScale", s_AnimRate, 500, Easing.SpringOut, (d, b) => { _isAnimating = false; });
+        popupAnimation.Commit(this, "PopupScale", s_AnimRate, 500, Easing.SpringOut, async (d, b) =>
+        {
+            _isAnimating = false;
+            await CalculateToastAnchor();
+            ToastAnchorChanged?.Invoke(this, new ToastAnchorChangeEventArgs(ToastAnchorChangeEventArgs.Intent.Apply, _toastAnchor));
+        });
     }
 
     public async void Close(Action callback = null)
@@ -98,6 +104,7 @@ public partial class Popup : ContentView
         _isAnimating = true;
         
         BackButtonActionChanged?.Invoke(this, new BackButtonActionRegisterEventArgs(BackButtonActionRegisterEventArgs.Intent.Deregister, Back));
+        ToastAnchorChanged?.Invoke(this, new ToastAnchorChangeEventArgs(ToastAnchorChangeEventArgs.Intent.Remove,  _toastAnchor));
         
         var animation = new Animation(x => Opacity = x, BackgroundOpacity, 0);
         animation.Commit(this, "OverlayHide", s_AnimRate, 500, Easing.CubicInOut);
@@ -120,5 +127,10 @@ public partial class Popup : ContentView
     protected virtual void CloseButtonClicked(object sender, EventArgs e)
     {
         Back();
+    }
+
+    protected virtual async Task CalculateToastAnchor()
+    {
+        
     }
 }

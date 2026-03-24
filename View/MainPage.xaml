@@ -35,18 +35,21 @@
         
         <controls:SettingsPopup x:Name="SettingsPopup" 
                                 BackButtonActionChanged="OnBackButtonActionChanged"
+                                ToastAnchorChanged="OnToastAnchorChanged"
                                 ExportChecklistsClicked="OnExportChecklistsButtonClicked"
                                 ViewModel="{Binding SettingsPopupViewModel}"
                                 Grid.Row="0" 
                                 Grid.RowSpan="2" />
         <controls:ChecklistExportPopup x:Name="ChecklistExportPopup"
                                        BackButtonActionChanged="OnBackButtonActionChanged"
+                                       ToastAnchorChanged="OnToastAnchorChanged"
                                        Checklists="{Binding Checklists}"
                                        ExportCommand="{Binding ExportChecklistsCommand}"
                                        Grid.Row="0"
                                        Grid.RowSpan="2"/>
         <controls:CreateChecklistPopup x:Name="CreateChecklistPopup"
                                        BackButtonActionChanged="OnBackButtonActionChanged"
+                                       ToastAnchorChanged="OnToastAnchorChanged"
                                        ViewModel="{Binding CreateChecklistViewModel}"
                                        Grid.Row="0"
                                        Grid.RowSpan="2" />

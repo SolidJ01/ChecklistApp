@@ -8,7 +8,8 @@
              x:Class="ChecklistApp.Controls.SettingsPopup"
              x:DataType="controls:SettingsPopup">
     <controls:Popup.Content>
-        <Grid RowDefinitions="*, 70"
+        <Grid x:Name="Base" 
+              RowDefinitions="*, 70"
               BindingContext="{x:Reference settings}">
             <ScrollView>
                 <VerticalStackLayout Padding="10" 
@@ -23,7 +24,8 @@
                                                     Notifications="{Binding ViewModel.Notifications}"/>
                 </VerticalStackLayout>
             </ScrollView>
-            <controls:ControlBar Grid.Row="1">
+            <controls:ControlBar x:Name="ControlBar" 
+                                 Grid.Row="1">
                 <Grid ColumnDefinitions="50, *" 
                       ColumnSpacing="10">
                     <Button WidthRequest="50"

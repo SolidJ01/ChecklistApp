@@ -7,8 +7,9 @@
              x:Class="ChecklistApp.Controls.Toast"
              x:DataType="controls:Toast">
     <FlexLayout BindingContext="{x:Reference this}" 
+                x:Name="Wrapper"
                 Direction="ColumnReverse"
-                Padding="0,0,0,60">
+                Padding="{Binding BaseSpacing}">
         <Border x:Name="Box" 
                 Margin="5"
                 BackgroundColor="{StaticResource Text}"
@@ -16,7 +17,7 @@
                 MinimumHeightRequest="50">
             <Label Text="{Binding Message}"
                    TextColor="Black"
-                   FontSize="18"
+                   FontSize="20"
                    FontAttributes="Bold"
                    VerticalOptions="Center" />
         </Border>

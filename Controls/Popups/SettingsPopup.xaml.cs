@@ -31,4 +31,11 @@ public partial class SettingsPopup : Popup
     {
         ExportChecklistsClicked?.Invoke(sender, e);
     }
+    
+    protected override Task CalculateToastAnchor()
+    {
+        _toastAnchor = ControlBar.Bounds;
+        _toastAnchor.Y += (settings.Height / 2) - (Base.Height / 2);
+        return base.CalculateToastAnchor();
+    }
 }

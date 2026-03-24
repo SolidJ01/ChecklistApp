@@ -47,4 +47,11 @@ public partial class CreateChecklistPopup : Popup
     {
         ViewModel.SaveCommand.Execute(Back);
     }
+    
+    protected override Task CalculateToastAnchor()
+    {
+        _toastAnchor = ControlBar.Bounds;
+        _toastAnchor.Y += (NewChecklist.Height / 2) - (Base.Height / 2);
+        return base.CalculateToastAnchor();
+    }
 }

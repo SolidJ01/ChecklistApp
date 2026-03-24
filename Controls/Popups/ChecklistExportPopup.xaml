@@ -8,7 +8,8 @@
              PopupMargin="15,25"
              x:Class="ChecklistApp.Controls.ChecklistExportPopup"
              x:DataType="controls:ChecklistExportPopup">
-    <Grid RowDefinitions="*, 70"
+    <Grid x:Name="Base" 
+          RowDefinitions="*, 70"
           BindingContext="{x:Reference ChecklistExport}">
         <CollectionView ItemsSource="{Binding Checklists}">
             <CollectionView.Header>
@@ -37,7 +38,8 @@
             </CollectionView.ItemTemplate>
             
         </CollectionView>
-        <controls:ControlBar Grid.Row="1">
+        <controls:ControlBar Grid.Row="1"
+                             x:Name="ControlBar">
             <Grid ColumnDefinitions="50, *"
                   ColumnSpacing="10">
                 <Button Text="&#xf060;"

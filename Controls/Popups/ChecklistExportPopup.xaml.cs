@@ -87,4 +87,11 @@ public partial class ChecklistExportPopup : Popup
             QuickClose();
         });
     }
+
+    protected override Task CalculateToastAnchor()
+    {
+        _toastAnchor = ControlBar.Bounds;
+        _toastAnchor.Y += (ChecklistExport.Height / 2) - (Base.Height / 2);
+        return base.CalculateToastAnchor();
+    }
 }
