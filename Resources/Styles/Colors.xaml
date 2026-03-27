@@ -17,6 +17,10 @@
     <Color x:Key="ForegroundRed">#972121</Color>
     <Color x:Key="ForegroundOrange">#C05D25</Color>
     <Color x:Key="ForegroundGreen">#099742</Color>
+    
+    <Color x:Key="RemotePrimary">#161A32</Color>
+    <Color x:Key="RemoteSecondary">#ffffff</Color>
+    <Color x:Key="RemoteAccent">#EEA702</Color>
 
     <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource Foreground}" />
     <SolidColorBrush x:Key="ForegroundDarkBrush" Color="{StaticResource ForegroundDark}" />

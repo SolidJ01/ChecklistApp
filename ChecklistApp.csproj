@@ -120,7 +120,6 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Splash\old_splash.svg" />
-	  <MauiSplashScreen Include="Resources\Splash\old_splash.svg" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -23,6 +23,10 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 				fonts.AddFont("FontAwesome6-Free-Solid-900.otf", "FontAwSolid");
+			})
+			.ConfigureEssentials(essentials =>
+			{
+				essentials.UseVersionTracking();
 			});
 
 		builder.Services.AddDbContext<ChecklistContext>(options => options.UseSqlite($"DataSource = {Path.Combine(FileSystem.AppDataDirectory, "Checklist.db")}"));
@@ -30,6 +34,8 @@ public static class MauiProgram
 		builder.Services.AddSingleton<ToastService>();
 		builder.Services.AddSingleton<IFileSaver>(FileSaver.Default);
 		builder.Services.AddSingleton<IPreferences>(Preferences.Default);
+		builder.Services.AddSingleton<IVersionTracking>(VersionTracking.Default);
+		builder.Services.AddSingleton<HttpClient>();
 		
 		#if ANDROID
 		builder.Services.AddTransient<INotificationManagerService, NotificationManagerService>();

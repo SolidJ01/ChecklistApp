@@ -1,8 +1,11 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Text.Json;
+using System.Windows.Input;
 using ChecklistApp.Data;
 using ChecklistApp.Model;
+using ChecklistApp.Model.Remote;
 using ChecklistApp.Services;
 using CommunityToolkit.Maui.Core.Extensions;
 
@@ -10,11 +13,21 @@ namespace ChecklistApp.ViewModel;
 
 public class SettingsPopupViewModel : ViewModel
 {
+    public enum RefreshState
+    {
+        Checking, 
+        Idle, 
+        UpdateAvailable
+    }
+    
     private IPreferences _preferences;
+    private IVersionTracking _versionTracking;
+    private HttpClient _httpClient;
     private ChecklistContext _context;
     private ToastService _toastService;
 
     private bool _notificationsEnabled = false;
+    private Release _release;
 
     public bool NotificationsEnabled
     {
@@ -28,14 +41,25 @@ public class SettingsPopupViewModel : ViewModel
     }
     public ObservableCollection<NotificationViewModel> Notifications { get; set; } = [];
 
-    public SettingsPopupViewModel(IPreferences preferences, ChecklistContext context, ToastService toastService)
+    public string UpdateTitle { get; set; } = "";
+    public string UpdateSubtitle { get; set; } = "";
+    public RefreshState UpdateState { get; set; } = RefreshState.Idle;
+    
+    public ICommand UpdateCommand { get; set; }
+
+    public SettingsPopupViewModel(IPreferences preferences, IVersionTracking versionTracking, HttpClient httpClient, ChecklistContext context, ToastService toastService)
     {
         _preferences = preferences;
+        _versionTracking = versionTracking;
+        _httpClient = httpClient;
         _context = context;
         _toastService = toastService;
+
+        UpdateCommand = new Command(Update);
         
         GetPreferences();
         GetNotificationDefaults();
+        Update();
     }
 
     private void GetPreferences()
@@ -105,5 +129,55 @@ public class SettingsPopupViewModel : ViewModel
             Console.WriteLine(ex.Message);
             _toastService.QueueToast($"Error: {ex.Message}");
         }
+    }
+
+    private async void Update()
+    {
+        switch (UpdateState)
+        {
+            case RefreshState.Idle:
+                await RetrieveLatestRelease();
+                break;
+            case RefreshState.Checking:
+                return;
+            case RefreshState.UpdateAvailable:
+                await SendToDownload();
+                break;
+        }
+    }
+
+    private async Task RetrieveLatestRelease()
+    {
+        UpdateState = RefreshState.Checking;
+        OnPropertyChanged(nameof(UpdateState));
+        try
+        {
+            var response =
+                await _httpClient.GetStringAsync(
+                    "https://CONNECTIONSTRING/api/software/latestversion/checklist/android");
+
+            _release = JsonSerializer.Deserialize<Release>(response);
+            if (_release.Version > Model.Remote.Version.Parse(_versionTracking.CurrentVersion))
+            {
+                UpdateTitle = $"{_release.Version} Available";
+                UpdateSubtitle = _release.Published.ToString("O");
+                _toastService.QueueToast($"Update {_release.Version} available!");
+                UpdateState = RefreshState.UpdateAvailable;
+                OnPropertyChanged(nameof(UpdateState));
+                return;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            
+        }
+        UpdateState = RefreshState.Idle;
+        OnPropertyChanged(nameof(UpdateState));
+    }
+
+    private async Task SendToDownload()
+    {
+        
     }
 }
