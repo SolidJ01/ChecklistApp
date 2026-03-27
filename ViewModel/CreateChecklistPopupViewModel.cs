@@ -162,7 +162,7 @@ namespace ChecklistApp.ViewModel
                             }
                             _checklistContext.CreateChecklist(checklist);
                         }
-                        _toastService.QueueToast($"Successfully imported {checklists.Count}  checklists");
+                        _toastService.QueueToast($"Successfully imported {checklists.Count} checklists");
                         //_checklistContext.CreateChecklists(checklists);
                     }
                     ChecklistAdded?.Invoke(this, EventArgs.Empty);
