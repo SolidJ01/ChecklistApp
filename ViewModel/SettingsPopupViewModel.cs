@@ -20,11 +20,12 @@ public class SettingsPopupViewModel : ViewModel
         UpdateAvailable
     }
     
-    private IPreferences _preferences;
-    private IVersionTracking _versionTracking;
-    private HttpClient _httpClient;
-    private ChecklistContext _context;
-    private ToastService _toastService;
+    private readonly IPreferences _preferences;
+    private readonly IVersionTracking _versionTracking;
+    private readonly HttpClient _httpClient;
+    private readonly ChecklistContext _context;
+    private readonly ToastService _toastService;
+    private readonly UpdateCheckerService _updateService;
 
     private bool _notificationsEnabled = false;
     private Release _release;
@@ -47,13 +48,19 @@ public class SettingsPopupViewModel : ViewModel
     
     public ICommand UpdateCommand { get; set; }
 
-    public SettingsPopupViewModel(IPreferences preferences, IVersionTracking versionTracking, HttpClient httpClient, ChecklistContext context, ToastService toastService)
+    public SettingsPopupViewModel(IPreferences preferences, 
+                                  IVersionTracking versionTracking, 
+                                  HttpClient httpClient, 
+                                  ChecklistContext context, 
+                                  ToastService toastService, 
+                                  UpdateCheckerService updateService)
     {
         _preferences = preferences;
         _versionTracking = versionTracking;
         _httpClient = httpClient;
         _context = context;
         _toastService = toastService;
+        _updateService = updateService;
 
         UpdateCommand = new Command(Update);
         
@@ -150,27 +157,17 @@ public class SettingsPopupViewModel : ViewModel
     {
         UpdateState = RefreshState.Checking;
         OnPropertyChanged(nameof(UpdateState));
-        try
-        {
-            var response =
-                await _httpClient.GetStringAsync(
-                    "https://CONNECTIONSTRING/api/software/latestversion/checklist/android");
 
-            _release = JsonSerializer.Deserialize<Release>(response);
-            if (_release.Version > Model.Remote.Version.Parse(_versionTracking.CurrentVersion))
-            {
-                UpdateTitle = $"{_release.Version} Available";
-                UpdateSubtitle = _release.Published.ToString("O");
-                _toastService.QueueToast($"Update {_release.Version} available!");
-                UpdateState = RefreshState.UpdateAvailable;
-                OnPropertyChanged(nameof(UpdateState));
-                return;
-            }
-        }
-        catch (Exception ex)
+        _release = await _updateService.GetLatestRelease();
+        
+        if (_release is not null && _release.Version > Model.Remote.Version.Parse(_versionTracking.CurrentVersion))
         {
-            Console.WriteLine(ex.Message);
-            
+            UpdateTitle = $"{_release.Version} Available";
+            UpdateSubtitle = _release.Published.ToString("O");
+            _toastService.QueueToast($"Update {_release.Version} available!");
+            UpdateState = SettingsPopupViewModel.RefreshState.UpdateAvailable;
+            OnPropertyChanged(nameof(UpdateState));
+            return;
         }
         UpdateState = RefreshState.Idle;
         OnPropertyChanged(nameof(UpdateState));

@@ -36,6 +36,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<IPreferences>(Preferences.Default);
 		builder.Services.AddSingleton<IVersionTracking>(VersionTracking.Default);
 		builder.Services.AddSingleton<HttpClient>();
+		builder.Services.AddSingleton<UpdateCheckerService>();
 		
 		#if ANDROID
 		builder.Services.AddTransient<INotificationManagerService, NotificationManagerService>();
