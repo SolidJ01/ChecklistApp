@@ -10,7 +10,8 @@
             <Grid IsClippedToBounds="False">
                 <Border x:Name="overlay"
                         BackgroundColor="Black"
-                        Opacity="{TemplateBinding Opacity}">
+                        Opacity="{TemplateBinding Opacity}"
+                        StrokeShape="Rectangle">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{TemplateBinding CloseCommand}" />
                     </Border.GestureRecognizers>

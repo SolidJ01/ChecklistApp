@@ -11,6 +11,8 @@ namespace ChecklistApp.Services
     public static class StringHelper
     {
         public static readonly string S_PreferenceNotificationsEnabled = "NotificationsEnabled";
+        public static readonly string S_PreferenceLastReleaseNotified = "LastReleaseNotified";
+        public static readonly string S_EnvironmentReleaseDate = "ReleaseDate";
         
         public static string FormatItemName(string name)
         {

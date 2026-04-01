@@ -16,7 +16,7 @@ namespace ChecklistApp.Data
 
         public ChecklistContext(DbContextOptions dbContextOptions) : base(dbContextOptions) 
         {
-            Database.EnsureCreated();
+            Database.Migrate();
             //if (!Checklists.Any() && !Items.Any())
             //{
             //    CreateTestDataSet();

@@ -6,24 +6,17 @@ public class Version
     public int Minor { get; set; }
     public int Patch { get; set; }
 
-    public Version(int major, int minor, int patch)
-    {
-        Major = major;
-        Minor = minor;
-        Patch = patch;
-    }
-
     public static Version Parse(string version)
     {
         string[] parts = version.Split('.');
         switch (parts.Length)
         {
             case 1:
-                return new Version(int.Parse(parts[0]), 0, 0);
+                return new Version { Major = int.Parse(parts[0]), Minor = 0, Patch = 0 };
             case 2:
-                return new Version(int.Parse(parts[0]), int.Parse(parts[1]), 0);
+                return new Version { Major = int.Parse(parts[0]), Minor = int.Parse(parts[1]), Patch = 0 };
             case 3:
-                return new Version(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]));
+                return new Version { Major = int.Parse(parts[0]), Minor = int.Parse(parts[1]), Patch = int.Parse(parts[2]) };
         }
         throw new FormatException("Invalid version format");
     }
@@ -42,5 +35,17 @@ public class Version
     public static bool operator < (Version version1, Version version2)
     {
         return version2 > version1;
+    }
+
+    public override string ToString()
+    {
+        return $"{Major}.{Minor}.{Patch}";
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is not Version v)
+            return false;
+        return v.Major.Equals(Major) && v.Minor.Equals(Minor) && v.Patch.Equals(Patch);
     }
 }

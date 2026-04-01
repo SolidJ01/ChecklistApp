@@ -12,27 +12,15 @@ public class UpdateCheckerService
     public UpdateCheckerService(HttpClient client)
     {
         _client = client;
-        string platform;
-        #if ANDROID
-        platform = "android";
-        #elif IOS
-        platform = "ios";
-        #endif
-        _connectionString = $"http://192.168.50.199:5248/api/software/releases/latest/checklist/{platform}";
+        _connectionString = $"https://www.fastcode.se/api/software/releases/latest/checklist/{DeviceInfo.Current.Platform.ToString().ToLower()}";
     }
 
     public async Task<Release> GetLatestRelease()
     {
-        try
-        {
-            var response = await _client.GetStringAsync(_connectionString);
+        var response = await _client.GetStringAsync(_connectionString);
 
-            return JsonSerializer.Deserialize<Release>(response);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            return null;
-        }
+        response = """{"version":{"major":0,"minor":9,"patch":2},"published":"2026-03-27T12:00:00"}""";
+        
+        return JsonSerializer.Deserialize<Release>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
     }
 }

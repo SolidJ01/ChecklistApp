@@ -8,8 +8,7 @@
              x:DataType="controls:UpdateChecker">
     <Border BindingContext="{x:Reference Update}"
             BackgroundColor="{StaticResource Foreground}"
-            HeightRequest="70"
-            Padding="20,10">
+            HeightRequest="60">
         <Border.Style>
             <Style TargetType="Border">
                 <Style.Triggers>
@@ -28,62 +27,127 @@
         <Border.GestureRecognizers>
             <TapGestureRecognizer Command="{Binding RefreshCommand}" />
         </Border.GestureRecognizers>
-        <FlexLayout Direction="Row">
-            <FlexLayout.Style>
-                <Style TargetType="FlexLayout">
-                    <Style.Triggers>
-                        <DataTrigger TargetType="FlexLayout" Binding="{Binding State}" Value="Idle">
-                            <Setter Property="Direction" Value="Row" />
-                        </DataTrigger>
-                        <DataTrigger TargetType="FlexLayout" Binding="{Binding State}" Value="Checking">
-                            <Setter Property="Direction" Value="Row" />
-                        </DataTrigger>
-                        <DataTrigger TargetType="FlexLayout" Binding="{Binding State}" Value="UpdateAvailable">
-                            <Setter Property="Direction" Value="RowReverse" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </FlexLayout.Style>
-            
-            <Label FontFamily="FontAwSolid"
-                   FontSize="32"
-                   TextColor="{StaticResource Text}"
-                   VerticalTextAlignment="Center">
-                <Label.Style>
-                    <Style TargetType="Label">
+        <Grid>
+            <Path Data="M 0,0 L 25,0 50,60 0,60Z"
+                  Fill="{StaticResource RemoteAccent}"
+                  StrokeThickness="0"
+                  Shadow="6 0 10 rgba(0,0,0,0.1)"
+                  Aspect="Uniform"
+                  HorizontalOptions="Start">
+                <Path.Style>
+                    <Style TargetType="Path">
                         <Style.Triggers>
-                            <DataTrigger TargetType="Label" Binding="{Binding State}" Value="Idle">
-                                <Setter Property="Text" Value="&#xf2f1;" />
-                                <Setter Property="IsVisible" Value="True" />
-                                <Setter Property="TextColor" Value="{StaticResource Text}" />
-                            </DataTrigger>
-                            <DataTrigger TargetType="Label" Binding="{Binding State}" Value="Checking">
-                                <Setter Property="Text" Value="" />
+                            <DataTrigger TargetType="Path" Binding="{Binding State}" Value="Idle">
                                 <Setter Property="IsVisible" Value="False" />
-                                <Setter Property="TextColor" Value="{StaticResource Text}" />
                             </DataTrigger>
-                            <DataTrigger TargetType="Label" Binding="{Binding State}" Value="UpdateAvailable">
-                                <Setter Property="Text" Value="&#xf019;" />
+                            <DataTrigger TargetType="Path" Binding="{Binding State}" Value="Checking">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Path" Binding="{Binding State}" Value="UpdateAvailable">
                                 <Setter Property="IsVisible" Value="True" />
-                                <Setter Property="TextColor" Value="{StaticResource RemotePrimary}" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </Label.Style>
-            </Label>
-            <VerticalStackLayout VerticalOptions="Center"
-                                 Margin="10,0,0,0"
-                                 FlexLayout.Grow="1"
-                                 FlexLayout.Shrink="0">
-                <Label Text="{Binding Subtitle}"
-                       FontSize="12"
+                </Path.Style>
+            </Path>
+            <Path Data="M 0,0 L 10,0 35,60 0,60Z"
+                  Fill="{StaticResource RemotePrimary}"
+                  StrokeThickness="0"
+                  Shadow="6 0 10 rgba(0,0,0,0.3)"
+                  Aspect="Uniform"
+                  HorizontalOptions="Start">
+                <Path.Style>
+                    <Style TargetType="Path">
+                        <Style.Triggers>
+                            <DataTrigger TargetType="Path" Binding="{Binding State}" Value="Idle">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Path" Binding="{Binding State}" Value="Checking">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Path" Binding="{Binding State}" Value="UpdateAvailable">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Path.Style>
+            </Path>
+            <FlexLayout Direction="Row"
+                        Padding="15,10"
+                        ZIndex="2">
+                <FlexLayout.Style>
+                    <Style TargetType="FlexLayout">
+                        <Style.Triggers>
+                            <DataTrigger TargetType="FlexLayout" Binding="{Binding State}" Value="Idle">
+                                <Setter Property="Direction" Value="Row" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="FlexLayout" Binding="{Binding State}" Value="Checking">
+                                <Setter Property="Direction" Value="Row" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="FlexLayout" Binding="{Binding State}" Value="UpdateAvailable">
+                                <Setter Property="Direction" Value="RowReverse" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </FlexLayout.Style>
+                
+                <Label FontFamily="FontAwSolid"
+                       FontSize="28"
                        TextColor="{StaticResource Text}"
-                       Margin="0,0,0,-10" />
+                       VerticalTextAlignment="Center"
+                       FlexLayout.Shrink="0">
+                    <Label.Style>
+                        <Style TargetType="Label">
+                            <Style.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding State}" Value="Idle">
+                                    <Setter Property="Text" Value="&#xf2f1;" />
+                                    <Setter Property="IsVisible" Value="True" />
+                                    <Setter Property="TextColor" Value="{StaticResource Text}" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label" Binding="{Binding State}" Value="Checking">
+                                    <Setter Property="Text" Value="" />
+                                    <Setter Property="IsVisible" Value="False" />
+                                    <Setter Property="TextColor" Value="{StaticResource Text}" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label" Binding="{Binding State}" Value="UpdateAvailable">
+                                    <Setter Property="Text" Value="&#xf019;" />
+                                    <Setter Property="IsVisible" Value="True" />
+                                    <Setter Property="TextColor" Value="{StaticResource RemotePrimary}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
                 <Label Text="{Binding Title}"
-                       FontSize="24"
+                       FontSize="22"
                        FontAttributes="Bold"
-                       TextColor="{StaticResource Text}" />
-            </VerticalStackLayout>
-        </FlexLayout>
+                       TextColor="{StaticResource Text}"
+                       Padding="10,0"
+                       FlexLayout.Grow="1"
+                       VerticalTextAlignment="Center">
+                    <Label.Style>
+                        <Style TargetType="Label">
+                            <Style.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding State}" Value="Idle">
+                                    <Setter Property="TextColor" Value="{StaticResource Text}" />
+                                    <Setter Property="FontFamily" Value="OpenSansSemiBold" />
+                                    <Setter Property="Margin" Value="0" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label" Binding="{Binding State}" Value="Checking">
+                                    <Setter Property="TextColor" Value="{StaticResource Text}" />
+                                    <Setter Property="FontFamily" Value="OpenSansSemiBold" />
+                                    <Setter Property="Margin" Value="0" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label" Binding="{Binding State}" Value="UpdateAvailable">
+                                    <Setter Property="TextColor" Value="{StaticResource RemotePrimary}" />
+                                    <Setter Property="FontFamily" Value="PoppinsBold" />
+                                    <Setter Property="Margin" Value="10,0,0,-2.5" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
+            </FlexLayout>
+        </Grid>
     </Border>
 </ContentView>

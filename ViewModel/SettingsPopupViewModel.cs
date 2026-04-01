@@ -29,6 +29,7 @@ public class SettingsPopupViewModel : ViewModel
 
     private bool _notificationsEnabled = false;
     private Release _release;
+    private int nUpdateChecks = 0;
 
     public bool NotificationsEnabled
     {
@@ -42,6 +43,7 @@ public class SettingsPopupViewModel : ViewModel
     }
     public ObservableCollection<NotificationViewModel> Notifications { get; set; } = [];
 
+    public string ReleaseInfo { get; set; }
     public string UpdateTitle { get; set; } = "";
     public string UpdateSubtitle { get; set; } = "";
     public RefreshState UpdateState { get; set; } = RefreshState.Idle;
@@ -63,6 +65,9 @@ public class SettingsPopupViewModel : ViewModel
         _updateService = updateService;
 
         UpdateCommand = new Command(Update);
+
+        ReleaseInfo =
+            $"Version {_versionTracking.CurrentVersion}   Released {Environment.GetEnvironmentVariable(StringHelper.S_EnvironmentReleaseDate)}";
         
         GetPreferences();
         GetNotificationDefaults();
@@ -156,25 +161,66 @@ public class SettingsPopupViewModel : ViewModel
     private async Task RetrieveLatestRelease()
     {
         UpdateState = RefreshState.Checking;
+        UpdateTitle = "Checking for Update...";
+        UpdateSubtitle = "";
         OnPropertyChanged(nameof(UpdateState));
+        OnPropertyChanged(nameof(UpdateTitle));
+        OnPropertyChanged(nameof(UpdateSubtitle));
+        nUpdateChecks++;
 
-        _release = await _updateService.GetLatestRelease();
+        try
+        {
+            _release = await _updateService.GetLatestRelease();
+        }
+        catch (Exception e)
+        {
+            UpdateTitle = "Release API Unavailable";
+            UpdateSubtitle = "";
+            OnPropertyChanged(nameof(UpdateTitle));
+            OnPropertyChanged(nameof(UpdateSubtitle));
+        }
         
         if (_release is not null && _release.Version > Model.Remote.Version.Parse(_versionTracking.CurrentVersion))
         {
             UpdateTitle = $"{_release.Version} Available";
             UpdateSubtitle = _release.Published.ToString("O");
-            _toastService.QueueToast($"Update {_release.Version} available!");
-            UpdateState = SettingsPopupViewModel.RefreshState.UpdateAvailable;
+            OnPropertyChanged(nameof(UpdateTitle));
+            OnPropertyChanged(nameof(UpdateSubtitle));
+            
+            
+            bool hasNotified = _preferences.ContainsKey(StringHelper.S_PreferenceLastReleaseNotified) && 
+                               Model.Remote.Version.Parse(_preferences.Get(StringHelper.S_PreferenceLastReleaseNotified, string.Empty))
+                                   .Equals(_release.Version);
+            if (nUpdateChecks <= 1 && !hasNotified)
+            {
+                _toastService.QueueToast($"Update {_release.Version} available!");
+                _preferences.Set(StringHelper.S_PreferenceLastReleaseNotified, _release.Version.ToString());
+            }
+            
+            UpdateState = RefreshState.UpdateAvailable;
             OnPropertyChanged(nameof(UpdateState));
             return;
         }
+        
+        UpdateTitle = "Up To Date";
+        UpdateSubtitle = "";
         UpdateState = RefreshState.Idle;
+        OnPropertyChanged(nameof(UpdateTitle));
+        OnPropertyChanged(nameof(UpdateSubtitle));
         OnPropertyChanged(nameof(UpdateState));
     }
 
     private async Task SendToDownload()
     {
-        
+        try
+        {
+            Uri uri = new Uri("https://www.fastcode.se/software/checklist");
+            await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            _toastService.QueueToast($"Error: {ex.Message}");
+        }
     }
 }

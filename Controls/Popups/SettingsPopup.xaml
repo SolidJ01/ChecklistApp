@@ -12,8 +12,8 @@
               RowDefinitions="*, 70"
               BindingContext="{x:Reference settings}">
             <ScrollView>
-                <Grid RowDefinitions="*,70"
-                      RowSpacing="10"
+                <Grid RowDefinitions="*,auto"
+                      RowSpacing="30"
                       Padding="10">
                     <VerticalStackLayout Spacing="10">
                         <Label FontSize="20"
@@ -25,11 +25,23 @@
                         <controls:NotificationScheduler NotificationsEnabled="{Binding ViewModel.NotificationsEnabled}"
                                                         Notifications="{Binding ViewModel.Notifications}"/>
                     </VerticalStackLayout>
-                    <controls:UpdateChecker Title="{Binding ViewModel.UpdateTitle}"
-                                            Subtitle="{Binding ViewModel.UpdateSubtitle}"
-                                            RefreshCommand="{Binding ViewModel.UpdateCommand}"
-                                            State="{Binding ViewModel.UpdateState}"
-                                            Grid.Row="1" />
+                    <VerticalStackLayout Grid.Row="1"
+                                         Spacing="5">
+                        <Label Text="Made by Emma Fast"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Center"
+                               TextColor="{StaticResource Text}" />
+                        <Label Text="{Binding ViewModel.ReleaseInfo}"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Center"
+                               TextColor="{StaticResource Text}" />
+                        <controls:UpdateChecker Title="{Binding ViewModel.UpdateTitle}"
+                                                Subtitle="{Binding ViewModel.UpdateSubtitle}"
+                                                RefreshCommand="{Binding ViewModel.UpdateCommand}"
+                                                State="{Binding ViewModel.UpdateState}" />
+                    </VerticalStackLayout>
                 </Grid>
             </ScrollView>
             <controls:ControlBar x:Name="ControlBar" 

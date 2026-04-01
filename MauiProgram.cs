@@ -23,11 +23,15 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 				fonts.AddFont("FontAwesome6-Free-Solid-900.otf", "FontAwSolid");
+				fonts.AddFont("Poppins-Regular.ttf", "PoppinsRegular");
+				fonts.AddFont("Poppins-Bold.ttf", "PoppinsBold");
 			})
 			.ConfigureEssentials(essentials =>
 			{
 				essentials.UseVersionTracking();
 			});
+		
+		Environment.SetEnvironmentVariable(StringHelper.S_EnvironmentReleaseDate, "2026-04-01");
 
 		builder.Services.AddDbContext<ChecklistContext>(options => options.UseSqlite($"DataSource = {Path.Combine(FileSystem.AppDataDirectory, "Checklist.db")}"));
 		builder.Services.AddSingleton<NavigationService>();
