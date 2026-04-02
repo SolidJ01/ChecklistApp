@@ -34,5 +34,9 @@
     <SolidColorBrush x:Key="ForegroundRedBrush" Color="{StaticResource ForegroundRed}" />
     <SolidColorBrush x:Key="ForegroundOrangeBrush" Color="{StaticResource ForegroundOrange}" />
     <SolidColorBrush x:Key="ForegroundGreenBrush" Color="{StaticResource ForegroundGreen}" />
+    
+    <SolidColorBrush x:Key="RemotePrimaryBrush" Color="{StaticResource RemotePrimary}" />
+    <SolidColorBrush x:Key="RemoteSecondaryBrush" Color="{StaticResource RemoteSecondary}" />
+    <SolidColorBrush x:Key="RemoteAccentBrush" Color="{StaticResource RemoteAccent}" />
 
 </ResourceDictionary>

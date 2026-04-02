@@ -29,9 +29,8 @@
         </Border.GestureRecognizers>
         <Grid>
             <Path Data="M 0,0 L 25,0 50,60 0,60Z"
-                  Fill="{StaticResource RemoteAccent}"
+                  Fill="{StaticResource RemoteAccentBrush}"
                   StrokeThickness="0"
-                  Shadow="6 0 10 rgba(0,0,0,0.1)"
                   Aspect="Uniform"
                   HorizontalOptions="Start">
                 <Path.Style>
@@ -51,9 +50,8 @@
                 </Path.Style>
             </Path>
             <Path Data="M 0,0 L 10,0 35,60 0,60Z"
-                  Fill="{StaticResource RemotePrimary}"
+                  Fill="{StaticResource RemotePrimaryBrush}"
                   StrokeThickness="0"
-                  Shadow="6 0 10 rgba(0,0,0,0.3)"
                   Aspect="Uniform"
                   HorizontalOptions="Start">
                 <Path.Style>
