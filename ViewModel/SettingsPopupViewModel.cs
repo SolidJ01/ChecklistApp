@@ -8,6 +8,7 @@ using ChecklistApp.Model;
 using ChecklistApp.Model.Remote;
 using ChecklistApp.Services;
 using CommunityToolkit.Maui.Core.Extensions;
+using Version = ChecklistApp.Model.Remote.Version;
 
 namespace ChecklistApp.ViewModel;
 
@@ -19,6 +20,8 @@ public class SettingsPopupViewModel : ViewModel
         Idle, 
         UpdateAvailable
     }
+
+    private static readonly int s_maxUpdateChecksToNotify = 1;
     
     private readonly IPreferences _preferences;
     private readonly IVersionTracking _versionTracking;
@@ -176,11 +179,14 @@ public class SettingsPopupViewModel : ViewModel
         {
             UpdateTitle = "Release API Unavailable";
             UpdateSubtitle = "";
+            UpdateState = RefreshState.Idle;
             OnPropertyChanged(nameof(UpdateTitle));
             OnPropertyChanged(nameof(UpdateSubtitle));
+            OnPropertyChanged(nameof(UpdateState));
+            return;
         }
         
-        if (_release is not null && _release.Version > Model.Remote.Version.Parse(_versionTracking.CurrentVersion))
+        if (_release is not null && _release.Version > Version.Parse(_versionTracking.CurrentVersion))
         {
             UpdateTitle = $"{_release.Version} Available";
             UpdateSubtitle = _release.Published.ToString("O");
@@ -188,10 +194,7 @@ public class SettingsPopupViewModel : ViewModel
             OnPropertyChanged(nameof(UpdateSubtitle));
             
             
-            bool hasNotified = _preferences.ContainsKey(StringHelper.S_PreferenceLastReleaseNotified) && 
-                               Model.Remote.Version.Parse(_preferences.Get(StringHelper.S_PreferenceLastReleaseNotified, string.Empty))
-                                   .Equals(_release.Version);
-            if (nUpdateChecks <= 1 && !hasNotified)
+            if (ShouldNotifyUpdate())
             {
                 _toastService.QueueToast($"Update {_release.Version} available!");
                 _preferences.Set(StringHelper.S_PreferenceLastReleaseNotified, _release.Version.ToString());
@@ -221,6 +224,24 @@ public class SettingsPopupViewModel : ViewModel
         {
             Console.WriteLine(ex.Message);
             _toastService.QueueToast($"Error: {ex.Message}");
+        }
+    }
+
+    private bool ShouldNotifyUpdate()
+    {
+        if (!_preferences.ContainsKey(StringHelper.S_PreferenceLastReleaseNotified))
+            return nUpdateChecks <= s_maxUpdateChecksToNotify;
+
+        try
+        {
+            Version lastNotifiedVersion =
+                Version.Parse(_preferences.Get(StringHelper.S_PreferenceLastReleaseNotified, string.Empty));
+            return lastNotifiedVersion < _release.Version && nUpdateChecks <= s_maxUpdateChecksToNotify;
+        }
+        catch (Exception e)
+        {
+            _toastService.QueueToast($"Error: {e.Message}");
+            return false;
         }
     }
 }
