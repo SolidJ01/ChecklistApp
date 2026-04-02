@@ -18,7 +18,7 @@ namespace ChecklistApp.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Value = table.Column<TimeSpan>(type: "TEXT", nullable: false),
-                    ChecklistId = table.Column<int>(type: "INTEGER", nullable: false)
+                    ChecklistId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {

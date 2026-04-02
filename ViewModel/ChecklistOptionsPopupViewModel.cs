@@ -128,7 +128,7 @@ public class ChecklistOptionsPopupViewModel : ViewModel
                 await _context.DeleteNotification(notification);
             }
             
-            _context.DeleteChecklist(_checklist);
+            await _context.DeleteChecklist(_checklist);
             await _navigationService.NavigateTo(NavigationService.NavigationTarget.Home);
             _toastService.QueueToast("Checklist deleted");
         }

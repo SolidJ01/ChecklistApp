@@ -45,28 +45,34 @@ namespace ChecklistApp.Data
             await SaveChangesAsync();
         }
 
-        public async void CreateChecklist(Checklist checklist)
+        public async Task CreateChecklist(Checklist checklist)
         {
             await Checklists.AddAsync(checklist);
             await SaveChangesAsync();
         }
 
-        public async void CreateChecklists(List<Checklist> checklists)
+        public async Task CreateChecklists(List<Checklist> checklists)
         {
             await Checklists.AddRangeAsync(checklists);
             await SaveChangesAsync();
         }
 
-        public async void DeleteChecklist(Checklist checklist)
+        public async Task DeleteChecklist(Checklist checklist)
         {
             if (!ChecklistExists(checklist))
                 return;
+
+            for (int i = checklist.Items.Count - 1; i >= 0; i--)
+            {
+                Items.Remove(checklist.Items[i]);
+            }
+            
             Checklists.Remove(checklist);
             await SaveChangesAsync();
         }
 
 
-        public async void CreateItems(List<Item> items)
+        public async Task CreateItems(List<Item> items)
         {
             if (items is null || !items.Any())
                 return;
@@ -76,7 +82,7 @@ namespace ChecklistApp.Data
             await SaveChangesAsync();
         }
 
-        public async void UpdateItem(Item item)
+        public async Task UpdateItem(Item item)
         {
             if (item is null)
                 return;
@@ -86,7 +92,7 @@ namespace ChecklistApp.Data
             await SaveChangesAsync();
         }
 
-        public async void DeleteItem(Item item)
+        public async Task DeleteItem(Item item)
         {
             if (item is null)
                 return;
