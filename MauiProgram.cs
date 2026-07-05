@@ -31,7 +31,7 @@ public static class MauiProgram
 				essentials.UseVersionTracking();
 			});
 		
-		Environment.SetEnvironmentVariable(StringHelper.S_EnvironmentReleaseDate, "2026-04-02");
+		Environment.SetEnvironmentVariable(StringHelper.S_EnvironmentReleaseDate, "2026-07-05");
 
 		builder.Services.AddDbContext<ChecklistContext>(options => options.UseSqlite($"DataSource = {Path.Combine(FileSystem.AppDataDirectory, "Checklist.db")}"));
 		builder.Services.AddSingleton<NavigationService>();

@@ -94,7 +94,7 @@ namespace ChecklistApp.ViewModel
             try
             {
                 _checklist.Name = StringHelper.FormatItemName(Name);
-                _checklist.Notifications = UseDeadline && NotificationsEnabled ? Notifications.Select(x => x.Notification).ToList() : [];
+                _checklist.Notifications = UseDeadline && NotificationsEnabled ? Notifications.Select(x => new Notification { Checklist = _checklist, Value = x.Notification.Value}).ToList() : [];
                 foreach (Notification notification in _checklist.Notifications) 
                     notification.Checklist = _checklist;
                 _checklistContext.CreateChecklist(_checklist);
