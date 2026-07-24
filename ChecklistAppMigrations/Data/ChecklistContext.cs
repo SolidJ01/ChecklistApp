@@ -13,9 +13,11 @@ namespace ChecklistApp.Data
         private DbSet<Checklist> Checklists { get; set; }
         private DbSet<Item> Items { get; set; }
         private DbSet<Notification> Notifications { get; set; }
+        private DbSet<ChecklistColor> ChecklistColors { get; set; }
 
-        public ChecklistContext(DbContextOptions dbContextOptions) : base(dbContextOptions) 
+        public ChecklistContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
         {
+            //Database.EnsureCreated();
             Database.Migrate();
             //if (!Checklists.Any() && !Items.Any())
             //{
@@ -141,6 +143,15 @@ namespace ChecklistApp.Data
             return Checklists.Any(x => x.Id == checklist.Id);
         }
 
+        #endregion
+        
+        #region ColorMethods
+
+        // public async Task<List<ChecklistColor>> GetColorsAsync()
+        // {
+        //     return await ChecklistColors.ToListAsync();
+        // }
+        
         #endregion
     }
 }

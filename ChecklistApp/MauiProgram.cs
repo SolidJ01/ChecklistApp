@@ -1,5 +1,6 @@
 ﻿using ChecklistApp.Controls;
 using ChecklistApp.Data;
+using ChecklistApp.Resources.Styles;
 using ChecklistApp.Services;
 using ChecklistApp.View;
 using ChecklistApp.ViewModel;
@@ -41,6 +42,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<IVersionTracking>(VersionTracking.Default);
 		builder.Services.AddSingleton<HttpClient>();
 		builder.Services.AddSingleton<UpdateCheckerService>();
+		builder.Services.AddSingleton<ColorService>();
 		
 		#if ANDROID
 		builder.Services.AddTransient<INotificationManagerService, NotificationManagerService>();

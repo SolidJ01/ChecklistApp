@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using ChecklistApp.Data;
 using ChecklistApp.Services;
 using ChecklistApp.View;
 using ChecklistApp.ViewModel;
@@ -9,7 +10,7 @@ public partial class MainPage : DialoguePage
 {
 	public ICommand RegisterBackButtonCommand { get; set; }
 	
-	public MainPage(MainPageViewModel viewModel, ToastService toastService) : base(toastService)
+	public MainPage(MainPageViewModel viewModel, ToastService toastService, ChecklistContext context) : base(toastService)
 	{
 		InitializeComponent();
 		this.BindingContext = viewModel;

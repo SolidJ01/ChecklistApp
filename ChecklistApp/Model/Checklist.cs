@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,11 +18,14 @@ namespace ChecklistApp.Model
             Magenta, 
             Red, 
             Orange, 
-            Green
+            Green, 
+            Yellow, 
+            Custom
         }
         public int Id { get; set; }
         public string Name { get; set; }
         public ChecklistColor Color { get; set; }
+        public int CustomColorId { get; set; }
         public bool UseDeadline { get; set; }
         public DateTime Deadline { get; set; }
         public List<Item> Items { get; set; }
