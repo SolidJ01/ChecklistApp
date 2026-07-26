@@ -9,12 +9,15 @@ namespace ChecklistApp;
 public partial class MainPage : DialoguePage
 {
 	public ICommand RegisterBackButtonCommand { get; set; }
+	public ICommand OpenColourPickerCommand { get; set; }
 	
 	public MainPage(MainPageViewModel viewModel, ToastService toastService, ChecklistContext context) : base(toastService)
 	{
 		InitializeComponent();
 		this.BindingContext = viewModel;
 		NavigatedTo += viewModel.ReloadList;
+		OpenColourPickerCommand = new Command(ColorSelector.Open);
+		OnPropertyChanged(nameof(OpenColourPickerCommand));
 	}
 
 	private void OnSettingsButtonClicked(object sender, EventArgs e)

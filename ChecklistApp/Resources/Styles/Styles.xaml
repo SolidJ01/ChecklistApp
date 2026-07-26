@@ -32,6 +32,11 @@
         <Setter Property="HorizontalTextAlignment" Value="Start" />
         <Setter Property="Margin" Value="10,0" />
     </Style>
+    
+    <Style TargetType="Label">
+        <Setter Property="FontSize" Value="22" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+    </Style>
 
     <!--<Style TargetType="ActivityIndicator">
         <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />

@@ -12,11 +12,18 @@ namespace ChecklistApp.Controls;
 public partial class CreateChecklistPopup : Popup
 {
     public static readonly BindableProperty ViewModelProperty = BindableProperty.Create(nameof(ViewModel), typeof(CreateChecklistPopupViewModel), typeof(CreateChecklistPopup));
+    public static readonly BindableProperty OpenColourPickerCommandProperty = BindableProperty.Create(nameof(OpenColourPickerCommand), typeof(ICommand), typeof(CreateChecklistPopup));
 
     public CreateChecklistPopupViewModel ViewModel
     {
         get => (CreateChecklistPopupViewModel)GetValue(ViewModelProperty);
         set => SetValue(ViewModelProperty, value);
+    }
+
+    public ICommand OpenColourPickerCommand
+    {
+        get => (ICommand)GetValue(OpenColourPickerCommandProperty);
+        set => SetValue(OpenColourPickerCommandProperty, value);
     }
     
     public CreateChecklistPopup()

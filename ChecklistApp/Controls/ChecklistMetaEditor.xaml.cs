@@ -13,6 +13,7 @@ public partial class ChecklistMetaEditor : ContentView
 	public static readonly BindableProperty ChecklistColorProperty = BindableProperty.Create(nameof(ChecklistColor), typeof(Checklist.ChecklistColor), typeof(ChecklistMetaEditor), Checklist.ChecklistColor.Magenta, BindingMode.TwoWay, propertyChanged:OnChecklistColorChanged);
 	public static readonly BindableProperty NotificationsEnabledProperty = BindableProperty.Create(nameof(NotificationsEnabled), typeof(bool), typeof(ChecklistMetaEditor), false, BindingMode.TwoWay);
 	public static readonly BindableProperty NotificationsProperty = BindableProperty.Create(nameof(Notifications), typeof(ObservableCollection<NotificationViewModel>), typeof(ChecklistMetaEditor), new ObservableCollection<NotificationViewModel>(), BindingMode.TwoWay);
+	public static readonly BindableProperty OpenColourPickerCommandProperty = BindableProperty.Create(nameof(OpenColourPickerCommand), typeof(ICommand), typeof(ChecklistMetaEditor), null);
 
 	private static void OnChecklistColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
@@ -53,6 +54,12 @@ public partial class ChecklistMetaEditor : ContentView
 		get => (Checklist.ChecklistColor)GetValue(ChecklistColorProperty);
 		set => SetValue(ChecklistColorProperty, value);
     }
+
+	public ICommand OpenColourPickerCommand
+	{
+		get => (ICommand)GetValue(OpenColourPickerCommandProperty);
+		set => SetValue(OpenColourPickerCommandProperty, value);
+	}
 
 	public ICommand UseDeadlineUpdatedCommand { get; set; }
 

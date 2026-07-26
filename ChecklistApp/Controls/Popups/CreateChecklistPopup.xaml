@@ -16,7 +16,8 @@
                                           Deadline="{Binding ViewModel.Deadline}"
                                           ChecklistColor="{Binding ViewModel.Color, Mode=TwoWay}"
                                           NotificationsEnabled="{Binding ViewModel.NotificationsEnabled}"
-                                          Notifications="{Binding ViewModel.Notifications}" />
+                                          Notifications="{Binding ViewModel.Notifications}"
+                                          OpenColourPickerCommand="{Binding OpenColourPickerCommand}" />
         </ScrollView>
         
         <controls:ControlBar x:Name="ControlBar" 
