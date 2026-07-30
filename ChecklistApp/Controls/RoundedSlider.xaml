@@ -2,21 +2,26 @@
 
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Name="this"
              x:Class="ChecklistApp.Controls.RoundedSlider">
-    <AbsoluteLayout x:Name="AbsoluteLayout"
-                    HeightRequest="50">
+    <Grid BindingContext="{x:Reference this}">
         <Border x:Name="Background" 
-                AbsoluteLayout.LayoutBounds="0, 0.5, 1, 0.7" 
-                AbsoluteLayout.LayoutFlags="All"
-                Background="{StaticResource ForegroundDarkBrush}" />
-        <Border x:Name="Slider"
-                BackgroundColor="{StaticResource Text}"
-                HeightRequest="50"
-                WidthRequest="20"
-                SizeChanged="OnLayoutSizeChanged">
-            <Border.GestureRecognizers>
-                <PanGestureRecognizer PanUpdated="OnPanUpdated" />
-            </Border.GestureRecognizers>
+                Margin="10, 6"
+                Background="{StaticResource ForegroundDarkBrush}"
+                SizeChanged="OnBackgroundSizeChanged">
+            <Image Source="{Binding BackgroundImage}" Aspect="Fill" IsOpaque="False" />
         </Border>
-    </AbsoluteLayout>
+        <AbsoluteLayout x:Name="AbsoluteLayout"
+                        HeightRequest="50">
+            <Border x:Name="Slider"
+                    BackgroundColor="{StaticResource Text}"
+                    HeightRequest="50"
+                    WidthRequest="20"
+                    SizeChanged="OnLayoutSizeChanged">
+                <Border.GestureRecognizers>
+                    <PanGestureRecognizer PanUpdated="OnPanUpdated" />
+                </Border.GestureRecognizers>
+            </Border>
+        </AbsoluteLayout>
+    </Grid>
 </ContentView>

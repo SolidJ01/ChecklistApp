@@ -11,6 +11,9 @@ public partial class RoundedSlider : ContentView
     public static readonly BindableProperty MinProperty = BindableProperty.Create(nameof(Min), typeof(double), typeof(RoundedSlider), 0.0);
     public static readonly BindableProperty MaxProperty = BindableProperty.Create(nameof(Max), typeof(double), typeof(RoundedSlider), 100.0);
     public static readonly BindableProperty ValueProperty = BindableProperty.Create(nameof(Value), typeof(double), typeof(RoundedSlider), 0.0, BindingMode.TwoWay, propertyChanged: ValuePropertyChanged);
+    public static readonly BindableProperty BackgroundColorProperty = BindableProperty.Create(nameof(BackgroundColor), typeof(Color), typeof(RoundedSlider), null);
+    public static readonly BindableProperty BackgroundImageProperty = BindableProperty.Create(nameof(BackgroundImage), typeof(ImageSource), typeof(RoundedSlider), null);
+    public static readonly BindableProperty BackgroundDimensionsProperty = BindableProperty.Create(nameof(BackgroundDimensions), typeof(Size), typeof(RoundedSlider), new Size(0, 0), BindingMode.OneWayToSource);
 
     private static void ValuePropertyChanged(BindableObject bindable, object oldValue, object newValue)
     {
@@ -36,6 +39,24 @@ public partial class RoundedSlider : ContentView
     {
         get => (double)GetValue(ValueProperty);
         set => SetValue(ValueProperty, value);
+    }
+
+    public Color BackgroundColor
+    {
+        get => (Color)GetValue(BackgroundColorProperty);
+        set => SetValue(BackgroundColorProperty, value);
+    }
+
+    public ImageSource BackgroundImage
+    {
+        get => (ImageSource)GetValue(BackgroundImageProperty);
+        set => SetValue(BackgroundImageProperty, value);
+    }
+
+    public Size BackgroundDimensions
+    {
+        get => (Size)GetValue(BackgroundDimensionsProperty);
+        set => SetValue(BackgroundDimensionsProperty, value);
     }
     
     public RoundedSlider()
@@ -75,5 +96,11 @@ public partial class RoundedSlider : ContentView
     private void OnLayoutSizeChanged(object sender, EventArgs e)
     {
         RecalculateSliderPosition();
+    }
+
+    private void OnBackgroundSizeChanged(object sender, EventArgs e)
+    {
+        BackgroundDimensions = new Size(Background.Width, Background.Height);
+        OnPropertyChanged(nameof(BackgroundDimensions));
     }
 }

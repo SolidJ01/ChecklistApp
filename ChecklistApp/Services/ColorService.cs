@@ -25,7 +25,7 @@ public class ColorService
             _customColourDictionary.Add($"CustomColour{color.Id}", new SolidColorBrush(new Color(color.Red,  color.Green, color.Blue)));
         }
 
-        Application.Current.Resources.MergedDictionaries.Add(_customColourDictionary);
+        Application.Current?.Resources.MergedDictionaries.Add(_customColourDictionary);
     }
 
     /// <summary>

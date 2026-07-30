@@ -1,14 +1,26 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ChecklistApp.Model;
+using Color = Microsoft.Maui.Graphics.Color;
+using Size = Microsoft.Maui.Graphics.Size;
 
 namespace ChecklistApp.Controls;
 
 public partial class ColorSelectorPopup : Popup
 {
     public static readonly BindableProperty ColorProperty = BindableProperty.Create(nameof(Color), typeof(Color), typeof(ColorSelectorPopup), Microsoft.Maui.Graphics.Color.FromArgb("#ffffff"));
+    public static readonly BindableProperty BackgroundDimensionsProperty = BindableProperty.Create(nameof(BackgroundDimensions), typeof(Size), typeof(ColorSelectorPopup), default(Size), BindingMode.OneWayToSource, propertyChanged:BackgroundDimensionsChanged);
+
+    private static void BackgroundDimensionsChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        ColorSelectorPopup popup = (ColorSelectorPopup)bindable;
+        popup.RegenerateHueImage();
+        popup.RegenerateSaturationImage();
+    }
 
     private double _hue = 0;
     private double _saturation = 0;
@@ -49,6 +61,16 @@ public partial class ColorSelectorPopup : Popup
             UpdateColor();
         }
     }
+
+    public Size BackgroundDimensions
+    {
+        get => (Size)GetValue(BackgroundDimensionsProperty);
+        set => SetValue(BackgroundDimensionsProperty, value);
+    }
+
+    public ImageSource HueSelectorBackground { get; set; }
+    public ImageSource SaturationSelectorBackground { get; set; }
+    public ImageSource ValueSelectorBackground { get; set; }
     
     public ColorSelectorPopup()
     {
@@ -87,5 +109,47 @@ public partial class ColorSelectorPopup : Popup
         OnPropertyChanged(nameof(Hue));
         OnPropertyChanged(nameof(Saturation));
         OnPropertyChanged(nameof(Value));
+    }
+
+    public void RegenerateHueImage()
+    {
+        int width = (int)BackgroundDimensions.Width;
+        int height = (int)BackgroundDimensions.Height;
+        
+        Bitmap bitmap = new Bitmap(width, height);
+        for (int x = 0; x < width; x++)
+        {
+            Color color = Color.FromHsv(x / (float)width, 1f, 1f);
+            for (int y = 0; y < height; y++)
+            {
+                bitmap.MapPixel(x, y, color);
+            }
+        }
+
+        byte[] byteArray = bitmap.AsByteArray();
+        
+        MemoryStream memoryStream = new MemoryStream(byteArray);
+        HueSelectorBackground = ImageSource.FromStream(() => memoryStream);
+        OnPropertyChanged(nameof(HueSelectorBackground));
+    }
+
+    public void RegenerateSaturationImage()
+    {
+        int width = (int)BackgroundDimensions.Width;
+        int height = (int)BackgroundDimensions.Height;
+        
+        Bitmap bitmap = new Bitmap(width, height);
+        for (int x = 0; x < width; x++)
+        {
+            Color color = Color.FromHsva((float)Hue, 0, 1f, x / (float)width);
+            for (int y = 0; y < height; y++)
+            {
+                bitmap.MapPixel(x, y, color);
+            }
+        }
+        
+        MemoryStream memoryStream = new MemoryStream(bitmap.AsByteArray());
+        SaturationSelectorBackground = ImageSource.FromStream(() => memoryStream);
+        OnPropertyChanged(nameof(SaturationSelectorBackground));
     }
 }

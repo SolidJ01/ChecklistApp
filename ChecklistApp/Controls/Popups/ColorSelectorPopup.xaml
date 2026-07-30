@@ -16,9 +16,9 @@
                        FontAttributes="Bold" 
                        TextColor="{StaticResource Text}"/>
             </Border>
-            <controls:RoundedSlider Min="0" Max="1" Value="{Binding Hue, Mode=TwoWay}" />
-            <controls:RoundedSlider Min="0" Max="1" Value="{Binding Saturation, Mode=TwoWay}" />
-            <controls:RoundedSlider Min="0" Max="1" Value="{Binding Value, Mode=TwoWay}" />
+            <controls:RoundedSlider Min="0" Max="1" Value="{Binding Hue}" BackgroundDimensions="{Binding BackgroundDimensions}" BackgroundImage="{Binding HueSelectorBackground}" />
+            <controls:RoundedSlider Min="0" Max="1" Value="{Binding Saturation}" BackgroundColor="{Binding Color}" BackgroundImage="{Binding SaturationSelectorBackground}" />
+            <controls:RoundedSlider Min="0" Max="1" Value="{Binding Value}" />
         </VerticalStackLayout>
         <controls:ControlBar x:Name="ControlBar"
                              Grid.Row="1">

@@ -38,5 +38,10 @@
     <SolidColorBrush x:Key="RemotePrimaryBrush" Color="{StaticResource RemotePrimary}" />
     <SolidColorBrush x:Key="RemoteSecondaryBrush" Color="{StaticResource RemoteSecondary}" />
     <SolidColorBrush x:Key="RemoteAccentBrush" Color="{StaticResource RemoteAccent}" />
+    
+    <LinearGradientBrush x:Key="SaturationOverlayBrush" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="White" Offset="0" />
+        <GradientStop Color="Transparent" Offset="1" />
+    </LinearGradientBrush>
 
 </ResourceDictionary>
