@@ -16,7 +16,7 @@ public partial class RoundedSlider : ContentView
     {
         if (bindable is RoundedSlider roundedSlider)
         {
-            roundedSlider.OnValueChanged();
+            roundedSlider.RecalculateSliderPosition();
         }
     }
 
@@ -45,13 +45,20 @@ public partial class RoundedSlider : ContentView
 
     private void OnPanUpdated(object sender, PanUpdatedEventArgs e)
     {
-        Slider.TranslationX = Math.Clamp(Slider.TranslationX + e.TotalX, 0, AbsoluteLayout.Width - Slider.Width);
+        //Slider.TranslationX = Math.Clamp(Slider.TranslationX + e.TotalX, 0, AbsoluteLayout.Width - Slider.Width);
+        Rect bounds = AbsoluteLayout.GetLayoutBounds((IView)Slider);
+        bounds.X = Math.Clamp(bounds.X + e.TotalX, 0, AbsoluteLayout.Width - Slider.Width);
+        AbsoluteLayout.SetLayoutBounds((IView)Slider, bounds);
         Value = GetValueFromTranslation();
     }
 
-    public void OnValueChanged()
+    public void RecalculateSliderPosition()
     {
-        Slider.TranslationX = GetTranslationFromValue();
+        double translation = GetTranslationFromValue();
+        if (!double.IsNaN(translation))
+        {
+            AbsoluteLayout.SetLayoutBounds((IView)Slider, new Rect(translation, 0, Slider.WidthRequest, Slider.HeightRequest));
+        }
     }
 
     private double GetTranslationFromValue()
@@ -61,6 +68,12 @@ public partial class RoundedSlider : ContentView
 
     private double GetValueFromTranslation()
     {
-        return ((Slider.TranslationX / (AbsoluteLayout.Width - Slider.Width)) * (Max - Min)) + Min;
+        Rect bounds = AbsoluteLayout.GetLayoutBounds((IView)Slider);
+        return ((bounds.X / (AbsoluteLayout.Width - Slider.Width)) * (Max - Min)) + Min;
+    }
+
+    private void OnLayoutSizeChanged(object sender, EventArgs e)
+    {
+        RecalculateSliderPosition();
     }
 }

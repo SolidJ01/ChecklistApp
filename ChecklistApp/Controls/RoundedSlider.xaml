@@ -12,7 +12,8 @@
         <Border x:Name="Slider"
                 BackgroundColor="{StaticResource Text}"
                 HeightRequest="50"
-                WidthRequest="20">
+                WidthRequest="20"
+                SizeChanged="OnLayoutSizeChanged">
             <Border.GestureRecognizers>
                 <PanGestureRecognizer PanUpdated="OnPanUpdated" />
             </Border.GestureRecognizers>

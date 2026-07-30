@@ -53,6 +53,12 @@ public partial class ColorSelectorPopup : Popup
     public ColorSelectorPopup()
     {
         InitializeComponent();
+        if (Application.Current.Resources.TryGetValue("Foreground", out var resource) && resource is Color color)
+        {
+            Color = color;
+            OnPropertyChanged(nameof(Color));
+            UpdateHsv();
+        }
     }
 
     private void UpdateColor()
@@ -61,17 +67,23 @@ public partial class ColorSelectorPopup : Popup
         OnPropertyChanged(nameof(Color));
     }
 
-    private void UpdateHSV()
+    private void UpdateHsv()
     {
-        float oldHue = Color.GetHue();
-        float oldSaturation = Color.GetSaturation();
-        float oldLuminosity = Color.GetLuminosity();
-        float newHue = oldHue;
-        float newValue = oldLuminosity + oldSaturation * Math.Min(oldLuminosity, 1 - oldLuminosity);
-        float newSaturation = newValue == 0 ? 0f : (float)(2 * (1 - oldLuminosity / newValue));
-        Hue = newHue;
-        Saturation = newSaturation;
-        Value = newValue;
+        float xMax = Math.Max(Math.Max(Color.Red, Color.Green),  Color.Blue);
+        float xMin = Math.Min(Math.Min(Color.Red, Color.Green), Color.Blue);
+        float chroma = xMax - xMin;
+        float newHue =
+            chroma == 0
+                ? 0
+                : xMax == Color.Red
+                    ? (((Color.Green - Color.Blue) / chroma) % 6)
+                    : xMax == Color.Green
+                        ? ((Color.Blue - Color.Red) / chroma + 2)
+                        : ((Color.Red - Color.Green) / chroma + 4);
+        float newSaturation = xMax == 0 ? 0 : chroma / xMax;
+        _hue = newHue;
+        _saturation = newSaturation;
+        _value = xMax;
         OnPropertyChanged(nameof(Hue));
         OnPropertyChanged(nameof(Saturation));
         OnPropertyChanged(nameof(Value));
