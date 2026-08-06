@@ -19,7 +19,7 @@ public partial class ColorSelectorPopup : Popup
     {
         ColorSelectorPopup popup = (ColorSelectorPopup)bindable;
         popup.RegenerateHueImage();
-        popup.RegenerateSaturationImage();
+        //popup.RegenerateSaturationImage();
     }
 
     private double _hue = 0;
@@ -141,7 +141,7 @@ public partial class ColorSelectorPopup : Popup
         Bitmap bitmap = new Bitmap(width, height);
         for (int x = 0; x < width; x++)
         {
-            Color color = Color.FromHsva((float)Hue, 0, 1f, x / (float)width);
+            Color color = Color.FromHsva((float)Hue, 0, 1f, 0);
             for (int y = 0; y < height; y++)
             {
                 bitmap.MapPixel(x, y, color);

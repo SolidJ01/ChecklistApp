@@ -11,7 +11,7 @@ public partial class RoundedSlider : ContentView
     public static readonly BindableProperty MinProperty = BindableProperty.Create(nameof(Min), typeof(double), typeof(RoundedSlider), 0.0);
     public static readonly BindableProperty MaxProperty = BindableProperty.Create(nameof(Max), typeof(double), typeof(RoundedSlider), 100.0);
     public static readonly BindableProperty ValueProperty = BindableProperty.Create(nameof(Value), typeof(double), typeof(RoundedSlider), 0.0, BindingMode.TwoWay, propertyChanged: ValuePropertyChanged);
-    public static readonly BindableProperty BackgroundColorProperty = BindableProperty.Create(nameof(BackgroundColor), typeof(Color), typeof(RoundedSlider), null);
+    public static readonly BindableProperty BackgroundBrushProperty = BindableProperty.Create(nameof(BackgroundBrush), typeof(Brush), typeof(RoundedSlider), null);
     public static readonly BindableProperty BackgroundImageProperty = BindableProperty.Create(nameof(BackgroundImage), typeof(ImageSource), typeof(RoundedSlider), null);
     public static readonly BindableProperty BackgroundDimensionsProperty = BindableProperty.Create(nameof(BackgroundDimensions), typeof(Size), typeof(RoundedSlider), new Size(0, 0), BindingMode.OneWayToSource);
 
@@ -41,10 +41,10 @@ public partial class RoundedSlider : ContentView
         set => SetValue(ValueProperty, value);
     }
 
-    public Color BackgroundColor
+    public Brush BackgroundBrush
     {
-        get => (Color)GetValue(BackgroundColorProperty);
-        set => SetValue(BackgroundColorProperty, value);
+        get => (Brush)GetValue(BackgroundBrushProperty);
+        set => SetValue(BackgroundBrushProperty, value);
     }
 
     public ImageSource BackgroundImage

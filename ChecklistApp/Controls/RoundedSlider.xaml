@@ -7,9 +7,9 @@
     <Grid BindingContext="{x:Reference this}">
         <Border x:Name="Background" 
                 Margin="10, 6"
-                Background="{StaticResource ForegroundDarkBrush}"
+                Background="{Binding BackgroundBrush}"
                 SizeChanged="OnBackgroundSizeChanged">
-            <Image Source="{Binding BackgroundImage}" Aspect="Fill" IsOpaque="False" />
+            <Image Source="{Binding BackgroundImage}" Aspect="Fill" />
         </Border>
         <AbsoluteLayout x:Name="AbsoluteLayout"
                         HeightRequest="50">

@@ -7,6 +7,16 @@
              PopupMargin="15, 25"
              x:Class="ChecklistApp.Controls.ColorSelectorPopup">
     <Grid x:Name="Base" RowDefinitions="auto,70" RowSpacing="10" BindingContext="{x:Reference this}">
+        <Grid.Resources>
+            <LinearGradientBrush x:Key="SaturationBackgroundBrush" StartPoint="0,0" EndPoint="1,0">
+                <GradientStop Color="White" Offset="0" />
+                <GradientStop Color="{Binding Color}" Offset="1" />
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Key="LightnessBackgroundBrush" StartPoint="0,0" EndPoint="1,0">
+                <GradientStop Color="Black" Offset="0" />
+                <GradientStop Color="{Binding Color}" Offset="1" />
+            </LinearGradientBrush>
+        </Grid.Resources>
         <VerticalStackLayout Spacing="10"
                              Padding="10, 10, 10, 0">
             <Border Padding="15 ,0"
@@ -17,8 +27,8 @@
                        TextColor="{StaticResource Text}"/>
             </Border>
             <controls:RoundedSlider Min="0" Max="1" Value="{Binding Hue}" BackgroundDimensions="{Binding BackgroundDimensions}" BackgroundImage="{Binding HueSelectorBackground}" />
-            <controls:RoundedSlider Min="0" Max="1" Value="{Binding Saturation}" BackgroundColor="{Binding Color}" BackgroundImage="{Binding SaturationSelectorBackground}" />
-            <controls:RoundedSlider Min="0" Max="1" Value="{Binding Value}" />
+            <controls:RoundedSlider Min="0" Max="1" Value="{Binding Saturation}" BackgroundBrush="{DynamicResource SaturationBackgroundBrush}" />
+            <controls:RoundedSlider Min="0" Max="1" Value="{Binding Value}" BackgroundBrush="{DynamicResource LightnessBackgroundBrush}" />
         </VerticalStackLayout>
         <controls:ControlBar x:Name="ControlBar"
                              Grid.Row="1">
