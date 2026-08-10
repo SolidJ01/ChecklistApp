@@ -14,7 +14,7 @@
                                           Name="{Binding Name}"
                                           UseDeadline="{Binding UseDeadline}"
                                           Deadline="{Binding Deadline}"
-                                          ChecklistColor="{Binding ChecklistColor, Mode=TwoWay}"
+                                          
                                           NotificationsEnabled="{Binding NotificationsEnabled}"
                                           Notifications="{Binding Notifications}" />
         </ScrollView>

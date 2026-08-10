@@ -1,119 +1,80 @@
-namespace ChecklistApp.Controls;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using ChecklistApp.Model;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
+using ChecklistApp.ViewModel;
+
+namespace ChecklistApp.Controls;
 
 public partial class ColorSelector : ContentView
 {
-	public static readonly BindableProperty SelectedColorProperty = BindableProperty.Create(nameof(SelectedColor), typeof(Checklist.ChecklistColor), typeof(ColorSelector), Checklist.ChecklistColor.Red, BindingMode.TwoWay, propertyChanged:OnSelectedColorChanged);
+	public static readonly BindableProperty SelectableColorsProperty = BindableProperty.Create(nameof(SelectableColors), typeof(ObservableCollection<SelectableColorViewModel>),  typeof(ColorSelector), new ObservableCollection<SelectableColorViewModel>(), propertyChanged:SelectableColorsPropertyChanged);
 
-    public Checklist.ChecklistColor SelectedColor
+	private static void SelectableColorsPropertyChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		get => (Checklist.ChecklistColor)GetValue(SelectedColorProperty);
-		set => SetValue(SelectedColorProperty, value);
-    }
-
-    private static void OnSelectedColorChanged(BindableObject bindable, object oldValue, object newValue)
-    {
-        var selector = (ColorSelector)bindable;
-        selector.OnPropertyChanged(nameof(SelectedColor));
-        selector.OnPropertyChanged(nameof(GreyChecked));
-        selector.OnPropertyChanged(nameof(CyanChecked));
-        selector.OnPropertyChanged(nameof(BlueChecked));
-        selector.OnPropertyChanged(nameof(PurpleChecked));
-        selector.OnPropertyChanged(nameof(MagentaChecked));
-        selector.OnPropertyChanged(nameof(RedChecked));
-        selector.OnPropertyChanged(nameof(OrangeChecked));
-        selector.OnPropertyChanged(nameof(GreenChecked));
-    }
-
-    public bool GreyChecked
-	{
-		get
-		{
-			return SelectedColor.Equals(Checklist.ChecklistColor.Grey);
-		}
+		if (bindable is ColorSelector selector)
+			selector.RedrawUI();
 	}
 
-	public bool CyanChecked
+	public ObservableCollection<SelectableColorViewModel> SelectableColors
 	{
-		get
-		{
-			return SelectedColor.Equals(Checklist.ChecklistColor.Cyan);
-		}
+		get => (ObservableCollection<SelectableColorViewModel>)GetValue(SelectableColorsProperty);
+		set => SetValue(SelectableColorsProperty, value);
 	}
-
-    public bool BlueChecked
-    {
-        get
-        {
-            return SelectedColor.Equals(Checklist.ChecklistColor.Blue);
-        }
-    }
-
-    public bool PurpleChecked
-    {
-        get
-        {
-            return SelectedColor.Equals(Checklist.ChecklistColor.Purple);
-        }
-    }
-
-    public bool MagentaChecked
-    {
-        get
-        {
-            return SelectedColor.Equals(Checklist.ChecklistColor.Magenta);
-        }
-    }
-
-    public bool RedChecked
-    {
-        get
-        {
-            return SelectedColor.Equals(Checklist.ChecklistColor.Red);
-        }
-    }
-
-    public bool OrangeChecked
-    {
-        get
-        {
-            return SelectedColor.Equals(Checklist.ChecklistColor.Orange);
-        }
-    }
-
-    public bool GreenChecked
-    {
-        get
-        {
-            return SelectedColor.Equals(Checklist.ChecklistColor.Green);
-        }
-    }
-
-    public ICommand SetColorCommand { get; set; }
 
     public ColorSelector()
     {
-        SetColorCommand = new Command<string>(SetColor);
         InitializeComponent();
 	}
 
-    private void SetColor(string value)
+    private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        if (value is null)
-            return;
+	    foreach (var item in e.NewItems)
+	    {
+		    SelectableColorViewModel viewModel = item as SelectableColorViewModel;
+		    var button = CreateButton(viewModel);
+		    Layout.Add(button);
+	    }
+    }
 
-        Checklist.ChecklistColor color = (Checklist.ChecklistColor)Enum.Parse(typeof(Checklist.ChecklistColor), value);
-        SelectedColor = color;
-        OnPropertyChanged(nameof(GreyChecked));
-        OnPropertyChanged(nameof(CyanChecked));
-        OnPropertyChanged(nameof(BlueChecked));
-        OnPropertyChanged(nameof(PurpleChecked));
-        OnPropertyChanged(nameof(MagentaChecked));
-        OnPropertyChanged(nameof(RedChecked));
-        OnPropertyChanged(nameof(OrangeChecked));
-        OnPropertyChanged(nameof(GreenChecked));
+    public void RedrawUI()
+    {
+	    SelectableColors.CollectionChanged += OnCollectionChanged;
+	    for (int i = 0; i < SelectableColors.Count; i++)
+	    {
+		    var item = SelectableColors[i];
+		    Layout.Add(CreateButton(item), i % 5, i / 5);
+	    }
+    }
+
+    private ColorButton CreateButton(SelectableColorViewModel viewModel)
+    {
+	    Application.Current.Resources.TryGetValue("ChecklistColorConverter", out var checklistColorConverter);
+	    Application.Current.Resources.TryGetValue("DynamicCommandConverter", out var dynamicCommandConverter);
+	    Application.Current.Resources.TryGetValue("BoolToInt", out var boolToIntConverter);
+	    
+	    var button = new ColorButton();
+	    button.BindingContext = viewModel;
+	    
+	    button.SetBinding(ColorButton.BackgroundBrushProperty, new MultiBinding
+	    {
+		    Bindings = [new Binding(nameof(viewModel.Color)), new Binding(nameof(viewModel.CustomColorId))], 
+		    Converter = (IMultiValueConverter)checklistColorConverter
+	    });
+	    
+	    button.SetBinding(ColorButton.IsCheckedProperty, new Binding
+	    {
+		    Path = nameof(viewModel.Selected)
+	    });
+	    
+	    button.SetBinding(ColorButton.CommandProperty, new MultiBinding
+	    {
+		    Bindings = [new Binding(nameof(viewModel.Command)), new Binding(nameof(viewModel.SelectedCommand))],
+		    Converter = (IMultiValueConverter)dynamicCommandConverter,
+		    ConverterParameter = new Binding(nameof(viewModel.Selected), converter: (IValueConverter)boolToIntConverter)
+	    });
+	    
+	    button.SetBinding(ColorButton.CommandParameterProperty, new Binding(viewModel.Color == Checklist.ChecklistColor.Custom ? nameof(viewModel.CustomColorId) : nameof(viewModel.Color)));
+	    
+	    return button;
     }
 }

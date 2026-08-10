@@ -14,7 +14,7 @@
                                           Name="{Binding ViewModel.Name}"
                                           UseDeadline="{Binding ViewModel.UseDeadline}"
                                           Deadline="{Binding ViewModel.Deadline}"
-                                          ChecklistColor="{Binding ViewModel.Color, Mode=TwoWay}"
+                                          SelectableColors="{Binding ViewModel.SelectableColors}"
                                           NotificationsEnabled="{Binding ViewModel.NotificationsEnabled}"
                                           Notifications="{Binding ViewModel.Notifications}"
                                           OpenColourPickerCommand="{Binding OpenColourPickerCommand}" />

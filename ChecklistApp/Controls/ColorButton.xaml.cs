@@ -4,12 +4,12 @@ namespace ChecklistApp.Controls;
 
 public partial class ColorButton : ContentView
 {
-	public static readonly new BindableProperty BackgroundColorProperty = BindableProperty.Create(nameof(BackgroundColor), typeof(Color), typeof(ColorButton));
+	public static readonly BindableProperty BackgroundBrushProperty = BindableProperty.Create(nameof(BackgroundBrush), typeof(Brush), typeof(ColorButton));
 
-	public new Color BackgroundColor
+	public Brush BackgroundBrush
 	{
-		get => (Color)GetValue(BackgroundColorProperty);
-		set => SetValue(BackgroundColorProperty, value);
+		get => (Brush)GetValue(BackgroundBrushProperty);
+		set => SetValue(BackgroundBrushProperty, value);
 	}
 
 

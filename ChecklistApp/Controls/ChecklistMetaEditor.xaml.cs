@@ -10,7 +10,7 @@ public partial class ChecklistMetaEditor : ContentView
 	public static readonly BindableProperty NameProperty = BindableProperty.Create(nameof(Name), typeof(string), typeof(ChecklistMetaEditor), string.Empty, BindingMode.TwoWay);
 	public static readonly BindableProperty UseDeadlineProperty = BindableProperty.Create(nameof(UseDeadline), typeof(bool), typeof(ChecklistMetaEditor), false, BindingMode.TwoWay);
 	public static readonly BindableProperty DeadlineProperty = BindableProperty.Create(nameof(Deadline), typeof(DateTime), typeof(ChecklistMetaEditor), DateTime.Now, BindingMode.TwoWay);
-	public static readonly BindableProperty ChecklistColorProperty = BindableProperty.Create(nameof(ChecklistColor), typeof(Checklist.ChecklistColor), typeof(ChecklistMetaEditor), Checklist.ChecklistColor.Magenta, BindingMode.TwoWay, propertyChanged:OnChecklistColorChanged);
+	public static readonly BindableProperty SelectableColorsProperty = BindableProperty.Create(nameof(SelectableColors), typeof(ObservableCollection<SelectableColorViewModel>), typeof(ChecklistMetaEditor), new ObservableCollection<SelectableColorViewModel>(), BindingMode.TwoWay, propertyChanged:OnChecklistColorChanged);
 	public static readonly BindableProperty NotificationsEnabledProperty = BindableProperty.Create(nameof(NotificationsEnabled), typeof(bool), typeof(ChecklistMetaEditor), false, BindingMode.TwoWay);
 	public static readonly BindableProperty NotificationsProperty = BindableProperty.Create(nameof(Notifications), typeof(ObservableCollection<NotificationViewModel>), typeof(ChecklistMetaEditor), new ObservableCollection<NotificationViewModel>(), BindingMode.TwoWay);
 	public static readonly BindableProperty OpenColourPickerCommandProperty = BindableProperty.Create(nameof(OpenColourPickerCommand), typeof(ICommand), typeof(ChecklistMetaEditor), null);
@@ -18,7 +18,7 @@ public partial class ChecklistMetaEditor : ContentView
 	private static void OnChecklistColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		var editor = (ChecklistMetaEditor)bindable;
-		editor.OnPropertyChanged(nameof(ChecklistColor));
+		//editor.OnPropertyChanged(nameof(ChecklistColor));
 	}
 	
 	public string Name
@@ -49,10 +49,10 @@ public partial class ChecklistMetaEditor : ContentView
 		set => SetValue(NotificationsProperty, value);
 	}
 
-	public Checklist.ChecklistColor ChecklistColor
+	public ObservableCollection<SelectableColorViewModel> SelectableColors
 	{
-		get => (Checklist.ChecklistColor)GetValue(ChecklistColorProperty);
-		set => SetValue(ChecklistColorProperty, value);
+		get => (ObservableCollection<SelectableColorViewModel>)GetValue(SelectableColorsProperty);
+		set => SetValue(SelectableColorsProperty, value);
     }
 
 	public ICommand OpenColourPickerCommand

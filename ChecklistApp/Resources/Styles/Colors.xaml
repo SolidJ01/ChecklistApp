@@ -16,7 +16,8 @@
     <Color x:Key="ForegroundMagenta">#972153</Color>
     <Color x:Key="ForegroundRed">#972121</Color>
     <Color x:Key="ForegroundOrange">#C05D25</Color>
-    <Color x:Key="ForegroundGreen">#099742</Color>
+    <Color x:Key="ForegroundGreen">#1C9E38</Color>
+    <Color x:Key="ForegroundYellow">#B49C10</Color>
     
     <Color x:Key="RemotePrimary">#161A32</Color>
     <Color x:Key="RemoteSecondary">#ffffff</Color>
@@ -34,6 +35,7 @@
     <SolidColorBrush x:Key="ForegroundRedBrush" Color="{StaticResource ForegroundRed}" />
     <SolidColorBrush x:Key="ForegroundOrangeBrush" Color="{StaticResource ForegroundOrange}" />
     <SolidColorBrush x:Key="ForegroundGreenBrush" Color="{StaticResource ForegroundGreen}" />
+    <SolidColorBrush x:Key="ForegroundYellowBrush" Color="{StaticResource ForegroundYellow}" />
     
     <SolidColorBrush x:Key="RemotePrimaryBrush" Color="{StaticResource RemotePrimary}" />
     <SolidColorBrush x:Key="RemoteSecondaryBrush" Color="{StaticResource RemoteSecondary}" />

@@ -10,4 +10,6 @@
     <valueconverters:FloatToProgressBarLayoutBoundsConverter x:Key="FloatToProgress" />
     <valueconverters:ConditionalItemDisplayConverter x:Key="ConditionalDisplay" />
     <valueconverters:GreaterThanZeroConverter x:Key="GreaterThanZero" />
+    <valueconverters:ChecklistColorToBrushConverter x:Key="ChecklistColorConverter" />
+    <valueconverters:DynamicCommandConverter x:Key="DynamicCommandConverter" />
 </ResourceDictionary>

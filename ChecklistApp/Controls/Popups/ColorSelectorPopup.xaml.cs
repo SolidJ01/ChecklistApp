@@ -32,6 +32,8 @@ public partial class ColorSelectorPopup : Popup
         set => SetValue(ColorProperty, value);
     }
 
+    public Color SaturatedLitColor { get; set; }
+
     public double Hue
     {
         get => _hue;
@@ -86,7 +88,9 @@ public partial class ColorSelectorPopup : Popup
     private void UpdateColor()
     {
         Color = Color.FromHsv((float)_hue, (float)_saturation, (float)_value);
+        SaturatedLitColor = Color.FromHsv((float)_hue, 1, 1);
         OnPropertyChanged(nameof(Color));
+        OnPropertyChanged(nameof(SaturatedLitColor));
     }
 
     private void UpdateHsv()

@@ -5,35 +5,27 @@
              x:Name="this"
              x:Class="ChecklistApp.Controls.ColorButton"
              x:DataType="controls:ColorButton">
-    <Grid BindingContext="{x:Reference this}" IsClippedToBounds="False" Margin="7.5">
-        <Border BackgroundColor="{Binding BackgroundColor}"
-               Padding="0"
-               HeightRequest="{Binding Width, Source={RelativeSource AncestorType={x:Type Grid}}}">
-            <Border.Shadow>
-                <Shadow Brush="Black"
-                        Offset="0,6"
-                        Radius="20"
-                        Opacity="0" />
-            </Border.Shadow>
-            <Border.GestureRecognizers>
-                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" NumberOfTapsRequired="1" />
-            </Border.GestureRecognizers>
-            <Label FontSize="36"
-                   FontFamily="FontAwSolid"
-                   FontAttributes="Bold"
-                   TextColor="{StaticResource Text}"
-                   HorizontalTextAlignment="Center"
-                   VerticalTextAlignment="Center"
-                   Text="&#xf00c;">
-                <Label.Triggers>
-                    <DataTrigger TargetType="Label" Binding="{Binding IsChecked}" Value="false">
-                        <Setter Property="Opacity" Value="0" />
-                    </DataTrigger>
-                    <DataTrigger TargetType="Label" Binding="{Binding IsChecked}" Value="true">
-                        <Setter Property="Opacity" Value="1" />
-                    </DataTrigger>
-                </Label.Triggers>
-            </Label>
-        </Border>
-    </Grid>
+    <Border BindingContext="{x:Reference this}"
+            Background="{Binding BackgroundBrush}"
+            HeightRequest="{Binding Width, Source={RelativeSource Self}}">
+        <Border.GestureRecognizers>
+            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" NumberOfTapsRequired="1" />
+        </Border.GestureRecognizers>
+        <Label FontSize="36"
+               FontFamily="FontAwSolid"
+               FontAttributes="Bold"
+               TextColor="{StaticResource Text}"
+               HorizontalTextAlignment="Center"
+               VerticalTextAlignment="Center"
+               Text="&#xf00c;">
+            <Label.Triggers>
+                <DataTrigger TargetType="Label" Binding="{Binding IsChecked}" Value="false">
+                    <Setter Property="Opacity" Value="0" />
+                </DataTrigger>
+                <DataTrigger TargetType="Label" Binding="{Binding IsChecked}" Value="true">
+                    <Setter Property="Opacity" Value="1" />
+                </DataTrigger>
+            </Label.Triggers>
+        </Label>
+    </Border>
 </ContentView>

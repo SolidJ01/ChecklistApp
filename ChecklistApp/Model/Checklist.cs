@@ -18,14 +18,14 @@ namespace ChecklistApp.Model
             Magenta, 
             Red, 
             Orange, 
-            Green, 
             Yellow, 
+            Green, 
             Custom
         }
         public int Id { get; set; }
         public string Name { get; set; }
         public ChecklistColor Color { get; set; }
-        public int CustomColorId { get; set; }
+        public int? CustomColorId { get; set; }
         public bool UseDeadline { get; set; }
         public DateTime Deadline { get; set; }
         public List<Item> Items { get; set; }

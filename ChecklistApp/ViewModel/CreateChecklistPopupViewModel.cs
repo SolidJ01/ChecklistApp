@@ -21,6 +21,7 @@ namespace ChecklistApp.ViewModel
         private INotificationManagerService _notificationManagerService;
         private IPreferences _preferences;
         private ToastService _toastService;
+        private ColorService _colorService;
         
         private bool _notificationsEnabled;
 
@@ -41,6 +42,8 @@ namespace ChecklistApp.ViewModel
             }
         }
         public ObservableCollection<NotificationViewModel> Notifications { get; set; }
+        
+        public ObservableCollection<SelectableColorViewModel> SelectableColors { get; set; }
 
         #endregion
 
@@ -49,21 +52,67 @@ namespace ChecklistApp.ViewModel
         public ICommand CancelCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand ImportCommand { get; set; }
+        public ICommand SetColorCommand { get; set; }
+        public ICommand SetCustomColorCommand { get; set; }
+        public ICommand EditCustomColorCommand { get; set; }
+        public ICommand AddNewColorCommand { get; set; }
 
         #endregion
 
-        public CreateChecklistPopupViewModel(ChecklistContext checklistContext, INotificationManagerService notificationManagerService, IPreferences preferences, ToastService toastService)
+        public CreateChecklistPopupViewModel(ChecklistContext checklistContext, INotificationManagerService notificationManagerService, IPreferences preferences, ToastService toastService, ColorService colorService)
         {
             _checklistContext = checklistContext;
             _notificationManagerService = notificationManagerService;
             _preferences = preferences;
             _toastService = toastService;
+            _colorService = colorService;
             ResetChecklist();
 
             CancelCommand = new Command(Cancel);
             SaveCommand = new Command<Action>(Save);
             ImportCommand = new Command<Action>(Import);
+
+            SetColorCommand = new Command<Checklist.ChecklistColor>(SetColor);
+            SetCustomColorCommand = new Command<int>(SetCustomColor);
+            EditCustomColorCommand = new Command<int>(EditCustomColor);
+            AddNewColorCommand = new Command(AddNewColor);
+
+            ObservableCollection<SelectableColorViewModel> selectableColors = [];
+            foreach (Checklist.ChecklistColor color in Enum.GetValues<Checklist.ChecklistColor>())
+            {
+                if (color == Checklist.ChecklistColor.Custom)
+                    continue;
+                selectableColors.Add(new SelectableColorViewModel
+                {
+                    Color = color, 
+                    Selected = color == Color, 
+                    Command = SetColorCommand
+                });
+            }
+
+            List<ChecklistColor> customColors = _checklistContext.GetColorsAsync().Result;
+            foreach (ChecklistColor color in customColors)
+            {
+                selectableColors.Add(new SelectableColorViewModel
+                {
+                    Color = Checklist.ChecklistColor.Custom,
+                    CustomColorId =  color.Id,
+                    Selected = Color == Checklist.ChecklistColor.Custom && _checklist.CustomColorId == color.Id,
+                    Command = SetCustomColorCommand,
+                });
+            }
+
+            selectableColors.Add(new SelectableColorViewModel
+            {
+                Color = Checklist.ChecklistColor.Grey,
+                Selected = false,
+                Command = AddNewColorCommand
+            });
+            SelectableColors = selectableColors;
+            OnPropertyChanged(nameof(SelectableColors));
         }
+        
+        #region ChecklistMethods
 
         public void ResetChecklist()
         {
@@ -175,5 +224,46 @@ namespace ChecklistApp.ViewModel
                 _toastService.QueueToast(e.Message);
             }
         }
+        
+        #endregion
+        
+        #region ColorMethods
+
+        private void SetColor(Checklist.ChecklistColor color)
+        {
+            _checklist.Color = color;
+            _checklist.CustomColorId = null;
+            foreach (var selectableColor in SelectableColors)
+            {
+                selectableColor.Selected = selectableColor.Color == color && selectableColor.Command == SetColorCommand;
+            }
+        }
+
+        private void SetCustomColor(int colorId)
+        {
+            _checklist.Color = Checklist.ChecklistColor.Custom;
+            _checklist.CustomColorId = colorId;
+            foreach (var selectableColor in SelectableColors)
+            {
+                selectableColor.Selected = selectableColor.Color == Checklist.ChecklistColor.Custom && selectableColor.CustomColorId == colorId;
+            }
+        }
+
+        private void AddNewColor()
+        {
+            _colorService.RequestColourCreation(OnNewColorAdded);
+        }
+
+        private void OnNewColorAdded(int id)
+        {
+            //  TODO: Reload colours, select added colour
+        }
+
+        private void EditCustomColor(int colorId)
+        {
+            
+        }
+        
+        #endregion
     }
 }

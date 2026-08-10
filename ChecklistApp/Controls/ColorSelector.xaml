@@ -2,136 +2,19 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:ChecklistApp.Controls"
+             xmlns:viewModel="clr-namespace:ChecklistApp.ViewModel"
              x:Name="this"
              x:Class="ChecklistApp.Controls.ColorSelector"
              x:DataType="controls:ColorSelector">
-    <Frame BindingContext="{x:Reference this}" 
+    <Border BindingContext="{x:Reference this}" 
            BackgroundColor="{StaticResource ForegroundDark}"
-           Padding="7.5"
-           HasShadow="False">
-        <VerticalStackLayout>
-            <Grid ColumnSpacing="0"
-                  RowSpacing="0"
-                  IsClippedToBounds="False">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <!--<Button Grid.Row="0"
-                    Grid.Column="0"
-                    FontSize="38"
-                    Background="{StaticResource ForegroundBrush}"
-                    TextColor="{StaticResource Text}"
-                    Command="{Binding SetColorCommand}"/>-->
-
-                <!--<controls:RoundedCheckbox Grid.Row="0"
-                                      Grid.Column="0"
-                                      FontSize="38"
-                                      Design="StaticForeground"
-                                      EnsureSquare="True"
-                                      IsChecked="{Binding GreyChecked, Mode=OneWay}"
-                                      Command="{Binding SetColorCommand}"
-                                      CommandParameter="Grey"/>
-                <controls:RoundedCheckbox Grid.Row="0"
-                                      Grid.Column="1"
-                                      FontSize="38"
-                                      Design="StaticForegroundCyan"
-                                      EnsureSquare="True"
-                                      IsChecked="{Binding CyanChecked, Mode=OneWay}"
-                                      Command="{Binding SetColorCommand}"
-                                      CommandParameter="Cyan"/>
-                <controls:RoundedCheckbox Grid.Row="0"
-                                      Grid.Column="2"
-                                      FontSize="38"
-                                      Design="StaticForegroundBlue"
-                                      EnsureSquare="True"
-                                      IsChecked="{Binding BlueChecked}"
-                                      Command="{Binding SetColorCommand}"
-                                      CommandParameter="Blue"/>
-                <controls:RoundedCheckbox Grid.Row="0"
-                                      Grid.Column="3"
-                                      FontSize="38"
-                                      Design="StaticForegroundPurple"
-                                      EnsureSquare="True"/>
-
-                <controls:RoundedCheckbox Grid.Row="1"
-                                      Grid.Column="0"
-                                      FontSize="38"
-                                      Design="StaticForegroundMagenta"
-                                      EnsureSquare="True"/>
-                <controls:RoundedCheckbox Grid.Row="1"
-                                      Grid.Column="1"
-                                      FontSize="38"
-                                      Design="StaticForegroundRed"
-                                      EnsureSquare="True"/>
-                <controls:RoundedCheckbox Grid.Row="1"
-                                      Grid.Column="2"
-                                      FontSize="38"
-                                      Design="StaticForegroundOrange"
-                                      EnsureSquare="True"/>
-                <controls:RoundedCheckbox Grid.Row="1"
-                                      Grid.Column="3"
-                                      FontSize="38"
-                                      Design="StaticForegroundGreen"
-                                      EnsureSquare="True"/>-->
-
-                <controls:ColorButton Grid.Row="0"
-                                      Grid.Column="0"
-                                      BackgroundColor="{StaticResource Foreground}"
-                                      IsChecked="{Binding GreyChecked}"
-                                      Command="{Binding SetColorCommand}"
-                                      CommandParameter="Grey"/>
-                <controls:ColorButton Grid.Row="0"
-                                      Grid.Column="1"
-                                      BackgroundColor="{StaticResource ForegroundCyan}"
-                                      IsChecked="{Binding CyanChecked}"
-                                      Command="{Binding SetColorCommand}"
-                                      CommandParameter="Cyan"/>
-                <controls:ColorButton Grid.Row="0"
-                                      Grid.Column="2"
-                                      BackgroundColor="{StaticResource ForegroundBlue}"
-                                      IsChecked="{Binding BlueChecked}"
-                                      Command="{Binding SetColorCommand}"
-                                      CommandParameter="Blue"/>
-                <controls:ColorButton Grid.Row="0"
-                                      Grid.Column="3"
-                                      BackgroundColor="{StaticResource ForegroundPurple}"
-                                      IsChecked="{Binding PurpleChecked}"
-                                      Command="{Binding SetColorCommand}"
-                                      CommandParameter="Purple"/>
-                <controls:ColorButton Grid.Row="1"
-                                      Grid.Column="0"
-                                      BackgroundColor="{StaticResource ForegroundMagenta}"
-                                      IsChecked="{Binding MagentaChecked}"
-                                      Command="{Binding SetColorCommand}"
-                                      CommandParameter="Magenta"/>
-                <controls:ColorButton Grid.Row="1"
-                                      Grid.Column="1"
-                                      BackgroundColor="{StaticResource ForegroundRed}"
-                                      IsChecked="{Binding RedChecked}"
-                                      Command="{Binding SetColorCommand}"
-                                      CommandParameter="Red"/>
-                <controls:ColorButton Grid.Row="1"
-                                      Grid.Column="2"
-                                      BackgroundColor="{StaticResource ForegroundOrange}"
-                                      IsChecked="{Binding OrangeChecked}"
-                                      Command="{Binding SetColorCommand}"
-                                      CommandParameter="Orange"/>
-                <controls:ColorButton Grid.Row="1"
-                                      Grid.Column="3"
-                                      BackgroundColor="{StaticResource ForegroundGreen}"
-                                      IsChecked="{Binding GreenChecked}"
-                                      Command="{Binding SetColorCommand}"
-                                      CommandParameter="Green"/>
-            </Grid>
-        </VerticalStackLayout>
-        
-    </Frame>
+           Padding="10">
+        <Grid x:Name="Layout"
+              ColumnDefinitions="*,*,*,*,*"
+              ColumnSpacing="10"
+              RowSpacing="10"
+              RowDefinitions="auto">
+            
+        </Grid>
+    </Border>
 </ContentView>

@@ -4,6 +4,8 @@ namespace ChecklistApp.Services;
 
 public class ColorService
 {
+    public static readonly string S_CustomColourString = "CustomColour";
+    
     private readonly ChecklistContext _context;
     private ResourceDictionary _customColourDictionary;
 
@@ -22,7 +24,7 @@ public class ColorService
         _customColourDictionary = new ResourceDictionary();
         foreach (var color in customColours)
         {
-            _customColourDictionary.Add($"CustomColour{color.Id}", new SolidColorBrush(new Color(color.Red,  color.Green, color.Blue)));
+            _customColourDictionary.Add($"{S_CustomColourString}{color.Id}", new SolidColorBrush(new Color(color.Red,  color.Green, color.Blue)));
         }
 
         Application.Current?.Resources.MergedDictionaries.Add(_customColourDictionary);
@@ -36,19 +38,39 @@ public class ColorService
         var customColours = _context.GetColorsAsync().Result;
         foreach (var color in customColours)
         {
-            if (!_customColourDictionary.ContainsKey($"CustomColour{color.Id}"))
+            if (!_customColourDictionary.ContainsKey($"{S_CustomColourString}{color.Id}"))
             {
-                _customColourDictionary.Add($"CustomColour{color.Id}", new SolidColorBrush(new Color(color.Red,  color.Green, color.Blue)));
+                _customColourDictionary.Add($"{S_CustomColourString}{color.Id}", new SolidColorBrush(new Color(color.Red,  color.Green, color.Blue)));
             }
         }
 
-        foreach (var key in _customColourDictionary.Keys.Where(key => key.Contains("CustomColour")))
+        foreach (var key in _customColourDictionary.Keys.Where(key => key.Contains(S_CustomColourString)))
         {
-            int id = int.Parse(key.Split("CustomColour", StringSplitOptions.RemoveEmptyEntries)[0]);
+            int id = int.Parse(key.Split(S_CustomColourString, StringSplitOptions.RemoveEmptyEntries)[0]);
             if (customColours.All(x => x.Id != id))
             {
                 _customColourDictionary.Remove(key);
             }
         }
+    }
+
+    public void RequestColourCreation(Action<int> callback)
+    {
+        
+    }
+
+    public void RequestColourEditing(int id, Action callback)
+    {
+        
+    }
+
+    private void AddColour(Color newColor, Action callback)
+    {
+        
+    }
+
+    private void EditColour(int id, Color newColor)
+    {
+        
     }
 }
