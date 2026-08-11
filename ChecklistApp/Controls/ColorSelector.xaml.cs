@@ -28,11 +28,43 @@ public partial class ColorSelector : ContentView
 
     private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-	    foreach (var item in e.NewItems)
+	    if (e.OldItems != null)
 	    {
-		    SelectableColorViewModel viewModel = item as SelectableColorViewModel;
-		    var button = CreateButton(viewModel);
-		    Layout.Add(button);
+		    foreach (var item in e.OldItems)
+		    {
+			    SelectableColorViewModel viewModel = item as SelectableColorViewModel;
+			    ColorButton button = (ColorButton)Layout.Children[e.OldStartingIndex];
+			    switch (e.Action)
+			    {
+				    case NotifyCollectionChangedAction.Move:
+					    int newIndex = SelectableColors.IndexOf(viewModel);
+					    Layout.SetColumn(button, newIndex % 5);
+					    Layout.SetRow(button, newIndex / 5);
+					    break;
+				    case NotifyCollectionChangedAction.Remove:
+					    Layout.Remove(button);
+					    break;
+			    }
+		    }
+	    }
+	    if (e.NewItems is not null)
+	    {
+		    for (int i = e.NewStartingIndex; i < Layout.Children.Count; i++)
+		    {
+			    ColorButton button = (ColorButton)Layout.Children[i];
+			    Layout.SetColumn(button, (i + e.NewItems.Count) % 5);
+			    Layout.SetRow(button, (i + e.NewItems.Count) / 5);
+		    }
+		    for (int i = 0; i < e.NewItems.Count; i++)
+		    {
+			    var item = e.NewItems[i];
+			    SelectableColorViewModel viewModel = item as SelectableColorViewModel;
+			    var button = CreateButton(viewModel);
+			    int index = e.NewStartingIndex + i;
+			    Layout.Insert(index, button);
+			    Layout.SetColumn(button, index % 5);
+			    Layout.SetRow(button, index / 5);
+		    }
 	    }
     }
 
@@ -65,13 +97,9 @@ public partial class ColorSelector : ContentView
 	    {
 		    Path = nameof(viewModel.Selected)
 	    });
-	    
-	    button.SetBinding(ColorButton.CommandProperty, new MultiBinding
-	    {
-		    Bindings = [new Binding(nameof(viewModel.Command)), new Binding(nameof(viewModel.SelectedCommand))],
-		    Converter = (IMultiValueConverter)dynamicCommandConverter,
-		    ConverterParameter = new Binding(nameof(viewModel.Selected), converter: (IValueConverter)boolToIntConverter)
-	    });
+
+	    button.SetBinding(ColorButton.CommandProperty, new Binding(nameof(viewModel.Command)));
+	    button.SetBinding(ColorButton.SelectedCommandProperty, new Binding(nameof(viewModel.SelectedCommand)));
 	    
 	    button.SetBinding(ColorButton.CommandParameterProperty, new Binding(viewModel.Color == Checklist.ChecklistColor.Custom ? nameof(viewModel.CustomColorId) : nameof(viewModel.Color)));
 	    

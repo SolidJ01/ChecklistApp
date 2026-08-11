@@ -13,11 +13,13 @@ namespace ChecklistApp.View;
 public partial class DialoguePage : PopupPage
 {
     private ToastService _toastService;
+    private ColorService _colorService;
     private Dictionary<object, Rect> _toastSpacingLayers = [];
     
-    public DialoguePage(ToastService toastService)
+    public DialoguePage(ToastService toastService, ColorService colorService)
     {
         _toastService = toastService;
+        _colorService = colorService;
         InitializeComponent();
         ((Toast)GetTemplateChild("Toast")).ToastCompleted += OnToastCompleted;
     }
@@ -75,11 +77,15 @@ public partial class DialoguePage : PopupPage
         base.OnNavigatedTo(args);
         _toastService.ToastProposed += ToastServiceOnToastProposed;
         CheckQueuedToasts();
+        
+        _colorService.ColorSelectRequested += ((ColorSelectorPopup)GetTemplateChild("ColorSelector")).OnColorSelectRequested;
     }
 
     protected override void OnNavigatedFrom(NavigatedFromEventArgs args)
     {
         base.OnNavigatedFrom(args);
         _toastService.ToastProposed -= ToastServiceOnToastProposed;
+        
+        _colorService.ColorSelectRequested -= ((ColorSelectorPopup)GetTemplateChild("ColorSelector")).OnColorSelectRequested;
     }
 }

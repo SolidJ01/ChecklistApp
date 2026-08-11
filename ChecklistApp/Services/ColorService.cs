@@ -1,10 +1,12 @@
 using ChecklistApp.Data;
+using ChecklistApp.Model;
 
 namespace ChecklistApp.Services;
 
 public class ColorService
 {
     public static readonly string S_CustomColourString = "CustomColour";
+    public event EventHandler<ColorSelectRequestEventArgs> ColorSelectRequested;
     
     private readonly ChecklistContext _context;
     private ResourceDictionary _customColourDictionary;
@@ -56,21 +58,36 @@ public class ColorService
 
     public void RequestColourCreation(Action<int> callback)
     {
-        
+        ColorSelectRequested?.Invoke(this, new ColorSelectRequestEventArgs(null, null, (int? i, Color c) => CreateNewColour(c,  callback)));
     }
 
-    public void RequestColourEditing(int id, Action callback)
+    public async void RequestColourEditing(int id, Action callback)
     {
-        
+        ChecklistColor color = await _context.GetColorAsync(id);
+        ColorSelectRequested?.Invoke(this, new ColorSelectRequestEventArgs(id, Color.FromRgb(color.Red, color.Green, color.Blue), (int? i, Color c) => EditColour(id, c, callback)));
     }
 
-    private void AddColour(Color newColor, Action callback)
+    private void CreateNewColour(Color color, Action<int> callback)
     {
-        
+        ChecklistColor newColor = new ChecklistColor
+        {
+            Red = color.Red,
+            Blue = color.Blue,
+            Green = color.Green
+        };
+        _context.CreateColor(newColor);
+        Update();
+        callback?.Invoke(newColor.Id);
     }
 
-    private void EditColour(int id, Color newColor)
+    private void EditColour(int id, Color color, Action? callback)
     {
-        
+        ChecklistColor editedColor = _context.GetColorAsync(id).Result;
+        editedColor.Red = color.Red;
+        editedColor.Green = color.Green;
+        editedColor.Blue = color.Blue;
+        _context.UpdateColor(editedColor);
+        Update();
+        callback?.Invoke();
     }
 }

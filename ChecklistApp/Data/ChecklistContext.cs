@@ -150,6 +150,26 @@ namespace ChecklistApp.Data
         {
             return await ChecklistColors.ToListAsync();
         }
+
+        public async Task<ChecklistColor> GetColorAsync(int id)
+        {
+            ChecklistColor? c = await ChecklistColors.FirstOrDefaultAsync(x => x.Id == id);
+            if (c is null)
+                throw new KeyNotFoundException();
+            return c;
+        }
+
+        public void CreateColor(ChecklistColor checklistColor)
+        {
+            ChecklistColors.Add(checklistColor);
+            SaveChanges();
+        }
+
+        public void UpdateColor(ChecklistColor checklistColor)
+        {
+            ChecklistColors.Update(checklistColor);
+            SaveChanges();
+        }
         
         #endregion
     }

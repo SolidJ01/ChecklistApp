@@ -5,7 +5,7 @@ namespace ChecklistApp.View;
 
 public partial class ChecklistPage : DialoguePage
 {
-	public ChecklistPage(ChecklistPageViewModel viewModel, ToastService toastService) : base(toastService)
+	public ChecklistPage(ChecklistPageViewModel viewModel, ToastService toastService, ColorService colorService) : base(toastService, colorService)
 	{
 		InitializeComponent();
 		BindingContext = viewModel;

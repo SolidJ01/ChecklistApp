@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using ChecklistApp.Model;
 using Color = Microsoft.Maui.Graphics.Color;
 using Size = Microsoft.Maui.Graphics.Size;
@@ -25,6 +26,9 @@ public partial class ColorSelectorPopup : Popup
     private double _hue = 0;
     private double _saturation = 0;
     private double _value = 0;
+
+    private int? _activeId;
+    private Action<int?, Color> _activeCallback;
     
     public Color Color
     {
@@ -74,8 +78,12 @@ public partial class ColorSelectorPopup : Popup
     public ImageSource SaturationSelectorBackground { get; set; }
     public ImageSource ValueSelectorBackground { get; set; }
     
+    public ICommand SaveCommand { get; set; }
+    
     public ColorSelectorPopup()
     {
+        SaveCommand = new Command(SaveColor);
+        
         InitializeComponent();
         if (Application.Current.Resources.TryGetValue("Foreground", out var resource) && resource is Color color)
         {
@@ -83,6 +91,25 @@ public partial class ColorSelectorPopup : Popup
             OnPropertyChanged(nameof(Color));
             UpdateHsv();
         }
+    }
+
+    public void OnColorSelectRequested(object caller, ColorSelectRequestEventArgs e)
+    {
+        _activeId = e.Id;
+        _activeCallback = e.Callback;
+        if (e.Color is not null)
+        {
+            Color = e.Color;
+            OnPropertyChanged(nameof(Color));
+            UpdateHsv();
+        }
+        Open();
+    }
+
+    private void SaveColor()
+    {
+        _activeCallback?.Invoke(_activeId, Color);
+        Close();
     }
 
     private void UpdateColor()
@@ -115,7 +142,7 @@ public partial class ColorSelectorPopup : Popup
         OnPropertyChanged(nameof(Value));
     }
 
-    public void RegenerateHueImage()
+    private void RegenerateHueImage()
     {
         int width = (int)BackgroundDimensions.Width;
         int height = (int)BackgroundDimensions.Height;
@@ -137,7 +164,7 @@ public partial class ColorSelectorPopup : Popup
         OnPropertyChanged(nameof(HueSelectorBackground));
     }
 
-    public void RegenerateSaturationImage()
+    private void RegenerateSaturationImage()
     {
         int width = (int)BackgroundDimensions.Width;
         int height = (int)BackgroundDimensions.Height;

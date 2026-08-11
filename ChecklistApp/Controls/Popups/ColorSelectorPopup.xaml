@@ -21,7 +21,7 @@
                              Padding="10, 10, 10, 0">
             <Border Padding="15 ,0"
                     HeightRequest="50"
-                    BackgroundColor="{Binding Color}">
+                    Background="{Binding Color}">
                 <Label Text="Custom Colour"
                        FontAttributes="Bold" 
                        TextColor="{StaticResource Text}"/>
@@ -38,7 +38,8 @@
                         FontFamily="FontAwSolid"
                         Clicked="CloseButtonClicked" />
                 <Button Grid.Column="1"
-                        Text="Save" />
+                        Text="Save"
+                        Command="{Binding SaveCommand}" />
             </Grid>
         </controls:ControlBar>
     </Grid>

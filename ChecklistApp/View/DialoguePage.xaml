@@ -10,6 +10,7 @@
         <ControlTemplate>
             <Grid>
                 <ContentPresenter />
+                <controls:ColorSelectorPopup x:Name="ColorSelector" />
                 <popups:DialoguePopup x:Name="Dialogue" />
                 <controls:Toast x:Name="Toast" />
             </Grid>

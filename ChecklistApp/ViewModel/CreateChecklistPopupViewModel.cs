@@ -99,6 +99,7 @@ namespace ChecklistApp.ViewModel
                     CustomColorId =  color.Id,
                     Selected = Color == Checklist.ChecklistColor.Custom && _checklist.CustomColorId == color.Id,
                     Command = SetCustomColorCommand,
+                    SelectedCommand = EditCustomColorCommand
                 });
             }
 
@@ -256,10 +257,29 @@ namespace ChecklistApp.ViewModel
 
         private void OnNewColorAdded(int id)
         {
-            //  TODO: Reload colours, select added colour
+            ChecklistColor color = _checklistContext.GetColorAsync(id).Result;
+            foreach (var selectableColor in SelectableColors)
+            {
+                selectableColor.Selected = false;
+            }
+            
+            SelectableColors.Insert(SelectableColors.Count - 1, new SelectableColorViewModel
+            {
+                Color = Checklist.ChecklistColor.Custom, 
+                CustomColorId = id,
+                Selected = true,
+                Command = SetCustomColorCommand,
+                SelectedCommand = EditCustomColorCommand
+            });
+            Console.WriteLine();
         }
 
         private void EditCustomColor(int colorId)
+        {
+            _colorService.RequestColourEditing(colorId, () => OnColorEdited(colorId));
+        }
+
+        private void OnColorEdited(int colorId)
         {
             
         }

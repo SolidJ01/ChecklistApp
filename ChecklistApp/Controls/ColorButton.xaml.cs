@@ -12,16 +12,6 @@ public partial class ColorButton : ContentView
 		set => SetValue(BackgroundBrushProperty, value);
 	}
 
-
-	//	TODO: Research property change notification propagation - can this object be notified when the selected color changes through this property? 
-	//public static readonly BindableProperty SelectedColorProperty = BindableProperty.Create(nameof(SelectedColor), typeof(Color), typeof(ColorButton));
-
-	//public Color SelectedColor
-	//{
-	//	get => (Color)GetValue(SelectedColorProperty);
-	//	set => SetValue(SelectedColorProperty, value);
-	//}
-
 	public static readonly BindableProperty IsCheckedProperty = BindableProperty.Create(nameof(IsChecked), typeof(bool), typeof(ColorButton), propertyChanged:OnIsCheckedPropertyChanged);
 
     public bool IsChecked
@@ -43,6 +33,14 @@ public partial class ColorButton : ContentView
 		set => SetValue(CommandProperty, value);
 	}
 
+	public static readonly BindableProperty SelectedCommandProperty = BindableProperty.Create(nameof(SelectedCommand), typeof(ICommand), typeof(ColorButton));
+
+	public ICommand SelectedCommand
+	{
+		get => (ICommand)GetValue(SelectedCommandProperty);
+		set => SetValue(SelectedCommandProperty, value);
+	}
+
     public static readonly BindableProperty CommandParameterProperty = BindableProperty.Create(nameof(CommandParameter), typeof(object), typeof(ColorButton), null);
     public object CommandParameter
     {
@@ -57,6 +55,9 @@ public partial class ColorButton : ContentView
 
     private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
     {
-		Command.Execute(CommandParameter);
+	    if (!IsChecked)
+			Command?.Execute(CommandParameter);
+	    else
+		    SelectedCommand?.Execute(CommandParameter);
     }
 }

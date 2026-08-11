@@ -11,7 +11,7 @@ public partial class MainPage : DialoguePage
 	public ICommand RegisterBackButtonCommand { get; set; }
 	public ICommand OpenColourPickerCommand { get; set; }
 	
-	public MainPage(MainPageViewModel viewModel, ToastService toastService, ChecklistContext context) : base(toastService)
+	public MainPage(MainPageViewModel viewModel, ToastService toastService, ColorService colorService) : base(toastService, colorService)
 	{
 		InitializeComponent();
 		this.BindingContext = viewModel;
