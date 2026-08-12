@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using ChecklistApp.Model;
+using ChecklistApp.Services;
 using ChecklistApp.ViewModel;
 
 namespace ChecklistApp.Controls;
@@ -87,11 +88,12 @@ public partial class ColorSelector : ContentView
 	    var button = new ColorButton();
 	    button.BindingContext = viewModel;
 	    
-	    button.SetBinding(ColorButton.BackgroundBrushProperty, new MultiBinding
-	    {
-		    Bindings = [new Binding(nameof(viewModel.Color)), new Binding(nameof(viewModel.CustomColorId))], 
-		    Converter = (IMultiValueConverter)checklistColorConverter
-	    });
+	    button.SetDynamicResource(ColorButton.BackgroundBrushProperty, ColorService.CalculateResourceKey(viewModel.Color, viewModel.CustomColorId));
+	    // button.SetBinding(ColorButton.BackgroundBrushProperty, new MultiBinding
+	    // {
+		   //  Bindings = [new Binding(nameof(viewModel.Color)), new Binding(nameof(viewModel.CustomColorId))], 
+		   //  Converter = (IMultiValueConverter)checklistColorConverter
+	    // });
 	    
 	    button.SetBinding(ColorButton.IsCheckedProperty, new Binding
 	    {

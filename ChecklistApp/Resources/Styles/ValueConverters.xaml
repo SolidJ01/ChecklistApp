@@ -11,5 +11,6 @@
     <valueconverters:ConditionalItemDisplayConverter x:Key="ConditionalDisplay" />
     <valueconverters:GreaterThanZeroConverter x:Key="GreaterThanZero" />
     <valueconverters:ChecklistColorToBrushConverter x:Key="ChecklistColorConverter" />
+    <valueconverters:ChecklistColorToColorConverter x:Key="ChecklistColorToColorConverter" />
     <valueconverters:DynamicCommandConverter x:Key="DynamicCommandConverter" />
 </ResourceDictionary>

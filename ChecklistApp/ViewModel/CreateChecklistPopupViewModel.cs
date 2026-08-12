@@ -136,9 +136,9 @@ namespace ChecklistApp.ViewModel
             ResetChecklist();
         }
 
-        private void Save(Action callback = null)
+        private async void Save(Action callback = null)
         {
-            if (Name is null)
+            if (string.IsNullOrWhiteSpace(Name))
                 return;
             
             try
@@ -147,7 +147,7 @@ namespace ChecklistApp.ViewModel
                 _checklist.Notifications = UseDeadline && NotificationsEnabled ? Notifications.Select(x => new Notification { Checklist = _checklist, Value = x.Notification.Value}).ToList() : [];
                 foreach (Notification notification in _checklist.Notifications) 
                     notification.Checklist = _checklist;
-                _checklistContext.CreateChecklist(_checklist);
+                await _checklistContext.CreateChecklist(_checklist);
 
                 foreach (Notification notification in _checklist.Notifications)
                 {
@@ -165,7 +165,7 @@ namespace ChecklistApp.ViewModel
             }
             catch (Exception e)
             {
-                _toastService.QueueToast($"Error: {e.Message}");
+                _toastService.QueueToast($"Error: {e?.InnerException?.Message}");
             }
         }
 

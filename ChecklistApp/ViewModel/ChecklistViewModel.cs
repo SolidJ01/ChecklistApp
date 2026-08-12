@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ChecklistApp.Services;
 using CommunityToolkit.Maui.Core.Extensions;
 
 namespace ChecklistApp.ViewModel
@@ -74,6 +75,18 @@ namespace ChecklistApp.ViewModel
             {
                 return _checklist.Color;
             }
+        }
+
+        public int? CustomColorId { get => _checklist.CustomColorId; }
+        
+        public string ColorResourceKey 
+        {
+            get
+            {
+                return _checklist is not null
+                    ? ColorService.CalculateResourceKey(_checklist.Color, _checklist.CustomColorId)
+                    : "";
+            } 
         }
 
         public ObservableCollection<ItemViewModel> Items { get; set; } = [];
@@ -157,6 +170,8 @@ namespace ChecklistApp.ViewModel
             OnPropertyChanged(nameof(DeadlineStatus));
             OnPropertyChanged(nameof(IsOverdue));
             OnPropertyChanged(nameof(Color));
+            OnPropertyChanged(nameof(CustomColorId));
+            OnPropertyChanged(nameof(ColorResourceKey));
         }
 
         public void Update()
@@ -167,6 +182,8 @@ namespace ChecklistApp.ViewModel
             OnPropertyChanged(nameof(DeadlineStatus));
             OnPropertyChanged(nameof(IsOverdue));
             OnPropertyChanged(nameof(Color));
+            OnPropertyChanged(nameof(CustomColorId));
+            OnPropertyChanged(nameof(ColorResourceKey));
         }
 
         public bool ModelEquals(Checklist checklist)
