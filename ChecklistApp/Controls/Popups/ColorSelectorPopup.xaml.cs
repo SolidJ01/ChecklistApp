@@ -126,13 +126,15 @@ public partial class ColorSelectorPopup : Popup
         float xMin = Math.Min(Math.Min(Color.Red, Color.Green), Color.Blue);
         float chroma = xMax - xMin;
         float newHue =
-            chroma == 0
+            ((chroma == 0
                 ? 0
                 : xMax == Color.Red
-                    ? (((Color.Green - Color.Blue) / chroma) % 6)
+                    ? 60 * (((Color.Green - Color.Blue) / chroma) % 6)
                     : xMax == Color.Green
-                        ? ((Color.Blue - Color.Red) / chroma + 2)
-                        : ((Color.Red - Color.Green) / chroma + 4);
+                        ? 60 * ((Color.Blue - Color.Red) / chroma + 2)
+                        : 60 * ((Color.Red - Color.Green) / chroma + 4)) % 360) / 360;
+        if (newHue < 0)
+            newHue = 1 + newHue;
         float newSaturation = xMax == 0 ? 0 : chroma / xMax;
         _hue = newHue;
         _saturation = newSaturation;
