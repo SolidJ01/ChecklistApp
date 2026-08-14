@@ -9,8 +9,6 @@
                          Spacing="10">
         <controls:RoundedEntry Text="{Binding Name}" Placeholder="Title" />
         <controls:ColorSelector Margin="0,0,0,0" SelectableColors="{Binding SelectableColors}" />
-        <Button Text="Custom Colour"
-                Command="{Binding OpenColourPickerCommand}"/>
         <Grid Margin="0,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50" />

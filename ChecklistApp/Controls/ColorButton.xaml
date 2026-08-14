@@ -11,21 +11,31 @@
         <Border.GestureRecognizers>
             <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" NumberOfTapsRequired="1" />
         </Border.GestureRecognizers>
-        <Label FontSize="36"
-               FontFamily="FontAwSolid"
-               FontAttributes="Bold"
-               TextColor="{StaticResource Text}"
-               HorizontalTextAlignment="Center"
-               VerticalTextAlignment="Center"
-               Text="&#xf00c;">
-            <Label.Triggers>
-                <DataTrigger TargetType="Label" Binding="{Binding IsChecked}" Value="false">
-                    <Setter Property="Opacity" Value="0" />
-                </DataTrigger>
-                <DataTrigger TargetType="Label" Binding="{Binding IsChecked}" Value="true">
-                    <Setter Property="Opacity" Value="1" />
-                </DataTrigger>
-            </Label.Triggers>
-        </Label>
+        <AbsoluteLayout>
+            <Border BackgroundColor="Black"
+                    Opacity="0.3"
+                    AbsoluteLayout.LayoutBounds="0,0,1,1"
+                    AbsoluteLayout.LayoutFlags="All"
+                    IsVisible="{Binding IsChecked}" />
+            <Label Text="{Binding SmallIcon}"
+                   FontSize="{Binding SmallIconFontSize}"
+                   FontFamily="FontAwSolid"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Text}"
+                   HorizontalTextAlignment="End"
+                   VerticalTextAlignment="Start"
+                   Margin="0,6,6,0"
+                   AbsoluteLayout.LayoutBounds="1,0,0.5,0.5"
+                   AbsoluteLayout.LayoutFlags="All" />
+            <Label Text="{Binding Icon}" 
+                   FontSize="{Binding IconFontSize}"
+                   FontFamily="FontAwSolid"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Text}"
+                   AbsoluteLayout.LayoutBounds="0.5,0.5,0.8,0.8"
+                   AbsoluteLayout.LayoutFlags="All"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"/>
+        </AbsoluteLayout>
     </Border>
 </ContentView>

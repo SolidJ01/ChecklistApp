@@ -6,7 +6,7 @@
              x:Name="this"
              PopupMargin="15, 25"
              x:Class="ChecklistApp.Controls.ColorSelectorPopup">
-    <Grid x:Name="Base" RowDefinitions="auto,70" RowSpacing="10" BindingContext="{x:Reference this}">
+    <Grid x:Name="Base" RowDefinitions="auto,auto" RowSpacing="10" BindingContext="{x:Reference this}">
         <Grid.Resources>
             <LinearGradientBrush x:Key="SaturationBackgroundBrush" StartPoint="0,0" EndPoint="1,0">
                 <GradientStop Color="White" Offset="0" />
@@ -32,15 +32,33 @@
         </VerticalStackLayout>
         <controls:ControlBar x:Name="ControlBar"
                              Grid.Row="1">
-            <Grid ColumnDefinitions="50,*"
-                  ColumnSpacing="10">
-                <Button Text="&#xf060;" 
-                        FontFamily="FontAwSolid"
-                        Clicked="CloseButtonClicked" />
-                <Button Grid.Column="1"
-                        Text="Save"
-                        Command="{Binding SaveCommand}" />
-            </Grid>
+            <VerticalStackLayout Spacing="10">
+                <Button Background="{StaticResource ForegroundRedBrush}"
+                        Text="Delete"
+                        HeightRequest="50"
+                        Command="{Binding DeleteCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="IsVisible" Value="False" />
+                            <Style.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding Source={RelativeSource Self}, Path=IsEnabled}" Value="True">
+                                    <Setter Property="IsVisible" Value="True" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Grid ColumnDefinitions="50,*"
+                      RowDefinitions="50"
+                      ColumnSpacing="10">
+                    <Button Text="&#xf060;" 
+                            FontFamily="FontAwSolid"
+                            Clicked="CloseButtonClicked" />
+                    <Button Grid.Column="1"
+                            Text="Save"
+                            Command="{Binding SaveCommand}" />
+                </Grid>
+            </VerticalStackLayout>
         </controls:ControlBar>
     </Grid>
 </controls:Popup>

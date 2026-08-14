@@ -62,13 +62,16 @@ public class ColorService
 
     public void RequestColourCreation(Action<int> callback)
     {
-        ColorSelectRequested?.Invoke(this, new ColorSelectRequestEventArgs(null, null, (int? i, Color c) => CreateNewColour(c,  callback)));
+        Color? newColour = null;
+        if (Application.Current.Resources.TryGetValue("Foreground", out var resource))
+            newColour = (Color)resource;
+        ColorSelectRequested?.Invoke(this, new ColorSelectRequestEventArgs(newColour, (Color c) => CreateNewColour(c,  callback)));
     }
 
     public async void RequestColourEditing(int id, Action callback)
     {
         ChecklistColor color = await _context.GetColorAsync(id);
-        ColorSelectRequested?.Invoke(this, new ColorSelectRequestEventArgs(id, Color.FromRgb(color.Red, color.Green, color.Blue), (int? i, Color c) => EditColour(id, c, callback)));
+        ColorSelectRequested?.Invoke(this, new ColorSelectRequestEventArgs(Color.FromRgb(color.Red, color.Green, color.Blue), (Color c) => EditColour(id, c, callback), () => DeleteColour(id, callback)));
     }
 
     private void CreateNewColour(Color color, Action<int> callback)
@@ -91,6 +94,13 @@ public class ColorService
         editedColor.Green = color.Green;
         editedColor.Blue = color.Blue;
         _context.UpdateColor(editedColor);
+        Update();
+        callback?.Invoke();
+    }
+
+    private async Task DeleteColour(int id, Action callback)
+    {
+        await _context.DeleteColorAsync(id);
         Update();
         callback?.Invoke();
     }

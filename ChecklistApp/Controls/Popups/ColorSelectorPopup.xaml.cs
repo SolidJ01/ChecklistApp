@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using ChecklistApp.Model;
+using ChecklistApp.ViewModel;
 using Color = Microsoft.Maui.Graphics.Color;
 using Size = Microsoft.Maui.Graphics.Size;
 
@@ -20,15 +21,14 @@ public partial class ColorSelectorPopup : Popup
     {
         ColorSelectorPopup popup = (ColorSelectorPopup)bindable;
         popup.RegenerateHueImage();
-        //popup.RegenerateSaturationImage();
     }
 
     private double _hue = 0;
     private double _saturation = 0;
     private double _value = 0;
 
-    private int? _activeId;
-    private Action<int?, Color> _activeCallback;
+    private Action<Color> _activeCallback;
+    private Action? _activeDeleteCallback;
     
     public Color Color
     {
@@ -79,10 +79,12 @@ public partial class ColorSelectorPopup : Popup
     public ImageSource ValueSelectorBackground { get; set; }
     
     public ICommand SaveCommand { get; set; }
+    public ICommand DeleteCommand { get; set; }
     
     public ColorSelectorPopup()
     {
         SaveCommand = new Command(SaveColor);
+        DeleteCommand = new RelayCommand(DeleteColor, (object? param) => _activeDeleteCallback is not null);
         
         InitializeComponent();
         if (Application.Current.Resources.TryGetValue("Foreground", out var resource) && resource is Color color)
@@ -95,8 +97,9 @@ public partial class ColorSelectorPopup : Popup
 
     public void OnColorSelectRequested(object caller, ColorSelectRequestEventArgs e)
     {
-        _activeId = e.Id;
         _activeCallback = e.Callback;
+        _activeDeleteCallback = e.DeleteCallback;
+        ((RelayCommand)DeleteCommand).UpdateCanExecute();
         if (e.Color is not null)
         {
             Color = e.Color;
@@ -108,7 +111,13 @@ public partial class ColorSelectorPopup : Popup
 
     private void SaveColor()
     {
-        _activeCallback?.Invoke(_activeId, Color);
+        _activeCallback?.Invoke(Color);
+        Close();
+    }
+
+    private void DeleteColor()
+    {
+        _activeDeleteCallback?.Invoke();
         Close();
     }
 
@@ -164,25 +173,5 @@ public partial class ColorSelectorPopup : Popup
         MemoryStream memoryStream = new MemoryStream(byteArray);
         HueSelectorBackground = ImageSource.FromStream(() => memoryStream);
         OnPropertyChanged(nameof(HueSelectorBackground));
-    }
-
-    private void RegenerateSaturationImage()
-    {
-        int width = (int)BackgroundDimensions.Width;
-        int height = (int)BackgroundDimensions.Height;
-        
-        Bitmap bitmap = new Bitmap(width, height);
-        for (int x = 0; x < width; x++)
-        {
-            Color color = Color.FromHsva((float)Hue, 0, 1f, 0);
-            for (int y = 0; y < height; y++)
-            {
-                bitmap.MapPixel(x, y, color);
-            }
-        }
-        
-        MemoryStream memoryStream = new MemoryStream(bitmap.AsByteArray());
-        SaturationSelectorBackground = ImageSource.FromStream(() => memoryStream);
-        OnPropertyChanged(nameof(SaturationSelectorBackground));
     }
 }

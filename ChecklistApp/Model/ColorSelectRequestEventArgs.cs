@@ -1,8 +1,8 @@
 namespace ChecklistApp.Model;
 
-public class ColorSelectRequestEventArgs(int? id, Color? color, Action<int?, Color> callback) : EventArgs
+public class ColorSelectRequestEventArgs(Color? color, Action<Color> callback, Action? deleteCallback = null) : EventArgs
 {
-    public int? Id => id;
     public Color? Color => color;
-    public Action<int?, Color> Callback => callback;
+    public Action<Color> Callback => callback;
+    public Action? DeleteCallback => deleteCallback;
 }

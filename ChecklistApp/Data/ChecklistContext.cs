@@ -170,6 +170,18 @@ namespace ChecklistApp.Data
             ChecklistColors.Update(checklistColor);
             SaveChanges();
         }
+
+        public async Task DeleteColorAsync(ChecklistColor checklistColor)
+        {
+            ChecklistColors.Remove(checklistColor);
+            await SaveChangesAsync();
+        }
+
+        public async Task DeleteColorAsync(int id)
+        {
+            ChecklistColor color = await GetColorAsync(id);
+            await DeleteColorAsync(color);
+        }
         
         #endregion
     }

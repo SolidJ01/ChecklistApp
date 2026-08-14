@@ -82,7 +82,7 @@ namespace ChecklistApp.ViewModel
             {
                 if (color == Checklist.ChecklistColor.Custom)
                     continue;
-                selectableColors.Add(new SelectableColorViewModel
+                selectableColors.Add(new SelectableColorViewModel(selectedIcon:"")
                 {
                     Color = color, 
                     Selected = color == Color, 
@@ -93,7 +93,7 @@ namespace ChecklistApp.ViewModel
             List<ChecklistColor> customColors = _checklistContext.GetColorsAsync().Result;
             foreach (ChecklistColor color in customColors)
             {
-                selectableColors.Add(new SelectableColorViewModel
+                selectableColors.Add(new SelectableColorViewModel(selectedIcon:"", smallIcon:"", selectedSmallIcon:"")
                 {
                     Color = Checklist.ChecklistColor.Custom,
                     CustomColorId =  color.Id,
@@ -103,7 +103,7 @@ namespace ChecklistApp.ViewModel
                 });
             }
 
-            selectableColors.Add(new SelectableColorViewModel
+            selectableColors.Add(new SelectableColorViewModel(icon:"", selectedIcon:"")
             {
                 Color = Checklist.ChecklistColor.Grey,
                 Selected = false,
@@ -263,7 +263,7 @@ namespace ChecklistApp.ViewModel
                 selectableColor.Selected = false;
             }
             
-            SelectableColors.Insert(SelectableColors.Count - 1, new SelectableColorViewModel
+            SelectableColors.Insert(SelectableColors.Count - 1, new SelectableColorViewModel(selectedIcon:"", smallIcon:"", selectedSmallIcon:"")
             {
                 Color = Checklist.ChecklistColor.Custom, 
                 CustomColorId = id,
@@ -271,17 +271,43 @@ namespace ChecklistApp.ViewModel
                 Command = SetCustomColorCommand,
                 SelectedCommand = EditCustomColorCommand
             });
-            Console.WriteLine();
+        }
+
+        private void OnColorRemoved(int id)
+        {
+            SelectableColorViewModel? color = SelectableColors.FirstOrDefault(x => x.CustomColorId == id);
+            if (color is null)
+                return;
+            if (color.Selected)
+            {
+                SetColor(Checklist.ChecklistColor.Grey);
+            }
+            SelectableColors.Remove(color);
         }
 
         private void EditCustomColor(int colorId)
         {
-            _colorService.RequestColourEditing(colorId, () => OnColorEdited(colorId));
+            _colorService.RequestColourEditing(colorId, () => OnColorsChanged());
         }
 
-        private void OnColorEdited(int colorId)
+        private async Task OnColorsChanged()
         {
-            
+            List<ChecklistColor> colors = await _checklistContext.GetColorsAsync();
+            foreach (var checklistColor in colors)
+            {
+                if (SelectableColors.All(x => x.CustomColorId != checklistColor.Id))
+                {
+                    OnNewColorAdded(checklistColor.Id);
+                }
+            }
+
+            foreach (var selectableColor in SelectableColors.Where(x => x.Color == Checklist.ChecklistColor.Custom))
+            {
+                if (colors.All(x => x.Id != selectableColor.CustomColorId) && selectableColor.CustomColorId is not null)
+                {
+                    OnColorRemoved((int)selectableColor.CustomColorId);
+                }
+            }
         }
         
         #endregion

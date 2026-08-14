@@ -3,12 +3,14 @@ using System.Collections.Specialized;
 using ChecklistApp.Model;
 using ChecklistApp.Services;
 using ChecklistApp.ViewModel;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ChecklistApp.Controls;
 
 public partial class ColorSelector : ContentView
 {
 	public static readonly BindableProperty SelectableColorsProperty = BindableProperty.Create(nameof(SelectableColors), typeof(ObservableCollection<SelectableColorViewModel>),  typeof(ColorSelector), new ObservableCollection<SelectableColorViewModel>(), propertyChanged:SelectableColorsPropertyChanged);
+	public static readonly BindableProperty ColumnsProperty = BindableProperty.Create(nameof(Columns), typeof(int), typeof(ColorSelector), 5);
 
 	private static void SelectableColorsPropertyChanged(BindableObject bindable, object oldValue, object newValue)
 	{
@@ -20,6 +22,12 @@ public partial class ColorSelector : ContentView
 	{
 		get => (ObservableCollection<SelectableColorViewModel>)GetValue(SelectableColorsProperty);
 		set => SetValue(SelectableColorsProperty, value);
+	}
+
+	public int Columns
+	{
+		get => (int)GetValue(ColumnsProperty);
+		set => SetValue(ColumnsProperty, value);
 	}
 
     public ColorSelector()
@@ -39,12 +47,28 @@ public partial class ColorSelector : ContentView
 			    {
 				    case NotifyCollectionChangedAction.Move:
 					    int newIndex = SelectableColors.IndexOf(viewModel);
-					    Layout.SetColumn(button, newIndex % 5);
-					    Layout.SetRow(button, newIndex / 5);
+					    Layout.SetColumn(button, newIndex % Columns);
+					    Layout.SetRow(button, newIndex / Columns);
 					    break;
 				    case NotifyCollectionChangedAction.Remove:
 					    Layout.Remove(button);
 					    break;
+			    }
+		    }
+
+		    for (int i = e.OldStartingIndex; i < SelectableColors.Count; i++)
+		    {
+			    ColorButton button = (ColorButton)Layout.Children[i];
+			    Layout.SetColumn(button, i % Columns);
+			    Layout.SetRow(button, i / Columns);
+		    }
+
+		    int nTargetRows = (int)Math.Round(Layout.Children.Count / (double)Columns, MidpointRounding.ToPositiveInfinity);
+		    if (Layout.RowDefinitions.Count > nTargetRows)
+		    {
+			    for (int i = Layout.RowDefinitions.Count; i > nTargetRows; i--)
+			    {
+				    Layout.RowDefinitions.RemoveAt(i - 1);
 			    }
 		    }
 	    }
@@ -53,8 +77,16 @@ public partial class ColorSelector : ContentView
 		    for (int i = e.NewStartingIndex; i < Layout.Children.Count; i++)
 		    {
 			    ColorButton button = (ColorButton)Layout.Children[i];
-			    Layout.SetColumn(button, (i + e.NewItems.Count) % 5);
-			    Layout.SetRow(button, (i + e.NewItems.Count) / 5);
+			    int targetRow = (int)Math.Round((i + e.NewItems.Count + 1) / (double)Columns, MidpointRounding.ToPositiveInfinity);
+			    if (targetRow > Layout.RowDefinitions.Count)
+			    {
+				    
+				    Layout.RowDefinitions.Add(new RowDefinition());
+				    
+			    }
+			    
+			    Layout.SetColumn(button, (i + e.NewItems.Count) % Columns);
+			    Layout.SetRow(button, (i + e.NewItems.Count) / Columns);
 		    }
 		    for (int i = 0; i < e.NewItems.Count; i++)
 		    {
@@ -63,8 +95,8 @@ public partial class ColorSelector : ContentView
 			    var button = CreateButton(viewModel);
 			    int index = e.NewStartingIndex + i;
 			    Layout.Insert(index, button);
-			    Layout.SetColumn(button, index % 5);
-			    Layout.SetRow(button, index / 5);
+			    Layout.SetColumn(button, index % Columns);
+			    Layout.SetRow(button, index / Columns);
 		    }
 	    }
     }
@@ -72,10 +104,22 @@ public partial class ColorSelector : ContentView
     public void RedrawUI()
     {
 	    SelectableColors.CollectionChanged += OnCollectionChanged;
+	    foreach (var child in Layout.Children)
+	    {
+		    Layout.Remove(child);
+	    }
+
+	    var columnDefs = new ColumnDefinitionCollection([]);
+	    for (int i = 0; i < Columns; i++)
+	    {
+		    columnDefs.Add(new ColumnDefinition(new GridLength(1, GridUnitType.Star)));
+	    }
+
+	    Layout.ColumnDefinitions = columnDefs;
 	    for (int i = 0; i < SelectableColors.Count; i++)
 	    {
 		    var item = SelectableColors[i];
-		    Layout.Add(CreateButton(item), i % 5, i / 5);
+		    Layout.Add(CreateButton(item), i % Columns, i / Columns);
 	    }
     }
 
@@ -104,6 +148,9 @@ public partial class ColorSelector : ContentView
 	    button.SetBinding(ColorButton.SelectedCommandProperty, new Binding(nameof(viewModel.SelectedCommand)));
 	    
 	    button.SetBinding(ColorButton.CommandParameterProperty, new Binding(viewModel.Color == Checklist.ChecklistColor.Custom ? nameof(viewModel.CustomColorId) : nameof(viewModel.Color)));
+	    
+	    button.SetBinding(ColorButton.IconProperty, new Binding(nameof(viewModel.Icon)));
+	    button.SetBinding(ColorButton.SmallIconProperty, new Binding(nameof(viewModel.SmallIcon)));
 	    
 	    return button;
     }
