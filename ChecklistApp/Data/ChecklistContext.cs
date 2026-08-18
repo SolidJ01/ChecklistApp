@@ -174,6 +174,14 @@ namespace ChecklistApp.Data
         public async Task DeleteColorAsync(ChecklistColor checklistColor)
         {
             ChecklistColors.Remove(checklistColor);
+
+            foreach (var checklist in Checklists.Where(x => x.CustomColorId == checklistColor.Id))
+            {
+                checklist.CustomColorId = null;
+                checklist.Color = Checklist.ChecklistColor.Grey;
+                Checklists.Update(checklist);
+            }
+            
             await SaveChangesAsync();
         }
 

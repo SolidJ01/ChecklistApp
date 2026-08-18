@@ -76,6 +76,12 @@ public class DynamicChecklistColorResourceExtension : BindableObject, IMarkupExt
             return color;
         }
 
-        throw new Exception($"Couldn't find custom colour resource");
+        if (Application.Current.Resources.TryGetValue("Foreground", out var defaultResource) &&
+            defaultResource is Color defaultColor)
+        {
+            return defaultColor;
+        }
+
+        throw new Exception($"Unable to resolve custom or default colour resource");
     }
 }

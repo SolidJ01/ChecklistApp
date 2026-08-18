@@ -14,7 +14,7 @@ namespace ChecklistApp.Migrations
                 name: "CustomColorId",
                 table: "Checklists",
                 type: "INTEGER",
-                nullable: false,
+                nullable: true,
                 defaultValue: 0);
         }
 

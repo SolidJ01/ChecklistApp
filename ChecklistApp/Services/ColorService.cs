@@ -101,9 +101,9 @@ public class ColorService
         callback?.Invoke();
     }
 
-    private async Task DeleteColour(int id, Action callback)
+    private void DeleteColour(int id, Action callback)
     {
-        await _context.DeleteColorAsync(id);
+        _ = _context.DeleteColorAsync(id);
         Update();
         callback?.Invoke();
     }

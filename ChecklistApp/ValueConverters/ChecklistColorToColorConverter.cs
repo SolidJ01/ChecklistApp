@@ -24,6 +24,10 @@ public class ChecklistColorToColorConverter : IMultiValueConverter
         {
             return resource as Color;
         }
+        else if (Application.Current.Resources.TryGetValue("Foreground", out resource))
+        {
+            return resource as Color;
+        }
         else
         {
             throw new ArgumentException($"Resource {resourceKey} not found");
