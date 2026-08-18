@@ -7,6 +7,7 @@ public class ColorService
 {
     public static readonly string S_CustomColourString = "CustomColour";
     public event EventHandler<ColorSelectRequestEventArgs> ColorSelectRequested;
+    public event EventHandler ColorsUpdated;
     
     private readonly ChecklistContext _context;
     private ResourceDictionary _customColourDictionary;
@@ -58,6 +59,8 @@ public class ColorService
                 _customColourDictionary.Remove(key);
             }
         }
+        
+        ColorsUpdated?.Invoke(this, EventArgs.Empty);
     }
 
     public void RequestColourCreation(Action<int> callback)
