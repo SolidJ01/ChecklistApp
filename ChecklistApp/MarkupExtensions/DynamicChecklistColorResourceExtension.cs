@@ -7,10 +7,16 @@ namespace ChecklistApp.MarkupExtensions;
 [RequireService([typeof(IProvideValueTarget), typeof(IReferenceProvider), typeof(ColorService)])]
 public class DynamicChecklistColorResourceExtension : BindableObject, IMarkupExtension<BindingBase>
 {
-    public static readonly BindableProperty ColorProperty = BindableProperty.Create(nameof(Color), typeof(Checklist.ChecklistColor), typeof(DynamicChecklistColorResourceExtension));
-    public static readonly BindableProperty CustomColorIdProperty = BindableProperty.Create(nameof(CustomColorId), typeof(int?), typeof(DynamicChecklistColorResourceExtension));
+    public static readonly BindableProperty ColorProperty = BindableProperty.Create(nameof(Color), typeof(Checklist.ChecklistColor), typeof(DynamicChecklistColorResourceExtension), propertyChanged:BindingsChanged);
+    public static readonly BindableProperty CustomColorIdProperty = BindableProperty.Create(nameof(CustomColorId), typeof(int?), typeof(DynamicChecklistColorResourceExtension), propertyChanged:BindingsChanged);
+
+    private static void BindingsChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        ((DynamicChecklistColorResourceExtension)bindable).OnBindingsChanged();
+    }
 
     private ColorService? _colorService = null;
+    private Color _resource = new Color(255);
     
     public Checklist.ChecklistColor Color
     {
@@ -24,11 +30,21 @@ public class DynamicChecklistColorResourceExtension : BindableObject, IMarkupExt
         set => SetValue(CustomColorIdProperty, value);
     }
 
-    public bool FlipFLop { get; set; } = false;
+    public Color Resource
+    {
+        get => _resource;
+        set
+        {
+            if (_resource != value)
+            {
+                _resource = value;
+                OnPropertyChanged(nameof(Resource));
+            }
+        }
+    }
 
     public BindingBase ProvideValue(IServiceProvider serviceProvider)
     {
-        Application.Current.Resources.TryGetValue("ChecklistColorToColorConverter", out object converter);
         _colorService = IPlatformApplication.Current.Services.GetService<ColorService>();
         if (_colorService is not null)
         {
@@ -40,19 +56,7 @@ public class DynamicChecklistColorResourceExtension : BindableObject, IMarkupExt
             this.SetBinding(BindingContextProperty, static (BindableObject b) => b.BindingContext, BindingMode.OneWay, source: targetObject);
         }
         
-        return new MultiBinding
-        {
-            Bindings =
-            {
-                BindingBase.Create(static (DynamicChecklistColorResourceExtension c) => c.Color, BindingMode.OneWay,
-                    source: this),
-                BindingBase.Create(static (DynamicChecklistColorResourceExtension c) => c.CustomColorId, BindingMode.OneWay,
-                    source: this), 
-                BindingBase.Create(static (DynamicChecklistColorResourceExtension c) => c.FlipFLop, BindingMode.OneWay, 
-                    source: this)
-            },
-            Converter = (IMultiValueConverter)converter
-        };
+        return new Binding(nameof(Resource), BindingMode.OneWay, source: this);
     }
 
     object IMarkupExtension.ProvideValue(IServiceProvider serviceProvider)
@@ -65,7 +69,28 @@ public class DynamicChecklistColorResourceExtension : BindableObject, IMarkupExt
         if (e.AffectedIds.All(x => x != CustomColorId))
             return;
         
-        FlipFLop = !FlipFLop;
-        OnPropertyChanged(nameof(FlipFLop));
+        ResolveColourResource();
+    }
+
+    public void OnBindingsChanged()
+    {
+        ResolveColourResource();
+    }
+
+    private void ResolveColourResource()
+    {
+        if (Application.Current.Resources.TryGetValue(ColorService.CalculateResourceKey(Color, CustomColorId),
+                out object resource) && resource is Color color)
+        {
+            Resource = color;
+        }
+        else if (Application.Current.Resources.TryGetValue("Foreground", out resource) && resource is Color defCol)
+        {
+            Resource = defCol;
+        }
+        else
+        {
+            throw new Exception("Shit's fucked yo");
+        }
     }
 }
