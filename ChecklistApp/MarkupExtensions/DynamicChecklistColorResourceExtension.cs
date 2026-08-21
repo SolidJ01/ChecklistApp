@@ -7,8 +7,8 @@ namespace ChecklistApp.MarkupExtensions;
 [RequireService([typeof(IProvideValueTarget), typeof(IReferenceProvider), typeof(ColorService)])]
 public class DynamicChecklistColorResourceExtension : BindableObject, IMarkupExtension<BindingBase>
 {
-    public static readonly BindableProperty ColorProperty = BindableProperty.Create(nameof(Color), typeof(Checklist.ChecklistColor), typeof(DynamicChecklistColorResourceExtension), propertyChanged:BindingsChanged);
-    public static readonly BindableProperty CustomColorIdProperty = BindableProperty.Create(nameof(CustomColorId), typeof(int?), typeof(DynamicChecklistColorResourceExtension), propertyChanged:BindingsChanged);
+    public static readonly BindableProperty ColorProperty = BindableProperty.Create(nameof(Color), typeof(Checklist.ChecklistColor?), typeof(DynamicChecklistColorResourceExtension), propertyChanged:BindingsChanged, defaultValue:null);
+    public static readonly BindableProperty CustomColorIdProperty = BindableProperty.Create(nameof(CustomColorId), typeof(int?), typeof(DynamicChecklistColorResourceExtension), propertyChanged:BindingsChanged, defaultValue:null);
 
     private static void BindingsChanged(BindableObject bindable, object oldValue, object newValue)
     {
@@ -16,9 +16,9 @@ public class DynamicChecklistColorResourceExtension : BindableObject, IMarkupExt
     }
 
     private ColorService? _colorService = null;
-    private Color _resource = new Color(255);
+    private Color _resource = new Color(0);
     
-    public Checklist.ChecklistColor Color
+    public Checklist.ChecklistColor? Color
     {
         get => (Checklist.ChecklistColor)GetValue(ColorProperty);
         set => SetValue(ColorProperty, value);
@@ -35,7 +35,7 @@ public class DynamicChecklistColorResourceExtension : BindableObject, IMarkupExt
         get => _resource;
         set
         {
-            if (_resource != value)
+            if (!_resource.Equals(value))
             {
                 _resource = value;
                 OnPropertyChanged(nameof(Resource));
@@ -45,6 +45,9 @@ public class DynamicChecklistColorResourceExtension : BindableObject, IMarkupExt
 
     public BindingBase ProvideValue(IServiceProvider serviceProvider)
     {
+        if (Application.Current.Resources.TryGetValue("Foreground", out var res) && res is Color col)
+            Resource = col;
+        
         _colorService = IPlatformApplication.Current.Services.GetService<ColorService>();
         if (_colorService is not null)
         {
@@ -79,7 +82,9 @@ public class DynamicChecklistColorResourceExtension : BindableObject, IMarkupExt
 
     private void ResolveColourResource()
     {
-        if (Application.Current.Resources.TryGetValue(ColorService.CalculateResourceKey(Color, CustomColorId),
+        if (Color is null)
+            return;
+        if (Application.Current.Resources.TryGetValue(ColorService.CalculateResourceKey((Checklist.ChecklistColor)Color, CustomColorId),
                 out object resource) && resource is Color color)
         {
             Resource = color;

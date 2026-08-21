@@ -134,6 +134,7 @@ namespace ChecklistApp.ViewModel
         private void Cancel()
         {
             ResetChecklist();
+            SetColor(Checklist.ChecklistColor.Grey);
         }
 
         private async void Save(Action callback = null)
