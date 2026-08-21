@@ -24,7 +24,7 @@ public class DynamicChecklistColorResourceExtension : BindableObject, IMarkupExt
         set => SetValue(CustomColorIdProperty, value);
     }
 
-    public Color ResolvedColorResource { get; set; } = new Color(255, 255, 255);
+    public bool FlipFLop { get; set; } = false;
 
     public BindingBase ProvideValue(IServiceProvider serviceProvider)
     {
@@ -40,8 +40,6 @@ public class DynamicChecklistColorResourceExtension : BindableObject, IMarkupExt
             this.SetBinding(BindingContextProperty, static (BindableObject b) => b.BindingContext, BindingMode.OneWay, source: targetObject);
         }
         
-        ResolvedColorResource = ResolveColorResource();
-        
         return new MultiBinding
         {
             Bindings =
@@ -50,7 +48,7 @@ public class DynamicChecklistColorResourceExtension : BindableObject, IMarkupExt
                     source: this),
                 BindingBase.Create(static (DynamicChecklistColorResourceExtension c) => c.CustomColorId, BindingMode.OneWay,
                     source: this), 
-                BindingBase.Create(static (DynamicChecklistColorResourceExtension c) => c.ResolvedColorResource, BindingMode.OneWay, 
+                BindingBase.Create(static (DynamicChecklistColorResourceExtension c) => c.FlipFLop, BindingMode.OneWay, 
                     source: this)
             },
             Converter = (IMultiValueConverter)converter
@@ -62,26 +60,12 @@ public class DynamicChecklistColorResourceExtension : BindableObject, IMarkupExt
         return ProvideValue(serviceProvider);
     }
 
-    private void ColorServiceOnColorsUpdated(object? sender, EventArgs e)
+    private void ColorServiceOnColorsUpdated(object? sender, ColorsUpdatedEventArgs e)
     {
-        ResolvedColorResource = ResolveColorResource();
-        OnPropertyChanged(nameof(ResolvedColorResource));
-    }
-
-    private Color ResolveColorResource()
-    {
-        if (Application.Current.Resources.TryGetValue(ColorService.CalculateResourceKey(Color, CustomColorId),
-                out var value) && value is Color color)
-        {
-            return color;
-        }
-
-        if (Application.Current.Resources.TryGetValue("Foreground", out var defaultResource) &&
-            defaultResource is Color defaultColor)
-        {
-            return defaultColor;
-        }
-
-        throw new Exception($"Unable to resolve custom or default colour resource");
+        if (e.AffectedIds.All(x => x != CustomColorId))
+            return;
+        
+        FlipFLop = !FlipFLop;
+        OnPropertyChanged(nameof(FlipFLop));
     }
 }

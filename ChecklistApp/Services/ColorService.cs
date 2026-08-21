@@ -7,7 +7,7 @@ public class ColorService
 {
     public static readonly string S_CustomColourString = "CustomColour";
     public event EventHandler<ColorSelectRequestEventArgs> ColorSelectRequested;
-    public event EventHandler ColorsUpdated;
+    public event EventHandler<ColorsUpdatedEventArgs> ColorsUpdated;
     
     private readonly ChecklistContext _context;
     private ResourceDictionary _customColourDictionary;
@@ -39,15 +39,19 @@ public class ColorService
     public void Update()
     {
         var customColours = _context.GetColorsAsync().Result;
-        foreach (var color in customColours)
+        List<int> affectedIds = [];
+        foreach (var customColor in customColours)
         {
-            if (!_customColourDictionary.ContainsKey($"{S_CustomColourString}{color.Id}"))
+            Color color = new Color(customColor.Red, customColor.Green, customColor.Blue);
+            if (!_customColourDictionary.ContainsKey($"{S_CustomColourString}{customColor.Id}"))
             {
-                _customColourDictionary.Add($"{S_CustomColourString}{color.Id}", new Color(color.Red,  color.Green, color.Blue));
+                _customColourDictionary.Add($"{S_CustomColourString}{customColor.Id}", color);
+                affectedIds.Add(customColor.Id);
             }
-            else
+            else if (_customColourDictionary.TryGetValue($"{S_CustomColourString}{customColor.Id}", out var customColour) && customColour is Color c && !c.Equals(color))
             {
-                _customColourDictionary[$"{S_CustomColourString}{color.Id}"] = new Color(color.Red, color.Green, color.Blue);
+                _customColourDictionary[$"{S_CustomColourString}{customColor.Id}"] = new Color(customColor.Red, customColor.Green, customColor.Blue);
+                affectedIds.Add(customColor.Id);
             }
         }
 
@@ -57,10 +61,11 @@ public class ColorService
             if (customColours.All(x => x.Id != id))
             {
                 _customColourDictionary.Remove(key);
+                affectedIds.Add(id);
             }
         }
         
-        ColorsUpdated?.Invoke(this, EventArgs.Empty);
+        ColorsUpdated?.Invoke(this, new ColorsUpdatedEventArgs(affectedIds));
     }
 
     public void RequestColourCreation(Action<int> callback)
